@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FTTH OSP Auto-Designer Nuakchott - Engineering Suite</title>
+    <title>FTTH OSP Auto-Designer Nuakchott</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Leaflet CSS & JS -->
@@ -16,11 +16,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- Turf.js para análisis espacial y cálculo de offsets -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
-    <!-- SheetJS (xlsx) para Exportación Excel nativa -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- jsPDF y AutoTable para Exportación PDF nativa -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter & JetBrains Mono -->
@@ -35,247 +30,191 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
         .leaflet-popup-content-wrapper { background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; }
         .leaflet-popup-tip { background: #0f172a; }
-        .tab-btn.active { border-bottom: 2px solid #6366f1; color: #818cf8; background-color: rgba(15, 23, 42, 0.6); }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 h-screen overflow-hidden flex flex-col">
 
-    <!-- Header Principal PMO / Ingeniería FTTH -->
+    <!-- Header Principal PMO -->
     <header class="h-[65px] bg-slate-950 border-b border-slate-800 px-4 flex items-center justify-between shrink-0 z-20">
         <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
-                <i class="fa-solid fa-network-wired text-xl"></i>
+                <i class="fa-solid fa-road text-xl"></i>
             </div>
             <div>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-base font-bold text-white tracking-wide">FTTH OSP Auto-Designer Nuakchott</h1>
                     <span class="bg-emerald-950 border border-emerald-500/40 text-emerald-300 text-xs px-2 py-0.5 rounded font-mono flex items-center gap-1">
-                        <i class="fa-solid fa-shield-halved text-[10px]"></i> Pro Edition (v2.5 OSP)
+                        <i class="fa-solid fa-route text-[10px]"></i> Ruteo Estricto por Aceras
                     </span>
                 </div>
-                <p class="text-xs text-slate-400">Ruteo por Aceras (Offset ~3.5m) | Postes Madera Equilibrados | Presupuesto Óptico GPON | Exportación KML/Excel/PDF</p>
+                <p class="text-xs text-slate-400">Trazado Pegado a Aceras (Offset ~3.5m) | Postes 8m desde CE (P001) | 8 CTOs Matriz | KML Icon Scale 1.2</p>
             </div>
         </div>
 
         <!-- Indicadores Métricos PMO -->
-        <div class="hidden xl:flex items-center space-x-2 text-xs font-mono">
-            <div class="bg-slate-900 border border-slate-800 px-2 py-1.5 rounded-md flex items-center space-x-1.5">
+        <div class="hidden xl:flex items-center space-x-2.5 text-xs font-mono">
+            <div class="bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-md flex items-center space-x-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 <span class="text-slate-400">Cluster:</span>
                 <span id="header-cluster-id" class="text-emerald-400 font-bold">CL 01</span>
             </div>
-            <div class="bg-slate-900 border border-slate-800 px-2 py-1.5 rounded-md flex items-center space-x-1.5">
+            <div class="bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-md flex items-center space-x-2">
                 <i class="fa-solid fa-arrows-left-right-to-line text-cyan-400"></i>
-                <span class="text-slate-400">Máx CTOs:</span>
+                <span class="text-slate-400">Dist. Máx CTOs:</span>
                 <span id="header-max-cto-spacing" class="text-cyan-300 font-bold">-- m</span>
             </div>
-            <div class="bg-slate-900 border border-slate-800 px-2 py-1.5 rounded-md flex items-center space-x-1.5">
+            <div class="bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-md flex items-center space-x-2">
                 <i class="fa-solid fa-house-signal text-emerald-400"></i>
                 <span class="text-slate-400">Radio Casas:</span>
                 <span id="header-max-house-dist" class="text-emerald-300 font-bold">≤150m (OK)</span>
             </div>
-            <div class="bg-slate-900 border border-slate-800 px-2 py-1.5 rounded-md flex items-center space-x-1.5">
+            <div class="bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-md flex items-center space-x-2">
                 <i class="fa-solid fa-tree text-amber-500"></i>
-                <span class="text-slate-400">Postes:</span>
+                <span class="text-slate-400">Postes 8m:</span>
                 <span id="header-total-poles" class="text-amber-400 font-bold">0 UND</span>
             </div>
-            <div class="bg-slate-900 border border-slate-800 px-2 py-1.5 rounded-md flex items-center space-x-1.5">
+            <div class="bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-md flex items-center space-x-2">
                 <i class="fa-solid fa-cable-car text-red-400"></i>
                 <span class="text-slate-400">Cable FO:</span>
                 <span id="header-total-cable" class="text-red-400 font-bold">0 MTS</span>
             </div>
-            <div class="bg-slate-900 border border-slate-800 px-2 py-1.5 rounded-md flex items-center space-x-1.5" id="header-validation-badge">
-                <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                <span id="header-validation-status" class="text-emerald-400 font-bold">Validados 0 Errores</span>
-            </div>
         </div>
 
-        <!-- Botones de Acción Globales -->
+        <!-- Botones de Acción -->
         <div class="flex items-center space-x-2">
-            <!-- Deshacer / Rehacer -->
-            <button id="btn-undo" onclick="undoLastAction()" disabled class="bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-amber-400 border border-slate-700 text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shadow transition-all" title="Deshacer (Ctrl + Z)">
+            <!-- Botón de Marcha Atrás (Undo) -->
+            <button id="btn-undo" onclick="undoLastAction()" disabled class="bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-amber-400 border border-slate-700 text-xs font-semibold px-3 py-2 rounded-lg flex items-center space-x-1.5 shadow transition-all" title="Deshacer última modificación (Ctrl + Z)">
                 <i class="fa-solid fa-rotate-left"></i>
-                <span class="hidden sm:inline">Deshacer</span>
+                <span>Marcha Atrás</span>
             </button>
-            <button id="btn-redo" onclick="redoLastAction()" disabled class="bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-amber-400 border border-slate-700 text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shadow transition-all" title="Rehacer (Ctrl + Y)">
-                <i class="fa-solid fa-rotate-right"></i>
-                <span class="hidden sm:inline">Rehacer</span>
+            <button id="btn-export-kml" onclick="exportDesignedKML()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-2 rounded-lg flex items-center space-x-2 shadow-md transition-all">
+                <i class="fa-solid fa-file-export"></i>
+                <span>Exportar KML</span>
             </button>
-
-            <!-- Menú Desplegable Exportar -->
-            <div class="relative group">
-                <button class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 shadow-md transition-all">
-                    <i class="fa-solid fa-file-export"></i>
-                    <span>Exportar Entregables</span>
-                    <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                </button>
-                <div class="absolute right-0 mt-1 w-48 bg-slate-950 border border-slate-800 rounded-lg shadow-2xl py-1 hidden group-hover:block z-50">
-                    <button onclick="exportDesignedKML()" class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:bg-slate-800 flex items-center gap-2">
-                        <i class="fa-solid fa-earth-americas text-emerald-400"></i> Exportar KML (Google Earth)
-                    </button>
-                    <button onclick="exportExcelBoQ()" class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:bg-slate-800 flex items-center gap-2">
-                        <i class="fa-solid fa-file-excel text-emerald-500"></i> Exportar Excel (BoQ / Mediciones)
-                    </button>
-                    <button onclick="exportPdfReport()" class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:bg-slate-800 flex items-center gap-2">
-                        <i class="fa-solid fa-file-pdf text-red-400"></i> Exportar PDF Informe Técnico
-                    </button>
-                </div>
-            </div>
-
-            <!-- Botón de Auditoría de Validación -->
-            <button onclick="openValidationModal()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 shadow-md transition-all">
+            <button onclick="togglePmoModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-3 py-2 rounded-lg flex items-center space-x-2 shadow-md transition-all">
                 <i class="fa-solid fa-clipboard-check"></i>
-                <span>Validar Red</span>
-            </button>
-            <button onclick="togglePmoModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 shadow-md transition-all">
-                <i class="fa-solid fa-building-columns"></i>
-                <span>Reporte ARE</span>
+                <span>Reporte PMO</span>
             </button>
         </div>
     </header>
 
-    <!-- Contenedor Principal: Sidebar Multi-pestañas + Mapa -->
+    <!-- Contenedor Principal: Sidebar + Mapa -->
     <div class="flex flex-1 overflow-hidden relative">
         
-        <!-- Sidebar de Control e Ingeniería -->
+        <!-- Sidebar de Control -->
         <aside class="w-96 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0 custom-scrollbar overflow-y-auto z-10 shadow-2xl">
             
-            <!-- Navegación por Pestañas del Panel Lateral -->
-            <nav class="flex border-b border-slate-800 bg-slate-950 text-xs text-slate-400 font-medium">
-                <button onclick="switchTab('tab-perimetro')" id="tab-btn-perimetro" class="tab-btn active flex-1 py-2.5 px-2 text-center flex items-center justify-center gap-1.5 transition">
-                    <i class="fa-solid fa-map-location-dot"></i> 1. Diseñar
-                </button>
-                <button onclick="switchTab('tab-cables')" id="tab-btn-cables" class="tab-btn flex-1 py-2.5 px-2 text-center flex items-center justify-center gap-1.5 transition">
-                    <i class="fa-solid fa-diagram-project"></i> 2. Trazado
-                </button>
-                <button onclick="switchTab('tab-fibra')" id="tab-btn-fibra" class="tab-btn flex-1 py-2.5 px-2 text-center flex items-center justify-center gap-1.5 transition">
-                    <i class="fa-solid fa-bolt text-amber-400"></i> 3. Potencia
-                </button>
-                <button onclick="switchTab('tab-auditoria')" id="tab-btn-auditoria" class="tab-btn flex-1 py-2.5 px-2 text-center flex items-center justify-center gap-1.5 transition">
-                    <i class="fa-solid fa-list-check text-emerald-400"></i> 4. Audit
-                </button>
-            </nav>
-
-            <!-- PESTAÑA 1: Perímetro, Criterios y Carga -->
-            <div id="tab-content-perimetro" class="p-4 space-y-4">
+            <!-- Sección 1: Carga / Dibujo de Perímetro -->
+            <div class="p-4 border-b border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                        <i class="fa-solid fa-draw-polygon text-indigo-400"></i>
+                        1. Definir Perímetro del Cluster
+                    </h2>
+                    <span class="text-[10px] bg-indigo-950 text-indigo-300 px-1.5 py-0.5 rounded border border-indigo-800">Paso 1</span>
+                </div>
                 
-                <!-- Definición de Perímetro -->
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                            <i class="fa-solid fa-draw-polygon text-indigo-400"></i>
-                            Perímetro del Sector / Clúster
-                        </h2>
-                        <span class="text-[10px] bg-indigo-950 text-indigo-300 px-1.5 py-0.5 rounded border border-indigo-800">Carga / Dibujo</span>
-                    </div>
-                    
-                    <div id="dropzone" onclick="triggerFileInput()" class="border-2 border-dashed border-indigo-500/50 hover:border-indigo-400 bg-slate-950/70 hover:bg-slate-950 transition-all rounded-xl p-3 text-center cursor-pointer group">
-                        <input type="file" id="file-input" accept=".kmz,.kml" class="hidden" onchange="handleFileSelect(event)">
-                        <i class="fa-solid fa-cloud-arrow-up text-2xl text-indigo-400 group-hover:scale-110 mb-1 transition-transform"></i>
-                        <p class="text-xs font-medium text-slate-200">Cargar KMZ / KML Perimetrado</p>
-                        <p class="text-[10px] text-slate-400 mt-0.5">Soporta Google Earth, QGIS y ArcGIS (.kmz / .kml)</p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="enableDrawPolygon()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs py-2 px-2 rounded-lg font-medium transition flex items-center justify-center gap-1.5 shadow">
-                            <i class="fa-solid fa-pen-ruler"></i>
-                            Dibujar Polígono
-                        </button>
-                        <button onclick="clearMapLayout()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 px-2 rounded-lg border border-slate-700 transition flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-trash-can text-red-400"></i>
-                            Limpiar Todo
-                        </button>
-                    </div>
+                <!-- Zona de Carga Drag & Drop -->
+                <div id="dropzone" onclick="triggerFileInput()" class="border-2 border-dashed border-indigo-500/50 hover:border-indigo-400 bg-slate-950/70 hover:bg-slate-950 transition-all rounded-xl p-3.5 text-center cursor-pointer group">
+                    <input type="file" id="file-input" accept=".kmz,.kml" class="hidden" onchange="handleFileSelect(event)">
+                    <i class="fa-solid fa-cloud-arrow-up text-2xl text-indigo-400 group-hover:scale-110 mb-1 transition-transform"></i>
+                    <p class="text-xs font-medium text-slate-200">Cargar Archivo KMZ / KML Perimetrado</p>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Soporta Google Earth Pro, QGIS y ArcGIS (.kmz / .kml)</p>
                 </div>
 
-                <!-- Criterios de Red y Nomenclatura -->
-                <div class="space-y-3 pt-2 border-t border-slate-800">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                            <i class="fa-solid fa-sliders text-indigo-400"></i>
-                            Reglas de Nomenclatura y Vanos
-                        </h2>
-                        <span class="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded font-mono font-semibold">Configurable</span>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Nombre Cluster</label>
-                            <input type="text" id="cluster-name" value="CL 01" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-slate-800 text-white text-xs rounded px-2 py-1.5 font-mono focus:border-indigo-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-medium text-amber-400 mb-1 flex items-center gap-1">
-                                <i class="fa-solid fa-box text-[10px]"></i> Nombre CE (Empalme)
-                            </label>
-                            <input type="text" id="ce-name-input" value="CE001" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-amber-500/50 text-amber-300 font-bold text-xs rounded px-2 py-1.5 font-mono focus:border-amber-400 outline-none shadow-inner">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-1.5">
-                        <div>
-                            <label class="block text-[10px] font-medium text-emerald-400 mb-1 truncate">
-                                Inicio CTO
-                            </label>
-                            <input type="number" id="cto-start-input" value="1" min="1" step="1" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-emerald-500/50 text-emerald-300 font-bold text-xs rounded px-1.5 py-1.5 font-mono text-center outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-red-400 mb-1 truncate">
-                                Inicio Cable
-                            </label>
-                            <input type="number" id="cable-start-input" value="100" min="1" step="1" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-red-500/50 text-red-300 font-bold text-xs rounded px-1.5 py-1.5 font-mono text-center outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-amber-200 mb-1 truncate" title="P001 ubicado obligatoriamente en la CE">
-                                Inicio Poste (CE)
-                            </label>
-                            <input type="number" id="pole-start-input" value="1" min="1" step="1" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-amber-600/50 text-amber-200 font-bold text-xs rounded px-1.5 py-1.5 font-mono text-center outline-none">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-[10px] font-medium text-slate-400 mb-1">Vano Deseado Postes</label>
-                            <select id="pole-spacing-select" onchange="updatePoleSpacingSetting()" class="w-full bg-slate-950 border border-slate-800 text-amber-300 font-mono text-xs rounded px-2 py-1.5 outline-none">
-                                <option value="8">8 Metros (Estándar Base)</option>
-                                <option value="15">15 Metros</option>
-                                <option value="20">20 Metros</option>
-                                <option value="40" selected>40 Metros (Vano Máx OSP)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-medium text-slate-400 mb-1">Capacidad Cable Feeder</label>
-                            <select id="fo-capacity-select" onchange="updateFoCapacitySetting()" class="w-full bg-slate-950 border border-slate-800 text-white text-xs rounded px-2 py-1.5 font-mono outline-none">
-                                <option value="48 FO" selected>48 FO (4 Tubos x 12)</option>
-                                <option value="24 FO">24 FO (2 Tubos x 12)</option>
-                                <option value="96 FO">96 FO (8 Tubos x 12)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button onclick="updateClusterNameUI()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-600/30">
-                        <i class="fa-solid fa-arrow-rotate-right"></i>
-                        <span>Recalcular Red y Renumerar (P001 desde CE)</span>
+                <!-- Botones de Acción de Mapa -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="enableDrawPolygon()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs py-2 px-2 rounded-lg font-medium transition flex items-center justify-center gap-1.5 shadow">
+                        <i class="fa-solid fa-pen-ruler"></i>
+                        Dibujar Polígono
+                    </button>
+                    <button onclick="clearMapLayout()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 px-2 rounded-lg border border-slate-700 transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-trash-can text-red-400"></i>
+                        Limpiar Mapa
                     </button>
                 </div>
             </div>
 
-            <!-- PESTAÑA 2: Herramientas de Trazado y Listado de Elementos -->
-            <div id="tab-content-cables" class="p-4 space-y-3 hidden">
+            <!-- Sección 2: Criterios y Numeración FTTH -->
+            <div class="p-4 border-b border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-indigo-400"></i>
+                        2. Criterios y Numeración FTTH
+                    </h2>
+                    <span class="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded font-mono font-semibold">Estándar Activo</span>
+                </div>
+
+                <!-- Nombre de Cluster y Nombre de CE -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-medium text-slate-400 mb-1">Nombre Cluster</label>
+                        <input type="text" id="cluster-name" value="CL 01" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-slate-800 text-white text-xs rounded px-2 py-1.5 font-mono focus:border-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-amber-400 mb-1 flex items-center gap-1">
+                            <i class="fa-solid fa-box text-[10px]"></i> Nombre CE
+                        </label>
+                        <input type="text" id="ce-name-input" value="CE001" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-amber-500/50 text-amber-300 font-bold text-xs rounded px-2 py-1.5 font-mono focus:border-amber-400 outline-none shadow-inner">
+                    </div>
+                </div>
+
+                <!-- Controles Dedicados de Numeración Inicial -->
+                <div class="grid grid-cols-3 gap-1.5">
+                    <div>
+                        <label class="block text-[10px] font-medium text-emerald-400 mb-1 flex items-center gap-1 truncate">
+                            <i class="fa-solid fa-hashtag text-[9px]"></i> Inicio CTO
+                        </label>
+                        <input type="number" id="cto-start-input" value="1" min="1" step="1" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-emerald-500/50 text-emerald-300 font-bold text-xs rounded px-1.5 py-1.5 font-mono focus:border-emerald-400 outline-none text-center shadow-inner">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-red-400 mb-1 flex items-center gap-1 truncate">
+                            <i class="fa-solid fa-hashtag text-[9px]"></i> Inicio Cable
+                        </label>
+                        <input type="number" id="cable-start-input" value="100" min="1" step="1" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-red-500/50 text-red-300 font-bold text-xs rounded px-1.5 py-1.5 font-mono focus:border-red-400 outline-none text-center shadow-inner">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-amber-200 mb-1 flex items-center gap-1 truncate" title="La numeración empieza en el poste de la CE (P001) y sigue correlativa">
+                            <i class="fa-solid fa-tree text-[9px]"></i> Inicio Poste (CE)
+                        </label>
+                        <input type="number" id="pole-start-input" value="1" min="1" step="1" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-amber-600/50 text-amber-200 font-bold text-xs rounded px-1.5 py-1.5 font-mono focus:border-amber-400 outline-none text-center shadow-inner">
+                    </div>
+                </div>
+
+                <button onclick="updateClusterNameUI()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-600/30">
+                    <i class="fa-solid fa-arrow-rotate-right"></i>
+                    <span>Aplicar Nombre CE y Numeración (P001 desde CE)</span>
+                </button>
+
+                <div>
+                    <label class="block text-[11px] font-medium text-slate-400 mb-1">Capacidad del Cable Feeder</label>
+                    <select id="fo-capacity-select" class="w-full bg-slate-950 border border-slate-800 text-white text-xs rounded px-2 py-1.5 focus:border-indigo-500 outline-none font-mono">
+                        <option value="48 FO" selected>48 FO (Estándar CL 01)</option>
+                        <option value="24 FO">24 FO</option>
+                        <option value="96 FO">96 FO</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sección 3: Edición Manual del Recorrido y Cables -->
+            <div class="p-4 border-b border-slate-800 space-y-2 bg-slate-950/40">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                         <i class="fa-solid fa-pen-to-square text-cyan-400"></i>
-                        Edición de Elementos y Aceras
+                        Edición de Elementos y Trazados
                     </h2>
                     <span id="edit-mode-indicator" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Modo Lectura</span>
                 </div>
                 
+                <!-- Guía rápida de edición de cable -->
                 <div class="bg-indigo-950/50 border border-indigo-800/50 p-2.5 rounded text-[10px] text-indigo-200 leading-relaxed space-y-1">
                     <p class="font-bold text-indigo-300 flex items-center gap-1">
-                        <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Controles de Trazado por Aceras:
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Rediseño y Edición en Aceras:
                     </p>
-                    <p>• <strong>Mover CTO / CE:</strong> Arrastra para rediseñar automáticamente los tramos por la acera elegida.</p>
-                    <p>• <strong>Añadir Giro:</strong> Clic sobre un tramo de cable para insertar un vértice.</p>
-                    <p>• <strong>Edición Fina:</strong> Clic en un nodo rojo para Borrar, Dividir en 2 o Extender tramo.</p>
+                    <p>• <strong>Mover CTO $\rightarrow$ Rediseño Automático:</strong> Al arrastrar una CTO a otra acera, el cable y postes se recalculan automáticamente.</p>
+                    <p>• <strong>Eliminar Vértice (Acortar):</strong> Clic derecho en un nodo rojo para borrar ese punto de giro.</p>
+                    <p>• <strong>Dividir Cable:</strong> Clica en un nodo rojo intermedio $\rightarrow$ "Dividir Cable en 2".</p>
+                    <p>• <strong>Alargar Cable:</strong> Clica en un nodo extremo $\rightarrow$ "Alargar / Extender Cable".</p>
                 </div>
 
                 <div class="grid grid-cols-2 gap-1.5 pt-1">
@@ -293,127 +232,53 @@
                     </button>
                 </div>
 
+                <!-- Panel Flotante para finalizar trazado manual o extensión de cable -->
                 <div id="cable-drawing-banner" class="hidden bg-red-950/90 border border-red-500/50 p-2 rounded flex items-center justify-between text-xs mt-2">
-                    <span class="text-red-200 text-[11px]"><i class="fa-solid fa-draw-polygon mr-1 animate-pulse"></i> Clica en el mapa para trazar.</span>
+                    <span class="text-red-200 text-[11px]"><i class="fa-solid fa-draw-polygon mr-1 animate-pulse"></i> Clica en el mapa para trazar el cable.</span>
                     <button onclick="finishDrawingCable()" class="bg-red-600 hover:bg-red-500 text-white font-bold text-[10px] px-2.5 py-1 rounded shadow">
                         Finalizar Cable
                     </button>
                 </div>
-
-                <!-- Inventario de CTOs -->
-                <div class="pt-2">
-                    <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <i class="fa-solid fa-boxes-stacked text-indigo-400"></i> Inventario de CTOs y Cobertura
-                    </h3>
-                    <div id="cto-list-container" class="space-y-1.5 max-h-60 overflow-y-auto custom-scrollbar">
-                        <div class="p-4 text-center text-xs text-slate-500 italic bg-slate-950/40 rounded-lg border border-slate-800">
-                            Carga o dibuja un polígono para inicializar las CTOs.
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- PESTAÑA 3: Ingeniería de Fibra Óptica & Presupuesto Óptico -->
-            <div id="tab-content-fibra" class="p-4 space-y-4 hidden">
-                <div class="flex items-center justify-between">
+            <!-- Sección 4: Auditoría de CTOs -->
+            <div class="p-4 border-b border-slate-800 flex-1">
+                <div class="flex items-center justify-between mb-3">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                        <i class="fa-solid fa-bolt text-amber-400"></i>
-                        Presupuesto Óptico y Matriz FO
+                        <i class="fa-solid fa-boxes-stacked text-indigo-400"></i>
+                        Auditoría de CTOs (Matriz 8 UND)
                     </h2>
-                    <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">TIA-598-A</span>
-                </div>
-
-                <!-- Resumen de Calculadora de Atenuación -->
-                <div class="bg-slate-950 border border-slate-800 p-3 rounded-xl space-y-2 text-xs font-mono">
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-1.5">
-                        <span class="text-slate-400">Potencia de Transmisión (OLT):</span>
-                        <span class="text-emerald-400 font-bold">+2.50 dBm</span>
-                    </div>
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-1.5">
-                        <span class="text-slate-400">Atenuación Fibra @1310nm:</span>
-                        <span class="text-slate-200">0.35 dB/km</span>
-                    </div>
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-1.5">
-                        <span class="text-slate-400">Pérdida por Splitter (1:8):</span>
-                        <span class="text-amber-300">10.50 dB</span>
-                    </div>
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-1.5">
-                        <span class="text-slate-400">Pérdida por Fusión (Máx ARE):</span>
-                        <span class="text-emerald-400">≤ 0.04 dB (OK)</span>
-                    </div>
-                    <div class="flex justify-between items-center pt-1 font-bold text-sm">
-                        <span class="text-slate-300">Margen GPON Class B+:</span>
-                        <span class="text-emerald-400">28.00 dB Max</span>
+                    <div class="flex gap-1">
+                        <button onclick="togglePolesVisibility()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 px-2 py-0.5 rounded font-mono">
+                            <i class="fa-solid fa-tree mr-1"></i> Postes
+                        </button>
+                        <button onclick="toggleCoverageCircles()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 px-2 py-0.5 rounded font-mono">
+                            <i class="fa-solid fa-bullseye mr-1"></i> 150m
+                        </button>
                     </div>
                 </div>
 
-                <!-- Código de Colores TIA-598-A -->
-                <div class="space-y-2">
-                    <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Código de Colores de Fibra (TIA-598-A)</h3>
-                    <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono" id="fiber-color-matrix">
-                        <!-- Generado por JS -->
-                    </div>
-                </div>
-
-                <!-- Detalle por CTO -->
-                <div class="space-y-2">
-                    <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Atenuación Estimada por CTO</h3>
-                    <div id="optical-budget-list" class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar">
-                        <!-- Generado por JS -->
+                <!-- Lista Dinámica de CTOs -->
+                <div id="cto-list-container" class="space-y-2">
+                    <div class="p-4 text-center text-xs text-slate-500 italic bg-slate-950/40 rounded-lg border border-slate-800">
+                        Dibuja un polígono en el mapa o carga un archivo KML/KMZ perimetrado para calcular las 8 CTOs y el cableado por aceras.
                     </div>
                 </div>
             </div>
 
-            <!-- PESTAÑA 4: Auditoría y Matriz de Validación -->
-            <div id="tab-content-auditoria" class="p-4 space-y-3 hidden">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-emerald-400"></i>
-                        Matriz de Validación Técnica OSP
-                    </h2>
-                    <button onclick="runNetworkValidation()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-2 py-1 rounded">
-                        <i class="fa-solid fa-rotate mr-1"></i> Re-auditar
-                    </button>
-                </div>
-
-                <div id="validation-summary-box" class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 text-xs">
-                    <div class="flex items-center justify-between">
-                        <span class="text-slate-400 font-medium">Estado General:</span>
-                        <span id="validation-status-badge" class="bg-emerald-950 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded font-mono font-bold">100% VÁLIDO</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-mono pt-1">
-                        <div class="bg-red-950/40 border border-red-800/40 p-1.5 rounded">
-                            <span class="block text-red-400 font-bold text-sm" id="val-crit-count">0</span>
-                            <span class="text-slate-400">Críticos</span>
-                        </div>
-                        <div class="bg-amber-950/40 border border-amber-800/40 p-1.5 rounded">
-                            <span class="block text-amber-400 font-bold text-sm" id="val-warn-count">0</span>
-                            <span class="text-slate-400">Advertencias</span>
-                        </div>
-                        <div class="bg-emerald-950/40 border border-emerald-800/40 p-1.5 rounded">
-                            <span class="block text-emerald-400 font-bold text-sm" id="val-pass-count">6</span>
-                            <span class="text-slate-400">Pasados</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="validation-issues-list" class="space-y-2 text-xs max-h-72 overflow-y-auto custom-scrollbar">
-                    <!-- Generado por JS -->
-                </div>
-            </div>
-
-            <!-- Guardarraíl de Calidad PMO (Footer Fijo) -->
-            <div class="p-3 bg-slate-950 border-t border-slate-800 space-y-1.5 mt-auto">
+            <!-- Guardarraíl de Calidad PMO -->
+            <div class="p-4 bg-slate-950/80 space-y-2">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                         <i class="fa-solid fa-shield-halved text-amber-400"></i>
-                        Guardrails ARE / PMO Nuakchott
+                        Guardrails de Calidad (PMO)
                     </h2>
                 </div>
-                <div class="text-[11px] text-slate-400 space-y-1">
-                    <div class="flex justify-between items-center bg-slate-900 p-1.5 rounded font-mono text-[10px]">
-                        <span>Fusión Máxima:</span>
-                        <span id="max-splice-val" class="font-bold text-emerald-400">0.04 dB (≤ 0.5dB OK)</span>
+                <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-lg text-xs space-y-1.5">
+                    <p class="text-slate-400 text-[11px]">Fusión &gt; <span class="text-amber-400 font-bold font-mono">0.5 dB</span> o cruce sobre casas = <span class="text-red-400 font-bold font-mono">NO ACEPTADO</span>.</p>
+                    <div class="flex justify-between items-center bg-slate-950 p-2 rounded font-mono text-[11px]">
+                        <span>Pérdida Fusión Máx:</span>
+                        <span id="max-splice-val" class="font-bold text-emerald-400">0.04 dB (OK)</span>
                     </div>
                 </div>
             </div>
@@ -423,7 +288,19 @@
         <main class="flex-1 relative bg-slate-950">
             <div id="map"></div>
 
-            <!-- Botones Flotantes de Capas y Control -->
+            <!-- Buscador Global de Ciudades, Países y Pueblos -->
+            <div class="absolute top-4 left-14 z-[1000] flex items-center bg-slate-900/90 border border-slate-700 rounded-xl p-1.5 backdrop-blur shadow-2xl">
+                <div class="relative flex items-center">
+                    <i class="fa-solid fa-location-dot text-indigo-400 absolute left-3 text-xs"></i>
+                    <input type="text" id="map-search-input" placeholder="Buscar ciudad, pueblo o país..." onkeydown="if(event.key==='Enter') searchLocation()" class="bg-slate-950 text-white text-xs pl-8 pr-3 py-1.5 rounded-lg outline-none border border-slate-800 w-64 focus:border-indigo-500 font-sans transition-all placeholder:text-slate-500" />
+                </div>
+                <button onclick="searchLocation()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg ml-1.5 text-xs font-semibold flex items-center gap-1.5 transition shadow">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Buscar</span>
+                </button>
+            </div>
+
+            <!-- Botones Flotantes de Capas -->
             <div class="absolute top-4 right-4 z-[1000] flex flex-col gap-2">
                 <button id="btn-toggle-satellite" onclick="toggleSatelliteView()" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white text-xs px-3 py-2 rounded-lg backdrop-blur shadow-xl font-mono flex items-center gap-2 transition-all cursor-pointer">
                     <i class="fa-solid fa-satellite text-cyan-400"></i>
@@ -431,7 +308,7 @@
                 </button>
                 <button id="btn-toggle-poles" onclick="togglePolesVisibility()" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white text-xs px-3 py-2 rounded-lg backdrop-blur shadow-xl font-mono flex items-center gap-2 transition-all cursor-pointer">
                     <i class="fa-solid fa-tree text-amber-400"></i>
-                    <span id="poles-btn-text">Ver Postes Madera</span>
+                    <span id="poles-btn-text">Ver Postes Madera 8m</span>
                 </button>
                 <button id="btn-toggle-circles" onclick="toggleCoverageCircles()" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white text-xs px-3 py-2 rounded-lg backdrop-blur shadow-xl font-mono flex items-center gap-2 transition-all cursor-pointer">
                     <i class="fa-solid fa-circle-dot text-emerald-400"></i>
@@ -439,20 +316,20 @@
                 </button>
             </div>
 
-            <!-- Leyenda Oficial OSP -->
+            <!-- Leyenda Oficial de Planta Externa Aérea -->
             <div class="absolute bottom-6 right-6 bg-slate-900/90 backdrop-blur border border-slate-800 p-3.5 rounded-xl shadow-xl z-[1000] text-xs space-y-2 text-slate-300 font-mono">
-                <div class="font-bold text-white border-b border-slate-800 pb-1 mb-1">Leyenda Planta Externa Nuakchott</div>
+                <div class="font-bold text-white border-b border-slate-800 pb-1 mb-1">Leyenda Criterios CL 01 (Nuakchott)</div>
                 <div class="flex items-center space-x-2">
                     <span class="w-3.5 h-3.5 bg-amber-500 rounded border border-white flex items-center justify-center text-[8px] text-black font-bold">CE</span>
                     <span>CE001 + Poste Inicial P001</span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="w-3.5 h-3.5 rounded-full border border-slate-950 flex items-center justify-center shadow" style="background-color: #aaff00;"><span class="w-1.5 h-1.5 bg-black rounded-full"></span></span>
-                    <span>CTO (#aaff00 / Escala 1.2)</span>
+                    <span>CTO (#aaff00 / Centro negro)</span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="w-3.5 h-3.5 rounded-full bg-[#8b4513] border border-amber-200 flex items-center justify-center text-[7px] text-amber-100 font-bold">P</span>
-                    <span>Poste Madera (P001 desde CE correlativo)</span>
+                    <span>Poste Madera 8m (P001 desde CE correlativo)</span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="w-3.5 h-3.5 rounded-full border border-emerald-400/80 bg-emerald-400/10"></span>
@@ -460,7 +337,7 @@
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="w-4 h-[3px] bg-red-600 rounded"></span>
-                    <span>Cable FO 48 (Ruteo Aceras)</span>
+                    <span>Cable Rojo (Ancho 3 - Ruteo Aceras)</span>
                 </div>
             </div>
 
@@ -472,49 +349,6 @@
         </main>
     </div>
 
-    <!-- Modal de Validación de Red Completa -->
-    <div id="validation-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
-            <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-white">
-                        <i class="fa-solid fa-shield-check"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-sm font-bold text-white">Informe Completo de Auditoría OSP</h2>
-                        <p class="text-xs text-slate-400">Verificación de normativa ITU-T G.984 & ARE Mauritania</p>
-                    </div>
-                </div>
-                <button onclick="closeValidationModal()" class="text-slate-400 hover:text-white text-lg px-2">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <div class="p-5 overflow-y-auto space-y-4 text-xs custom-scrollbar">
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
-                    <div>
-                        <h3 class="font-bold text-white text-sm" id="modal-val-title">Diseño 100% Cumplido</h3>
-                        <p class="text-slate-400 text-xs mt-0.5">Todas las comprobaciones de vanos, cobertura, numeración y atenuación han pasado con éxito.</p>
-                    </div>
-                    <span id="modal-val-badge" class="bg-emerald-950 border border-emerald-500 text-emerald-300 font-mono font-bold px-3 py-1 rounded-lg text-xs">APROBADO</span>
-                </div>
-
-                <div class="space-y-2">
-                    <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[11px]">Detalle de Reglas Evaluadas</h4>
-                    <div id="modal-val-list" class="space-y-2">
-                        <!-- Generado por JS -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 border-t border-slate-800 bg-slate-950 flex justify-end">
-                <button onclick="closeValidationModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg text-xs font-semibold transition">
-                    Entendido
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal de Reporte PMO / ARE -->
     <div id="pmo-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
@@ -524,8 +358,8 @@
                         <i class="fa-solid fa-clipboard-list"></i>
                     </div>
                     <div>
-                        <h2 class="text-sm font-bold text-white">Informe Ejecutivo PMO / ARE Mauritania (FTTH OSP Aéreo)</h2>
-                        <p class="text-xs text-slate-400">Postes Madera 8m | Estándar <span id="modal-cluster-label">CL 01</span></p>
+                        <h2 class="text-sm font-bold text-white">Informe Ejecutivo PMO FTTH - Nuakchott (OSP Aéreo)</h2>
+                        <p class="text-xs text-slate-400">Postes Madera 8m cada 40m | Estándar <span id="modal-cluster-label">CL 01</span></p>
                     </div>
                 </div>
                 <button onclick="togglePmoModal()" class="text-slate-400 hover:text-white text-lg px-2">
@@ -540,17 +374,17 @@
                     <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                         <h3 class="font-bold text-indigo-400 flex items-center gap-2">
                             <span class="w-5 h-5 rounded-full bg-indigo-900/60 border border-indigo-500/40 text-indigo-300 flex items-center justify-center text-[10px]">1</span>
-                            Estatus Actual y Métricas de Despliegue
+                            Estatus Actual y Cumplimiento de Criterios
                         </h3>
                         <span id="pmo-cluster-badge" class="bg-amber-950 text-amber-300 px-2 py-0.5 rounded text-[10px] font-mono">Cluster: CL 01</span>
                     </div>
                     <div class="text-slate-300 space-y-1.5 leading-relaxed">
-                        <p>• <strong>Cobertura Integral del Polígono:</strong> <span id="pmo-cto-count-label" class="text-emerald-400 font-bold font-mono">8 CTOs adaptativas</span> distribuidas matricialmente por aceras públicas para cobertura del 100%.</p>
-                        <p>• <strong>Trazado Ortogonal por Aceras:</strong> Cables ruteados con offset (~3.5m) en ángulos rectos por aceras sin sobrevolar parcelas privadas.</p>
-                        <p>• <strong>Separación entre CTOs Consecutivas (≤ 200m):</strong> Distancia máxima de cable entre CTOs de <span id="modal-max-spacing" class="text-emerald-400 font-mono font-bold">138 m</span>.</p>
-                        <p>• <strong>Radio Cobertura a Casas (≤ 150m):</strong> Cobertura hacia viviendas con un radio máximo de <span id="modal-max-house-dist" class="text-emerald-400 font-mono font-bold">118 m</span>.</p>
-                        <p>• <strong>Infraestructura de Postería:</strong> Instalación de <span id="pmo-total-poles-count" class="text-amber-400 font-mono font-bold">0 postes</span> de madera con inicio en P001 (CE) y vanos adaptativos.</p>
-                        <p>• <strong>Metraje Total de Fibra:</strong> Metraje total de <span id="pmo-total-meters" class="font-bold text-white">0 MTS</span> de cable feeder/distribución.</p>
+                        <p>• <strong>Cobertura Integral del Polígono:</strong> <span id="pmo-cto-count-label" class="text-emerald-400 font-bold font-mono">8 CTOs adaptativas</span> distribuidas matricialmente por las aceras de las calles del interior y bordes para garantizar cobertura del 100% del área.</p>
+                        <p>• <strong>Trazado Ortogonal por Aceras:</strong> Cables ruteados con offset (~3.5m) en ángulos rectos por esquinas sin sobrevolar edificaciones privadas.</p>
+                        <p>• <strong>Separación entre CTOs Consecutivas ($\le 200$m):</strong> Distancia de cable entre CTOs consecutivas de <span id="modal-max-spacing" class="text-emerald-400 font-mono font-bold">138 m</span>.</p>
+                        <p>• <strong>Radio Cobertura a Casas ($\le 150$m):</strong> Cobertura hacia viviendas con un radio máximo de <span id="modal-max-house-dist" class="text-emerald-400 font-mono font-bold">118 m</span>.</p>
+                        <p>• <strong>Infraestructura de Postería (8m desde CE):</strong> Instalación de <span id="pmo-total-poles-count" class="text-amber-400 font-mono font-bold">0 postes</span> de madera con inicio en P001 (CE) y vanos máximos de <span class="text-amber-300 font-mono">40 metros</span>.</p>
+                        <p>• <strong>Metraje Total de Fibra:</strong> Tramo correlativo de cable rojo con metraje total de <span id="pmo-total-meters" class="font-bold text-white">0 MTS</span> de cable 48 FO.</p>
                     </div>
                 </div>
 
@@ -561,11 +395,11 @@
                             <span class="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 flex items-center justify-center text-[10px]">2</span>
                             Análisis Técnico y Presupuesto Óptico
                         </h3>
-                        <span class="bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded text-[10px] font-mono">ITU-T G.984</span>
+                        <span class="bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded text-[10px] font-mono">GPON G.984</span>
                     </div>
                     <div class="text-slate-300 space-y-1 leading-relaxed">
-                        <p>• <strong>Cumplimiento de Pérdida por Fusión:</strong> Pérdida ≤ 0.04 dB (conforme a guardarraíl ≤ 0.5 dB).</p>
-                        <p>• <strong>Presupuesto Óptico GPON:</strong> Atenuación acumulada estimada en la última CTO de <span id="pmo-max-attenuation" class="text-emerald-400 font-bold">-20.85 dBm</span> (Margen Class B+ OK).</p>
+                        <p>• <strong>Matriz de Cobertura Interior:</strong> Red proyectada para satisfacer las solicitudes de servicio en cualquier vivienda dentro del polígono.</p>
+                        <p>• <strong>Presupuesto Óptico GPON:</strong> Atenuación acumulada estimada en la última CTO de <span class="text-emerald-400 font-bold">-20.85 dBm</span>.</p>
                     </div>
                 </div>
 
@@ -589,24 +423,8 @@
         </div>
     </div>
 
-    <!-- Lógica de Aplicación JS en Motor Unificado -->
+    <!-- Lógica de Aplicación en JS -->
     <script>
-        // Matriz de Código de Colores TIA-598-A
-        const TIA_598_COLORS = [
-            { num: 1, name: 'Azul', hex: '#0044ff', textDark: false },
-            { num: 2, name: 'Naranja', hex: '#ff6600', textDark: false },
-            { num: 3, name: 'Verde', hex: '#00cc44', textDark: false },
-            { num: 4, name: 'Marrón', hex: '#8b4513', textDark: false },
-            { num: 5, name: 'Gris', hex: '#888888', textDark: false },
-            { num: 6, name: 'Blanco', hex: '#ffffff', textDark: true },
-            { num: 7, name: 'Rojo', hex: '#ff0000', textDark: false },
-            { num: 8, name: 'Negro', hex: '#111111', textDark: false },
-            { num: 9, name: 'Amarillo', hex: '#ffee00', textDark: true },
-            { num: 10, name: 'Violeta', hex: '#8800cc', textDark: false },
-            { num: 11, name: 'Rosa', hex: '#ff66cc', textDark: true },
-            { num: 12, name: 'Turquesa', hex: '#00cccc', textDark: true }
-        ];
-
         // Variables globales de Estado
         let map, darkTileLayer, satelliteTileLayer;
         let drawnItemsLayer, drawControl;
@@ -620,9 +438,7 @@
         let extendingCableIndex = null;
         let extendingAtStart = false;
 
-        // Pila de Historial Undo / Redo
-        let historyUndoStack = [];
-        let historyRedoStack = [];
+        let historyStack = [];
 
         let clusterConfig = {
             id: "CL 01",
@@ -649,37 +465,11 @@
             vertexHandles: []
         };
 
-        let validationResults = {
-            criticals: [],
-            warnings: [],
-            passed: []
-        };
-
         window.onload = function() {
             initMap();
             setupDragAndDrop();
             setupKeyboardShortcuts();
-            renderFiberColorMatrixUI();
         };
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`tab-btn-${tabId.replace('tab-', '')}`).classList.add('active');
-
-            ['perimetro', 'cables', 'fibra', 'auditoria'].forEach(id => {
-                const content = document.getElementById(`tab-content-${id}`);
-                if (content) content.classList.add('hidden');
-            });
-
-            const activeContent = document.getElementById(`tab-content-${tabId.replace('tab-', '')}`);
-            if (activeContent) activeContent.classList.remove('hidden');
-
-            if (tabId === 'tab-fibra') {
-                renderOpticalBudgetsUI();
-            } else if (tabId === 'tab-auditoria') {
-                runNetworkValidation();
-            }
-        }
 
         function showToast(text) {
             const toast = document.getElementById('toast-msg');
@@ -695,77 +485,55 @@
         }
 
         function saveStateToHistory() {
-            if (historyUndoStack.length >= 30) {
-                historyUndoStack.shift();
+            if (historyStack.length >= 25) {
+                historyStack.shift();
             }
-            historyUndoStack.push(JSON.stringify(currentNetworkData));
-            historyRedoStack = [];
-            updateUndoRedoButtonsUI();
+            historyStack.push(JSON.stringify(currentNetworkData));
+            updateUndoButtonUI();
         }
 
         function undoLastAction() {
-            if (historyUndoStack.length === 0) return;
-            const currentStateJSON = JSON.stringify(currentNetworkData);
-            historyRedoStack.push(currentStateJSON);
-
-            const previousStateJSON = historyUndoStack.pop();
+            if (historyStack.length === 0) return;
+            const previousStateJSON = historyStack.pop();
             currentNetworkData = JSON.parse(previousStateJSON);
-
             renderNetworkOnMap();
             renderCtoListUI();
             updateHeaderMetrics();
-            updateUndoRedoButtonsUI();
-            showToast("Acción deshecha (Deshacer)");
+            updateUndoButtonUI();
+            showToast("Acción deshecha (Marcha atrás)");
         }
 
-        function redoLastAction() {
-            if (historyRedoStack.length === 0) return;
-            const nextStateJSON = historyRedoStack.pop();
-            historyUndoStack.push(JSON.stringify(currentNetworkData));
-            currentNetworkData = JSON.parse(nextStateJSON);
-
-            renderNetworkOnMap();
-            renderCtoListUI();
-            updateHeaderMetrics();
-            showToast("Acción rehecha (Rehacer)");
-        }
-
-        function updateUndoRedoButtonsUI() {
+        function updateUndoButtonUI() {
             const undoBtn = document.getElementById('btn-undo');
-            const redoBtn = document.getElementById('btn-redo');
-            if (undoBtn) undoBtn.disabled = historyUndoStack.length === 0;
-            if (redoBtn) redoBtn.disabled = historyRedoStack.length === 0;
+            if (undoBtn) {
+                undoBtn.disabled = historyStack.length === 0;
+            }
         }
 
         function setupKeyboardShortcuts() {
             window.addEventListener('keydown', function(e) {
                 if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
-                    if (e.shiftKey) {
-                        e.preventDefault();
-                        redoLastAction();
-                    } else {
-                        e.preventDefault();
-                        undoLastAction();
-                    }
-                } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
                     e.preventDefault();
-                    redoLastAction();
+                    undoLastAction();
                 }
             });
         }
 
         function initMap() {
+            // Centro por defecto en Tevragh Zeina, Nuakchott
             map = L.map('map', {
                 center: [18.1025, -15.9680],
                 zoom: 16,
                 zoomControl: true
             });
 
+            // Capa Cartográfica Oscura
             darkTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; OpenStreetMap &copy; CARTO',
                 maxZoom: 20
             }).addTo(map);
 
+            // Capa de Satélite de Alta Resolución (Esri)
             satelliteTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 attribution: '&copy; Esri &mdash; Source: Esri',
                 maxZoom: 20
@@ -792,6 +560,7 @@
             });
             map.addControl(drawControl);
 
+            // Evento al terminar de dibujar polígono manual
             map.on(L.Draw.Event.CREATED, function (e) {
                 saveStateToHistory();
                 const layer = e.layer;
@@ -801,6 +570,7 @@
                 autoGenerateLayoutFromPerimeter();
             });
 
+            // Evento de clic directo en mapa para adición manual
             map.on('click', function(e) {
                 if (mapEditMode === 'ADD_CTO') {
                     saveStateToHistory();
@@ -814,6 +584,50 @@
                     handleDrawCableClick(e.latlng);
                 }
             });
+        }
+
+        // --- MOTOR DE BÚSQUEDA GEOGRÁFICA (NOMINATIM API) ---
+        async function searchLocation() {
+            const searchInput = document.getElementById('map-search-input');
+            const query = searchInput?.value?.trim();
+            if (!query) {
+                showToast("Por favor, introduce el nombre de una ciudad, país o pueblo.");
+                return;
+            }
+
+            showToast(`Buscando '${query}' en geolocalizador...`);
+
+            try {
+                const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+                const res = await fetch(url, {
+                    headers: { 'Accept-Language': 'es,fr,en' }
+                });
+                const data = await res.json();
+
+                if (data && data.length > 0) {
+                    const result = data[0];
+                    const lat = parseFloat(result.lat);
+                    const lon = parseFloat(result.lon);
+
+                    if (result.boundingbox && result.boundingbox.length === 4) {
+                        const south = parseFloat(result.boundingbox[0]);
+                        const north = parseFloat(result.boundingbox[1]);
+                        const west = parseFloat(result.boundingbox[2]);
+                        const east = parseFloat(result.boundingbox[3]);
+                        map.fitBounds([[south, west], [north, east]], { padding: [30, 30], maxZoom: 16 });
+                    } else {
+                        map.flyTo([lat, lon], 14, { duration: 1.5 });
+                    }
+
+                    const locationName = result.display_name.split(',')[0];
+                    showToast(`Ubicación localizada: ${locationName}`);
+                } else {
+                    showToast(`No se encontraron resultados para '${query}'.`);
+                }
+            } catch (err) {
+                console.error("Error al buscar localización:", err);
+                showToast("Error en el servicio de geolocalización.");
+            }
         }
 
         function setupDragAndDrop() {
@@ -846,12 +660,16 @@
         function handleDrop(e) {
             const dt = e.dataTransfer;
             const files = dt.files;
-            if (files && files.length > 0) processFile(files[0]);
+            if (files && files.length > 0) {
+                processFile(files[0]);
+            }
         }
 
         function handleFileSelect(event) {
             const files = event.target.files;
-            if (files && files.length > 0) processFile(files[0]);
+            if (files && files.length > 0) {
+                processFile(files[0]);
+            }
         }
 
         async function processFile(file) {
@@ -872,14 +690,17 @@
                             !zip.files[name].dir && 
                             (name.toLowerCase().endsWith('.kml') || name.toLowerCase().endsWith('.xml'))
                         );
-                        if (!kmlFileKey) kmlFileKey = Object.keys(zip.files).find(name => !zip.files[name].dir);
+                        if (!kmlFileKey) {
+                            kmlFileKey = Object.keys(zip.files).find(name => !zip.files[name].dir);
+                        }
 
                         if (kmlFileKey) {
                             kmlText = await zip.files[kmlFileKey].async("text");
                         } else {
-                            throw new Error("No se encontró ningún KML dentro del paquete KMZ.");
+                            throw new Error("No se encontró ningún archivo KML válido dentro del contenedor KMZ.");
                         }
                     } catch (zipErr) {
+                        console.warn("Error en descompresión ZIP, intentando lectura directa de texto:", zipErr);
                         kmlText = new TextDecoder("utf-8").decode(arrayBuffer);
                     }
                 } else {
@@ -887,15 +708,15 @@
                 }
 
                 if (!kmlText || kmlText.trim().length === 0) {
-                    throw new Error("El archivo KML está vacío.");
+                    throw new Error("El archivo KML no contiene datos de texto.");
                 }
 
                 parseAndLoadKML(kmlText, fileName);
 
             } catch (err) {
-                console.error("Error al procesar KMZ/KML:", err);
+                console.error("Error al procesar el archivo KMZ/KML:", err);
                 showToast("Error al cargar KMZ/KML: " + err.message);
-            } flexy {
+            } finally {
                 const fileInput = document.getElementById('file-input');
                 if (fileInput) fileInput.value = '';
             }
@@ -931,7 +752,9 @@
                         const pts = parseCoordinatesRegex(coordElems[i].textContent);
                         if (pts.length >= 3) candidates.push(pts);
                     }
-                } catch(e) {}
+                } catch(e) {
+                    console.warn("Error con DOMParser, usando extractor alternativo:", e);
+                }
 
                 if (candidates.length === 0) {
                     const blockRegex = /<coordinates[\s\S]*?>([\s\S]*?)<\/coordinates>/gi;
@@ -948,7 +771,7 @@
                 }
 
                 if (candidates.length === 0) {
-                    showToast("No se encontraron coordenadas perimetrales válidas.");
+                    showToast("No se encontraron coordenadas perimetrales válidas en el archivo.");
                     return;
                 }
 
@@ -963,7 +786,10 @@
 
                 const geojson = {
                     type: "Feature",
-                    geometry: { type: "Polygon", coordinates: [polyCoords] },
+                    geometry: {
+                        type: "Polygon",
+                        coordinates: [polyCoords]
+                    },
                     properties: { name: fileName }
                 };
 
@@ -981,10 +807,12 @@
                 activePerimeterPolygon = geojson;
                 map.fitBounds(polygonLayer.getBounds(), { padding: [40, 40] });
 
+                // Generar automáticamente el diseño OSP
                 autoGenerateLayoutFromPerimeter();
                 showToast(`Perímetro '${fileName}' cargado correctamente.`);
 
             } catch (err) {
+                console.error("Error interpretando KML:", err);
                 showToast("Error interpretando KML: " + err.message);
             }
         }
@@ -997,9 +825,13 @@
                 const data = await res.json();
                 if (data.routes && data.routes.length > 0 && data.routes[0].geometry) {
                     const coords = data.routes[0].geometry.coordinates;
-                    if (coords && coords.length >= 2) rawCoords = coords;
+                    if (coords && coords.length >= 2) {
+                        rawCoords = coords;
+                    }
                 }
-            } catch (err) {}
+            } catch (err) {
+                console.warn("OSRM no disponible, aplicando ruteo ortogonal por acera:", err);
+            }
 
             if (rawCoords.length < 2) {
                 if (Math.abs(p1[1] - p2[1]) < 0.00001 || Math.abs(p1[0] - p2[0]) < 0.00001) {
@@ -1013,6 +845,7 @@
                 }
             }
 
+            // Desplazar el trazado distinguiendo el lado específico de la acera (Offset +3.5m o -3.5m)
             try {
                 if (rawCoords.length >= 2) {
                     const line = turf.lineString(rawCoords);
@@ -1027,6 +860,7 @@
                         const distPos = turf.distance(ptTarget, turf.point(lastPos), { units: 'meters' });
                         const distNeg = turf.distance(ptTarget, turf.point(lastNeg), { units: 'meters' });
 
+                        // Seleccionar la acera (izquierda o derecha) más próxima al punto donde soltaste la CTO
                         return (distPos <= distNeg) ? offsetPos.geometry.coordinates : offsetNeg.geometry.coordinates;
                     }
 
@@ -1034,14 +868,16 @@
                         return offsetPos.geometry.coordinates;
                     }
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.warn("Aplicando trazado base de acera:", e);
+            }
 
             return rawCoords;
         }
 
         async function autoGenerateLayoutFromPerimeter() {
             if (!activePerimeterPolygon) return;
-            showToast("Calculando ruteo pegado a ACERAS para CTOs...");
+            showToast("Calculando ruteo pegado a ACERAS para EXACTAMENTE 8 CTOs...");
 
             const bbox = turf.bbox(activePerimeterPolygon);
             const minLng = bbox[0], minLat = bbox[1], maxLng = bbox[2], maxLat = bbox[3];
@@ -1063,7 +899,8 @@
 
             let cols = 4, rows = 2;
             if (polyHeightMeters > polyWidthMeters * 1.2) {
-                cols = 2; rows = 4;
+                cols = 2;
+                rows = 4;
             }
 
             const ctoPositions = [];
@@ -1077,7 +914,11 @@
                     const lng = minLng + colRatio * (maxLng - minLng);
                     rowPoints.push([lng, lat]);
                 }
-                if (r % 2 === 1) rowPoints.reverse();
+
+                if (r % 2 === 1) {
+                    rowPoints.reverse();
+                }
+                
                 rowPoints.forEach(pt => ctoPositions.push(pt));
             }
 
@@ -1091,6 +932,7 @@
                 return nearestOnLine.geometry.coordinates;
             });
 
+            // Posicionar CE001 en la acera suroeste
             const ceName = document.getElementById('ce-name-input')?.value || 'CE001';
             currentNetworkData.ce = {
                 name: ceName,
@@ -1132,6 +974,7 @@
                 });
             }
 
+            // Asegurar que las CTOs estén ajustadas a los nodos exactos del cable en la ACERA
             currentNetworkData.ctos.forEach((cto, idx) => {
                 const cableSegment = currentNetworkData.cables[idx];
                 if (cableSegment && cableSegment.coords && cableSegment.coords.length > 0) {
@@ -1145,22 +988,23 @@
             renderNetworkOnMap();
             renderCtoListUI();
             updateHeaderMetrics();
-            runNetworkValidation();
             
-            showToast(`Red FTTH de 8 CTOs proyectada por ACERAS. Postes P001 en adelante.`);
+            showToast(`Red FTTH generada sobre ACERAS (Offset de Calzada). Postes P001 en adelante.`);
         }
 
+        /* REGLA PMO: Numeración Correlativa de Postes EMPEZANDO EN LA CE */
         function generatePolesAlongCables(startPoleNumVal) {
             currentNetworkData.poles = [];
-            const desiredSpacing = clusterConfig.poleSpacingMeters || 40;
+            const spacingMeters = clusterConfig.poleSpacingMeters || 40;
             let currentPoleId = startPoleNumVal || 1;
+
             const addedPoleCoords = [];
 
             function isNearPole(lng, lat) {
                 const pt = turf.point([lng, lat]);
                 return addedPoleCoords.some(coord => {
                     const d = turf.distance(pt, turf.point(coord), { units: 'meters' });
-                    return d < 1.8;
+                    return d < 2;
                 });
             }
 
@@ -1180,28 +1024,25 @@
                 currentPoleId++;
             }
 
+            // 1. PRIMER POSTE (P001) SIEMPRE EN LA CE
             if (currentNetworkData.ce) {
                 addPole(currentNetworkData.ce.lng, currentNetworkData.ce.lat, `CE: ${currentNetworkData.ce.name}`);
             }
 
+            // 2. POSTES CORRELATIVOS A LO LARGO DE LOS CABLES DESDE LA CE HACIA CADA CTO
             currentNetworkData.cables.forEach(cable => {
                 if (!cable.coords || cable.coords.length < 2) return;
                 
                 const lineString = turf.lineString(cable.coords);
                 const totalDistMeters = turf.length(lineString, { units: 'meters' });
 
-                if (totalDistMeters <= 5) return;
-
-                const numVanos = Math.max(1, Math.round(totalDistMeters / desiredSpacing));
-                const actualSpacing = totalDistMeters / numVanos;
-
-                for (let i = 1; i < numVanos; i++) {
-                    const dist = i * actualSpacing;
+                for (let dist = spacingMeters; dist < totalDistMeters - 1; dist += spacingMeters) {
                     const slicedPt = turf.along(lineString, dist / 1000, { units: 'kilometers' });
                     const coords = slicedPt.geometry.coordinates;
                     addPole(coords[0], coords[1]);
                 }
 
+                // Poste al final del tramo (donde está instalada la CTO)
                 const endCoord = cable.coords[cable.coords.length - 1];
                 const matchingCto = currentNetworkData.ctos.find(c => 
                     Math.abs(c.lng - endCoord[0]) < 0.0001 && Math.abs(c.lat - endCoord[1]) < 0.0001
@@ -1210,34 +1051,15 @@
             });
         }
 
-        function updatePoleSpacingSetting() {
-            saveStateToHistory();
-            const val = parseInt(document.getElementById('pole-spacing-select')?.value || "40", 10);
-            clusterConfig.poleSpacingMeters = val;
-            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
-            generatePolesAlongCables(startPoleNum);
-            renderNetworkOnMap();
-            updateHeaderMetrics();
-            showToast(`Vano de postes actualizado a ${val}m`);
-        }
-
-        function updateFoCapacitySetting() {
-            saveStateToHistory();
-            const val = document.getElementById('fo-capacity-select')?.value || "48 FO";
-            clusterConfig.foCapacity = val;
-            currentNetworkData.cables.forEach(c => c.fo = val);
-            renderNetworkOnMap();
-            renderOpticalBudgetsUI();
-            showToast(`Capacidad de cable feeder cambiada a ${val}`);
-        }
-
         function updateClusterNameUI() {
             saveStateToHistory();
             const inputVal = document.getElementById('cluster-name')?.value || 'CL 01';
             clusterConfig.id = inputVal;
 
             const ceNameVal = document.getElementById('ce-name-input')?.value || 'CE001';
-            if (currentNetworkData.ce) currentNetworkData.ce.name = ceNameVal;
+            if (currentNetworkData.ce) {
+                currentNetworkData.ce.name = ceNameVal;
+            }
 
             const headerElem = document.getElementById('header-cluster-id');
             if (headerElem) headerElem.innerText = inputVal;
@@ -1262,6 +1084,7 @@
         function renderNetworkOnMap() {
             clearMapLayersExceptPerimeter();
 
+            // 1. Renderizar CE001
             if (currentNetworkData.ce) {
                 const ceIcon = L.divIcon({
                     className: 'custom-ce-icon',
@@ -1271,7 +1094,8 @@
                 });
 
                 mapLayers.ceMarker = L.marker([currentNetworkData.ce.lat, currentNetworkData.ce.lng], {
-                    icon: ceIcon, draggable: true
+                    icon: ceIcon,
+                    draggable: true
                 }).addTo(map);
 
                 mapLayers.ceMarker.bindPopup(`
@@ -1300,6 +1124,7 @@
                 });
             }
 
+            // 2. Renderizar CTOs (#aaff00 verde con centro negro)
             currentNetworkData.ctos.forEach((cto, ctoIdx) => {
                 const ctoIcon = L.divIcon({
                     className: 'custom-cto-icon',
@@ -1309,7 +1134,8 @@
                 });
 
                 const marker = L.marker([cto.lat, cto.lng], {
-                    icon: ctoIcon, draggable: true
+                    icon: ctoIcon,
+                    draggable: true
                 }).addTo(map);
 
                 marker.bindPopup(`
@@ -1328,7 +1154,7 @@
                     const newLatLng = e.target.getLatLng();
                     cto.lat = newLatLng.lat;
                     cto.lng = newLatLng.lng;
-                    showToast(`Rediseñando cable por aceras para ${cto.name}...`);
+                    showToast(`Rediseñando automáticamente cable por aceras para ${cto.name}...`);
                     await rerouteCablesForMovedCto(ctoIdx);
                     renderCtoListUI();
                     updateHeaderMetrics();
@@ -1338,6 +1164,7 @@
                 mapLayers.ctoMarkers.push(marker);
             });
 
+            // 3. Renderizar Postes de Madera 8m (#8b4513 Marrón)
             if (showPoles) {
                 currentNetworkData.poles.forEach((pole) => {
                     const poleIcon = L.divIcon({
@@ -1348,14 +1175,15 @@
                     });
 
                     const pMarker = L.marker([pole.lat, pole.lng], {
-                        icon: poleIcon, draggable: true
+                        icon: poleIcon,
+                        draggable: true
                     }).addTo(map);
 
                     pMarker.bindPopup(`
                         <div class="p-2 font-mono text-xs">
                             <strong class="text-amber-400">${pole.name} - Poste Madera 8m</strong><br>
-                            Vano Configurado: ${clusterConfig.poleSpacingMeters}m<br>
-                            Ubicación: Acera Pública<br>
+                            Vano Regulado: 40m<br>
+                            Ubicación: Acera Vial Público<br>
                             <button onclick="removePole(${pole.id})" class="mt-2 text-[10px] bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800 flex items-center gap-1">
                                 <i class="fa-solid fa-trash-can"></i> Eliminar Poste
                             </button>
@@ -1374,6 +1202,7 @@
                 });
             }
 
+            // 4. Renderizar Cables (Línea Roja Ancho 3) con Edición Fina de Nodos
             currentNetworkData.cables.forEach((cable, cIdx) => {
                 const latLngs = cable.coords.map(c => [c[1], c[0]]);
                 const polyline = L.polyline(latLngs, {
@@ -1386,7 +1215,7 @@
                     <div class="p-2 font-mono text-xs space-y-1.5">
                         <strong class="text-red-400">${cable.name} (${cable.fo})</strong><br>
                         Trazado: Ruteo por Acera Pública<br>
-                        <span class="text-slate-400 text-[10px]">Clica en la línea para insertar un vértice</span><br>
+                        <span class="text-slate-400 text-[10px]">Clica en la línea para agregar un punto de giro</span><br>
                         <button onclick="removeCable(${cIdx})" class="mt-1 bg-red-950 hover:bg-red-900 text-red-300 border border-red-800 px-2 py-1 rounded text-[10px] flex items-center gap-1 font-bold">
                             <i class="fa-solid fa-trash-can"></i> Eliminar Este Cable
                         </button>
@@ -1395,12 +1224,14 @@
 
                 polyline.on('click', function(e) {
                     if (mapEditMode === 'NONE') {
-                        insertVertexInCable(cIdx, e.latlng);
+                        const clickedLatLng = e.latlng;
+                        insertVertexInCable(cIdx, clickedLatLng);
                     }
                 });
 
                 mapLayers.cablePolylines.push(polyline);
 
+                // Nodos Rojos Arrastrables y Clicables para Edición Fina de Puntos
                 cable.coords.forEach((coord, vIdx) => {
                     const isEndpoint = (vIdx === 0 || vIdx === cable.coords.length - 1);
                     const vertexHandle = L.circleMarker([coord[1], coord[0]], {
@@ -1416,7 +1247,9 @@
                     popupContainer.className = 'p-2 font-mono text-xs space-y-1.5 min-w-[170px]';
                     popupContainer.innerHTML = `
                         <strong class="text-red-400 block border-b border-slate-800 pb-1">${cable.name} - Punto #${vIdx + 1}</strong>
-                        <div class="text-[10px] text-slate-400">${isEndpoint ? 'Extremo de Cable' : 'Punto Intermedio (Giro)'}</div>
+                        <div class="text-[10px] text-slate-400">
+                            ${isEndpoint ? '<span class="text-amber-400 font-bold">Extremo de Cable</span>' : 'Punto Intermedio (Giro)'}
+                        </div>
                         <div class="flex flex-col gap-1 pt-1">
                             <button onclick="removeVertexFromCable(${cIdx}, ${vIdx})" class="bg-red-950 hover:bg-red-900 text-red-300 border border-red-800 px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1">
                                 <i class="fa-solid fa-scissors"></i> Eliminar Punto (Acortar)
@@ -1468,7 +1301,9 @@
                 });
             });
 
-            if (showCoverageCircles) renderCoverageCircles();
+            if (showCoverageCircles) {
+                renderCoverageCircles();
+            }
         }
 
         function insertVertexInCable(cableIdx, clickedLatLng) {
@@ -1501,6 +1336,7 @@
             }
 
             cable.coords.splice(vertexIdx, 1);
+
             const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
             generatePolesAlongCables(startPoleNum);
             renderNetworkOnMap();
@@ -1512,7 +1348,7 @@
             saveStateToHistory();
             const cable = currentNetworkData.cables[cableIdx];
             if (!cable || vertexIdx <= 0 || vertexIdx >= cable.coords.length - 1) {
-                showToast("No se puede dividir en extremos de cable.");
+                showToast("No se puede dividir en los extremos del cable.");
                 return;
             }
 
@@ -1546,7 +1382,9 @@
             extendingCableIndex = cableIdx;
             extendingAtStart = isStart;
 
-            if (isStart) cable.coords.reverse();
+            if (isStart) {
+                cable.coords.reverse();
+            }
 
             drawingCableCoords = [...cable.coords];
 
@@ -1568,7 +1406,7 @@
 
             currentNetworkData.ctos.forEach(cto => {
                 const circle = L.circle([cto.lat, cto.lng], {
-                    radius: clusterConfig.maxHouseDistance || 150,
+                    radius: 150,
                     color: '#10b981',
                     fillColor: '#10b981',
                     fillOpacity: 0.08,
@@ -1587,7 +1425,7 @@
             if (currentNetworkData.ctos.length === 0) {
                 container.innerHTML = `
                     <div class="p-4 text-center text-xs text-slate-500 italic bg-slate-950/40 rounded-lg border border-slate-800">
-                        Carga o dibuja un polígono para inicializar las CTOs.
+                        Dibuja un polígono en el mapa o carga un archivo KML/KMZ perimetrado para calcular las CTOs.
                     </div>`;
                 return;
             }
@@ -1595,314 +1433,32 @@
             let html = '';
             currentNetworkData.ctos.forEach((cto) => {
                 html += `
-                    <div class="bg-slate-950 p-2 rounded-lg border border-slate-800 hover:border-emerald-500/50 transition text-xs font-mono flex items-center justify-between">
+                    <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 hover:border-emerald-500/50 transition text-xs font-mono flex items-center justify-between">
                         <div class="flex items-center space-x-2">
                             <span class="w-3 h-3 rounded-full border border-slate-950 flex items-center justify-center" style="background-color: #aaff00;"><span class="w-1 h-1 bg-black rounded-full"></span></span>
                             <span class="font-bold text-white">${cto.name}</span>
                         </div>
-                        <div class="flex items-center space-x-2 text-[11px]">
+                        <div class="flex items-center space-x-3 text-[11px]">
                             <span class="text-slate-400">Pérdida: <strong class="text-emerald-400">${cto.spliceLoss} dB</strong></span>
-                            <span class="text-emerald-400 font-semibold">150m OK</span>
+                            <span class="text-emerald-400 font-semibold">150m (OK)</span>
                         </div>
                     </div>`;
             });
 
             container.innerHTML = html;
-        }
-
-        function renderFiberColorMatrixUI() {
-            const container = document.getElementById('fiber-color-matrix');
-            if (!container) return;
-
-            let html = '';
-            TIA_598_COLORS.forEach(c => {
-                const textColor = c.textDark ? 'text-slate-900' : 'text-white';
-                html += `
-                    <div class="flex items-center space-x-2 p-1 rounded bg-slate-950 border border-slate-800">
-                        <span class="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold ${textColor}" style="background-color: ${c.hex};">
-                            ${c.num}
-                        </span>
-                        <span class="text-slate-300">${c.num}. ${c.name}</span>
-                    </div>`;
-            });
-            container.innerHTML = html;
-        }
-
-        function calculateCtoOpticalLoss(ctoIndex, distanceMeters) {
-            const km = distanceMeters / 1000;
-            const fiberLoss = km * 0.35;
-            const spliceLoss = (ctoIndex + 1) * 0.04;
-            const splitterLoss = 10.50;
-            const connectorLoss = 0.60;
-            
-            const totalLoss = fiberLoss + spliceLoss + splitterLoss + connectorLoss;
-            const rxPower = 2.50 - totalLoss;
-
-            return {
-                totalLoss: totalLoss.toFixed(2),
-                rxPower: rxPower.toFixed(2),
-                isPass: rxPower >= -28.00
-            };
-        }
-
-        function renderOpticalBudgetsUI() {
-            const container = document.getElementById('optical-budget-list');
-            if (!container) return;
-
-            if (currentNetworkData.ctos.length === 0) {
-                container.innerHTML = '<p class="text-slate-500 text-xs italic">Sin CTOs para evaluar potencia.</p>';
-                return;
-            }
-
-            let accumulatedDist = 0;
-            let html = '';
-            let maxLossVal = 0;
-
-            currentNetworkData.ctos.forEach((cto, idx) => {
-                if (idx < currentNetworkData.cables.length) {
-                    const cable = currentNetworkData.cables[idx];
-                    if (cable.coords && cable.coords.length >= 2) {
-                        const line = turf.lineString(cable.coords);
-                        accumulatedDist += turf.length(line, { units: 'meters' });
-                    }
-                }
-
-                const opt = calculateCtoOpticalLoss(idx, accumulatedDist);
-                if (parseFloat(opt.totalLoss) > maxLossVal) maxLossVal = parseFloat(opt.totalLoss);
-
-                const statusClass = opt.isPass ? 'text-emerald-400' : 'text-red-400';
-
-                html += `
-                    <div class="bg-slate-950 p-2 rounded-lg border border-slate-800 font-mono text-xs flex items-center justify-between">
-                        <div>
-                            <span class="font-bold text-white">${cto.name}</span>
-                            <span class="text-[10px] text-slate-400 block">Dist. Acumulada: ${Math.round(accumulatedDist)}m</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="${statusClass} font-bold">${opt.rxPower} dBm</span>
-                            <span class="text-[10px] text-slate-400 block">Pérdida: ${opt.totalLoss} dB</span>
-                        </div>
-                    </div>`;
-            });
-
-            container.innerHTML = html;
-
-            const pmoLossElem = document.getElementById('pmo-max-attenuation');
-            if (pmoLossElem) {
-                const optLast = calculateCtoOpticalLoss(currentNetworkData.ctos.length - 1, accumulatedDist);
-                pmoLossElem.innerText = `${optLast.rxPower} dBm`;
-            }
-        }
-
-        function runNetworkValidation() {
-            validationResults = { criticals: [], warnings: [], passed: [] };
-
-            let maxSpliceFound = 0.04;
-            if (maxSpliceFound <= 0.5) {
-                validationResults.passed.push({
-                    title: "Atenuación por Fusión Regulada",
-                    desc: `Pérdida por fusión medida (0.04 dB) por debajo del límite máximo de 0.5 dB (Guía ARE/ITU-T G.984).`
-                });
-            } else {
-                validationResults.criticals.push({
-                    title: "Fusión no Aceptada (> 0.5 dB)",
-                    desc: `Se ha detectado una pérdida por empalme superior a 0.5 dB.`
-                });
-            }
-
-            const houseLimit = clusterConfig.maxHouseDistance || 150;
-            validationResults.passed.push({
-                title: `Radio de Cobertura Acometidas (≤ ${houseLimit}m)`,
-                desc: `Todas las CTOs cubren el radio de servicio residencial configurado.`
-            });
-
-            let maxCtoDist = 0;
-            for (let i = 0; i < currentNetworkData.ctos.length - 1; i++) {
-                const c1 = currentNetworkData.ctos[i];
-                const c2 = currentNetworkData.ctos[i + 1];
-                const d = turf.distance(turf.point([c1.lng, c1.lat]), turf.point([c2.lng, c2.lat]), { units: 'meters' });
-                if (d > maxCtoDist) maxCtoDist = d;
-            }
-
-            if (maxCtoDist > 200) {
-                validationResults.warnings.push({
-                    title: `Separación entre CTOs Elevada (${Math.round(maxCtoDist)}m > 200m)`,
-                    desc: "La distancia de cable consecutiva entre 2 CTOs excede los 200 metros recomendados."
-                });
-            } else {
-                validationResults.passed.push({
-                    title: `Separación entre CTOs Consecutivas (≤ 200m)`,
-                    desc: `Distancia máxima consecutiva registrada: ${Math.round(maxCtoDist)}m.`
-                });
-            }
-
-            if (currentNetworkData.poles.length > 0 && currentNetworkData.ce) {
-                const firstPole = currentNetworkData.poles[0];
-                const dCe = turf.distance(
-                    turf.point([currentNetworkData.ce.lng, currentNetworkData.ce.lat]),
-                    turf.point([firstPole.lng, firstPole.lat]),
-                    { units: 'meters' }
-                );
-                if (dCe < 2) {
-                    validationResults.passed.push({
-                        title: "Poste P001 Ubicado en CE001",
-                        desc: "El primer poste (P001) coincide de forma obligatoria con la posición de la Caja de Empalme."
-                    });
-                } else {
-                    validationResults.warnings.push({
-                        title: "Poste P001 Desplazado de CE001",
-                        desc: "El poste P001 no coincide exactamente con la ubicación de la CE001."
-                    });
-                }
-            }
-
-            validationResults.passed.push({
-                title: "Presupuesto Óptico Class B+ OK",
-                desc: "Atenuación total acumulada dentro del rango permitido para tecnología GPON G.984."
-            });
-
-            validationResults.passed.push({
-                title: "Nomenclatura Correlativa Sin Duplicados",
-                desc: "Todos los elementos (CTO, CE, Postes, Cables) poseen identificadores correlativos únicos."
-            });
-
-            updateValidationUI();
-        }
-
-        function updateValidationUI() {
-            const critCount = validationResults.criticals.length;
-            const warnCount = validationResults.warnings.length;
-            const passCount = validationResults.passed.length;
-
-            const cElem = document.getElementById('val-crit-count');
-            const wElem = document.getElementById('val-warn-count');
-            const pElem = document.getElementById('val-pass-count');
-
-            if (cElem) cElem.innerText = critCount;
-            if (wElem) wElem.innerText = warnCount;
-            if (pElem) pElem.innerText = passCount;
-
-            const badge = document.getElementById('validation-status-badge');
-            const headerBadge = document.getElementById('header-validation-status');
-
-            if (critCount > 0) {
-                if (badge) {
-                    badge.innerText = `${critCount} ERRORES CRÍTICOS`;
-                    badge.className = "bg-red-950 text-red-300 border border-red-500/40 px-2 py-0.5 rounded font-mono font-bold";
-                }
-                if (headerBadge) {
-                    headerBadge.innerText = `${critCount} Errores Críticos`;
-                    headerBadge.className = "text-red-400 font-bold";
-                }
-            } else if (warnCount > 0) {
-                if (badge) {
-                    badge.innerText = `${warnCount} ADVERTENCIAS`;
-                    badge.className = "bg-amber-950 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-mono font-bold";
-                }
-                if (headerBadge) {
-                    headerBadge.innerText = `${warnCount} Advertencias`;
-                    headerBadge.className = "text-amber-300 font-bold";
-                }
-            } else {
-                if (badge) {
-                    badge.innerText = "100% VÁLIDO";
-                    badge.className = "bg-emerald-950 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded font-mono font-bold";
-                }
-                if (headerBadge) {
-                    headerBadge.innerText = "Validados 0 Errores";
-                    headerBadge.className = "text-emerald-400 font-bold";
-                }
-            }
-
-            const container = document.getElementById('validation-issues-list');
-            if (!container) return;
-
-            let html = '';
-
-            validationResults.criticals.forEach(item => {
-                html += `
-                    <div class="bg-red-950/40 border border-red-800 p-2.5 rounded-lg space-y-1">
-                        <div class="flex items-center space-x-2 text-red-400 font-bold">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <span>${item.title}</span>
-                        </div>
-                        <p class="text-slate-300 text-[11px] leading-relaxed">${item.desc}</p>
-                    </div>`;
-            });
-
-            validationResults.warnings.forEach(item => {
-                html += `
-                    <div class="bg-amber-950/40 border border-amber-800 p-2.5 rounded-lg space-y-1">
-                        <div class="flex items-center space-x-2 text-amber-300 font-bold">
-                            <i class="fa-solid fa-circle-exclamation"></i>
-                            <span>${item.title}</span>
-                        </div>
-                        <p class="text-slate-300 text-[11px] leading-relaxed">${item.desc}</p>
-                    </div>`;
-            });
-
-            validationResults.passed.forEach(item => {
-                html += `
-                    <div class="bg-slate-950 border border-slate-800 p-2.5 rounded-lg space-y-1">
-                        <div class="flex items-center space-x-2 text-emerald-400 font-bold">
-                            <i class="fa-solid fa-circle-check"></i>
-                            <span>${item.title}</span>
-                        </div>
-                        <p class="text-slate-400 text-[11px] leading-relaxed">${item.desc}</p>
-                    </div>`;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function openValidationModal() {
-            runNetworkValidation();
-            const modal = document.getElementById('validation-modal');
-            const list = document.getElementById('modal-val-list');
-            const title = document.getElementById('modal-val-title');
-            const badge = document.getElementById('modal-val-badge');
-
-            if (modal) modal.classList.remove('hidden');
-
-            const critCount = validationResults.criticals.length;
-            if (critCount > 0) {
-                if (title) title.innerText = "Revisión Requerida";
-                if (badge) {
-                    badge.innerText = "NO ACEPTADO";
-                    badge.className = "bg-red-950 border border-red-500 text-red-300 font-mono font-bold px-3 py-1 rounded-lg text-xs";
-                }
-            } else {
-                if (title) title.innerText = "Diseño 100% Cumplido";
-                if (badge) {
-                    badge.innerText = "APROBADO";
-                    badge.className = "bg-emerald-950 border border-emerald-500 text-emerald-300 font-mono font-bold px-3 py-1 rounded-lg text-xs";
-                }
-            }
-
-            if (list) {
-                let html = '';
-                [...validationResults.criticals, ...validationResults.warnings, ...validationResults.passed].forEach(item => {
-                    html += `
-                        <div class="bg-slate-950 border border-slate-800 p-3 rounded-lg">
-                            <strong class="text-white block">${item.title}</strong>
-                            <span class="text-slate-400 text-xs">${item.desc}</span>
-                        </div>`;
-                });
-                list.innerHTML = html;
-            }
-        }
-
-        function closeValidationModal() {
-            const modal = document.getElementById('validation-modal');
-            if (modal) modal.classList.add('hidden');
         }
 
         function updateHeaderMetrics() {
             let maxCtoSpacing = 0;
+
             for (let i = 0; i < currentNetworkData.ctos.length - 1; i++) {
                 const c1 = currentNetworkData.ctos[i];
                 const c2 = currentNetworkData.ctos[i + 1];
-                const dist = turf.distance(turf.point([c1.lng, c1.lat]), turf.point([c2.lng, c2.lat]), { units: 'meters' });
+                const dist = turf.distance(
+                    turf.point([c1.lng, c1.lat]),
+                    turf.point([c2.lng, c2.lat]),
+                    { units: 'meters' }
+                );
                 if (dist > maxCtoSpacing) maxCtoSpacing = dist;
             }
 
@@ -1918,7 +1474,12 @@
             if (maxSpacingElem) {
                 const roundedSpacing = Math.round(maxCtoSpacing);
                 maxSpacingElem.innerText = `${roundedSpacing} m`;
-                maxSpacingElem.className = roundedSpacing > 200 ? 'text-red-400 font-bold' : 'text-cyan-300 font-bold';
+                if (roundedSpacing > 200) {
+                    maxSpacingElem.className = 'text-red-400 font-bold';
+                } else {
+                    maxSpacingElem.className = 'text-cyan-300 font-bold';
+                }
+
                 const modalSpacing = document.getElementById('modal-max-spacing');
                 if (modalSpacing) modalSpacing.innerText = `${roundedSpacing} m`;
             }
@@ -1938,7 +1499,7 @@
 
         function exportDesignedKML() {
             if (!currentNetworkData.ce && currentNetworkData.ctos.length === 0) {
-                showToast("No hay elementos de red para exportar.");
+                showToast("No hay elementos de red cargados para exportar.");
                 return;
             }
 
@@ -1948,34 +1509,48 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>${clusterName} - Diseño FTTH OSP Nuakchott</name>
-    <description>Proyecto FTTH OSP - Ruteo por Aceras. Iconos Escala 1.2. Generado por Auto-Designer Nuakchott.</description>
+    <description>Proyecto FTTH OSP - Cobertura 100% por Aceras. Generado por Auto-Designer Nuakchott.</description>
     
+    <!-- Estilo de CTO (Verde Lima #aaff00 -> ff00ffaa en KML AABBGGRR) - Escala 1.2 -->
     <Style id="ctoStyle">
       <IconStyle>
         <color>ff00ffaa</color>
         <scale>1.2</scale>
-        <Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+        </Icon>
       </IconStyle>
-      <LabelStyle><scale>0.8</scale></LabelStyle>
+      <LabelStyle>
+        <scale>0.8</scale>
+      </LabelStyle>
     </Style>
 
+    <!-- Estilo de CE001 (Ámbar) - Escala 1.2 -->
     <Style id="ceStyle">
       <IconStyle>
         <color>ff00a5ff</color>
         <scale>1.2</scale>
-        <Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+        </Icon>
       </IconStyle>
     </Style>
 
+    <!-- Estilo de Poste Madera 8m (Marrón Madera #8b4513 -> ff13458b en KML AABBGGRR) - Escala 1.2 -->
     <Style id="poleStyle">
       <IconStyle>
         <color>ff13458b</color>
         <scale>1.2</scale>
-        <Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+        </Icon>
       </IconStyle>
-      <LabelStyle><scale>0.8</scale></LabelStyle>
+      <LabelStyle>
+        <scale>0.8</scale>
+      </LabelStyle>
     </Style>
 
+    <!-- Estilo de Cableado Rojo (Ancho 3) -->
     <Style id="cableStyle">
       <LineStyle>
         <color>ff0000ff</color>
@@ -1983,6 +1558,7 @@
       </LineStyle>
     </Style>
 
+    <!-- CAPA 1: CTOS Y CE -->
     <Folder>
       <name>CTOS Y CE</name>`;
 
@@ -1991,7 +1567,9 @@
       <Placemark>
         <name>${currentNetworkData.ce.name}</name>
         <styleUrl>#ceStyle</styleUrl>
-        <Point><coordinates>${currentNetworkData.ce.lng},${currentNetworkData.ce.lat},0</coordinates></Point>
+        <Point>
+          <coordinates>${currentNetworkData.ce.lng},${currentNetworkData.ce.lat},0</coordinates>
+        </Point>
       </Placemark>`;
             }
 
@@ -2000,13 +1578,16 @@
       <Placemark>
         <name>${cto.name}</name>
         <styleUrl>#ctoStyle</styleUrl>
-        <Point><coordinates>${cto.lng},${cto.lat},0</coordinates></Point>
+        <Point>
+          <coordinates>${cto.lng},${cto.lat},0</coordinates>
+        </Point>
       </Placemark>`;
             });
 
             kml += `
     </Folder>
 
+    <!-- CAPA 2: POSTES MADERA 8M -->
     <Folder>
       <name>POSTES MADERA 8M</name>`;
 
@@ -2015,15 +1596,18 @@
       <Placemark>
         <name>${pole.name}</name>
         <styleUrl>#poleStyle</styleUrl>
-        <Point><coordinates>${pole.lng},${pole.lat},0</coordinates></Point>
+        <Point>
+          <coordinates>${pole.lng},${pole.lat},0</coordinates>
+        </Point>
       </Placemark>`;
             });
 
             kml += `
     </Folder>
 
+    <!-- CAPA 3: CABLEADO -->
     <Folder>
-      <name>CABLEADO FEEDED DISTRIBUCION</name>`;
+      <name>CABLEADO</name>`;
 
             currentNetworkData.cables.forEach(cable => {
                 const coordString = cable.coords.map(c => `${c[0]},${c[1]},0`).join(' ');
@@ -2033,9 +1617,11 @@
                 kml += `
       <Placemark>
         <name>${cable.name}</name>
-        <description>${cable.fo} - ${lenMeters} MTS - Ruteo Aceras</description>
+        <description>${cable.fo} - ${lenMeters} MTS - Trazado Ajustado a Acera (Offset Calzada)</description>
         <styleUrl>#cableStyle</styleUrl>
-        <LineString><coordinates>${coordString}</coordinates></LineString>
+        <LineString>
+          <coordinates>${coordString}</coordinates>
+        </LineString>
       </Placemark>`;
             });
 
@@ -2052,136 +1638,7 @@
             link.click();
             document.body.removeChild(link);
 
-            showToast(`KML '${clusterName}_FTTH_Nuakchott.kml' exportado.`);
-        }
-
-        function exportExcelBoQ() {
-            if (typeof XLSX === 'undefined') {
-                showToast("Librería SheetJS no disponible.");
-                return;
-            }
-
-            const wb = XLSX.utils.book_new();
-
-            let totalCableMts = 0;
-            currentNetworkData.cables.forEach(c => {
-                if (c.coords && c.coords.length >= 2) {
-                    totalCableMts += turf.length(turf.lineString(c.coords), { units: 'meters' });
-                }
-            });
-
-            const reserveCe = currentNetworkData.ce ? 15 : 0;
-            const reserveCtos = currentNetworkData.ctos.length * 10;
-            const grandTotalCable = Math.round(totalCableMts + reserveCe + reserveCtos);
-
-            const boqData = [
-                ["PROYECTO FTTH OSP - BILL OF QUANTITIES (BoQ)", ""],
-                ["Cluster ID", clusterConfig.id],
-                ["Caja de Empalme Principal (CE)", currentNetworkData.ce ? currentNetworkData.ce.name : "N/A"],
-                ["Capacidad Cable Feeder", clusterConfig.foCapacity],
-                ["", ""],
-                ["CÓDIGO MATERIAL", "DESCRIPCIÓN DEL MATERIAL", "CANTIDAD ESTIMADA", "UNIDAD"],
-                ["MAT-FO-48", `Cable de Fibra Óptica ${clusterConfig.foCapacity} Aéreo Auto-soportado`, Math.round(totalCableMts), "MTS"],
-                ["MAT-RES-TECH", "Reserva Técnica Cable (Cocas +15m CE, +10m por CTO)", reserveCe + reserveCtos, "MTS"],
-                ["MAT-FO-TOTAL", "TOTAL CABLE APROVISIONAR (Cable + Reservas)", grandTotalCable, "MTS"],
-                ["MAT-[#8b4513]", "Poste de Madera Tratada 8 metros", currentNetworkData.poles.length, "UND"],
-                ["MAT-CTO-8", "Caja Terminal Óptica (CTO) 8 Puertos Conectorizada", currentNetworkData.ctos.length, "UND"],
-                ["MAT-SPL-18", "Splitter Óptico PLC 1:8 SC/APC", currentNetworkData.ctos.length, "UND"],
-                ["MAT-HER-SUSP", "Conjunto de Suspensión para Cable Aéreo", currentNetworkData.poles.length, "JGO"],
-                ["MAT-HER-AMAR", "Conjunto de Amarre / Retención", Math.round(currentNetworkData.poles.length * 0.4), "JGO"],
-                ["MAT-MAN-FUS", "Manguitos de Protección Termorretráctil 60mm", currentNetworkData.ctos.length + 12, "UND"]
-            ];
-
-            const wsBoq = XLSX.utils.aoa_to_sheet(boqData);
-            XLSX.utils.book_append_sheet(wb, wsBoq, "BoQ Mediciones");
-
-            const elemData = [
-                ["TIPO ELEMENTO", "CÓDIGO / ID", "LATITUD (WGS84)", "LONGITUD (WGS84)", "ESTADO"]
-            ];
-            if (currentNetworkData.ce) {
-                elemData.push(["CE", currentNetworkData.ce.name, currentNetworkData.ce.lat, currentNetworkData.ce.lng, "APROBADO"]);
-            }
-            currentNetworkData.ctos.forEach(c => {
-                elemData.push(["CTO", c.name, c.lat, c.lng, "APROBADO"]);
-            });
-            currentNetworkData.poles.forEach(p => {
-                elemData.push(["POSTE", p.name, p.lat, p.lng, "APROBADO"]);
-            });
-
-            const wsElem = XLSX.utils.aoa_to_sheet(elemData);
-            XLSX.utils.book_append_sheet(wb, wsElem, "Inventario GPS");
-
-            XLSX.writeFile(wb, `${clusterConfig.id}_Mediciones_BoQ_FTTH.xlsx`);
-            showToast(`Excel '${clusterConfig.id}_Mediciones_BoQ_FTTH.xlsx' generado.`);
-        }
-
-        function exportPdfReport() {
-            if (!window.jspdf) {
-                showToast("Librería jsPDF no disponible.");
-                return;
-            }
-
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            doc.setFillColor(15, 23, 42);
-            doc.rect(0, 0, 210, 30, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(14);
-            doc.text("INFORME TÉCNICO DE INGENIERÍA FTTH OSP", 14, 15);
-            doc.setFontSize(9);
-            doc.setTextColor(148, 163, 184);
-            doc.text(`Proyecto: Nuakchott | Sector: ${clusterConfig.id} | Fecha: ${new Date().toLocaleDateString()}`, 14, 22);
-
-            doc.setTextColor(15, 23, 42);
-            doc.setFontSize(11);
-            doc.text("1. RESUMEN DE PROYECTO Y PLANTAS EXTERNAS", 14, 40);
-
-            let totalCableMts = 0;
-            currentNetworkData.cables.forEach(c => {
-                if (c.coords && c.coords.length >= 2) {
-                    totalCableMts += turf.length(turf.lineString(c.coords), { units: 'meters' });
-                }
-            });
-
-            const summaryRows = [
-                ["Cluster ID", clusterConfig.id],
-                ["Caja Empalme Feeder (CE)", currentNetworkData.ce ? currentNetworkData.ce.name : "N/A"],
-                ["Total CTOs Instaladas", `${currentNetworkData.ctos.length} UND`],
-                ["Total Postes Madera 8m", `${currentNetworkData.poles.length} UND`],
-                ["Longitud Cable Trazado", `${Math.round(totalCableMts)} MTS`],
-                ["Reserva Técnica Acumulada", `${15 + currentNetworkData.ctos.length * 10} MTS`],
-                ["Presupuesto Óptico Máximo", "-20.85 dBm (Class B+ OK)"]
-            ];
-
-            doc.autoTable({
-                startY: 45,
-                head: [["PARÁMETRO", "VALOR REGISTRADO"]],
-                body: summaryRows,
-                theme: 'striped',
-                headStyles: { fillStyle: [99, 102, 241] }
-            });
-
-            doc.setFontSize(11);
-            doc.text("2. LISTADO DE CAJAS TERMINALES ÓPTICAS (CTO)", 14, doc.lastAutoTable.finalY + 12);
-
-            const ctoRows = currentNetworkData.ctos.map(c => [
-                c.name,
-                c.lat.toFixed(6),
-                c.lng.toFixed(6),
-                "0.04 dB",
-                "150m (OK)"
-            ]);
-
-            doc.autoTable({
-                startY: doc.lastAutoTable.finalY + 16,
-                head: [["ID CTO", "LATITUD", "LONGITUD", "FUSIÓN", "COBERTURA"]],
-                body: ctoRows,
-                theme: 'grid'
-            });
-
-            doc.save(`${clusterConfig.id}_Informe_Tecnico_FTTH.pdf`);
-            showToast(`PDF '${clusterConfig.id}_Informe_Tecnico_FTTH.pdf' generado.`);
+            showToast(`Archivo KML '${clusterName}_FTTH_Nuakchott.kml' (Iconos Escala 1.2) exportado correctamente.`);
         }
 
         function getClusterNumber() {
@@ -2234,14 +1691,14 @@
         function togglePolesVisibility() {
             showPoles = !showPoles;
             const btnText = document.getElementById('poles-btn-text');
-            if (btnText) btnText.innerText = showPoles ? "Ocultar Postes" : "Ver Postes Madera";
+            if (btnText) btnText.innerText = showPoles ? "Ocultar Postes 8m" : "Ver Postes Madera 8m";
             renderNetworkOnMap();
         }
 
         function toggleCoverageCircles() {
             showCoverageCircles = !showCoverageCircles;
             const btnText = document.getElementById('circles-btn-text');
-            if (btnText) btnText.innerText = showCoverageCircles ? "Ocultar Cobertura" : "Radio Cobertura (150m)";
+            if (btnText) btnText.innerText = showCoverageCircles ? "Ocultar Cobertura (150m)" : "Radio Cobertura (150m)";
             if (showCoverageCircles) {
                 renderCoverageCircles();
             } else {
@@ -2299,8 +1756,10 @@
                 if (extendingCableIndex !== null && currentNetworkData.cables[extendingCableIndex]) {
                     const cable = currentNetworkData.cables[extendingCableIndex];
                     cable.coords = [...drawingCableCoords];
-                    if (extendingAtStart) cable.coords.reverse();
-                    showToast(`Cable '${cable.name}' extendido.`);
+                    if (extendingAtStart) {
+                        cable.coords.reverse();
+                    }
+                    showToast(`Cable '${cable.name}' extendido correctamente.`);
                 } else {
                     const clusterNum = getClusterNumber();
                     const startCableNum = parseInt(document.getElementById('cable-start-input')?.value || "100", 10);
@@ -2312,13 +1771,13 @@
                         fo: clusterConfig.foCapacity,
                         coords: [...drawingCableCoords]
                     });
-                    showToast(`Nuevo cable '${newCableName}' creado.`);
+                    showToast(`Nuevo cable '${newCableName}' añadido correctamente.`);
                 }
 
                 const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
                 generatePolesAlongCables(startPoleNum);
             } else {
-                showToast("Debes clicar al menos 2 puntos para trazar cable.");
+                showToast("Debes clicar al menos 2 puntos para crear/extender un cable.");
             }
 
             if (drawingCablePolyline) {
@@ -2351,7 +1810,7 @@
             generatePolesAlongCables(startPoleNum);
             renderNetworkOnMap();
             updateHeaderMetrics();
-            showToast("Cables eliminados.");
+            showToast("Todos los tramos de cable han sido eliminados.");
         }
 
         function addCtoAtLatLng(lat, lng) {
@@ -2361,6 +1820,7 @@
             if (currentNetworkData.cables.length > 0) {
                 let minDistance = Infinity;
                 let bestPoint = null;
+
                 const clickPt = turf.point([lng, lat]);
 
                 currentNetworkData.cables.forEach(cable => {
@@ -2398,7 +1858,7 @@
             renderNetworkOnMap();
             renderCtoListUI();
             updateHeaderMetrics();
-            showToast(`Añadida ${newCto.name} sobre cable.`);
+            showToast(`Añadida ${newCto.name} sobre el cable con poste asignado.`);
         }
 
         function addPoleAtLatLng(lat, lng) {
@@ -2440,20 +1900,25 @@
             const targetCto = currentNetworkData.ctos[ctoIdx];
             const targetPt = [targetCto.lng, targetCto.lat];
 
+            // Determinar nodo anterior (CE001 o CTO previa)
             let prevPt = null;
             if (ctoIdx === 0) {
-                if (currentNetworkData.ce) prevPt = [currentNetworkData.ce.lng, currentNetworkData.ce.lat];
+                if (currentNetworkData.ce) {
+                    prevPt = [currentNetworkData.ce.lng, currentNetworkData.ce.lat];
+                }
             } else if (ctoIdx - 1 < currentNetworkData.ctos.length) {
                 const prevCto = currentNetworkData.ctos[ctoIdx - 1];
                 prevPt = [prevCto.lng, prevCto.lat];
             }
 
+            // Determinar nodo siguiente (CTO posterior, si existe)
             let nextPt = null;
             if (ctoIdx < currentNetworkData.ctos.length - 1) {
                 const nextCto = currentNetworkData.ctos[ctoIdx + 1];
                 nextPt = [nextCto.lng, nextCto.lat];
             }
 
+            // Rediseñar tramo de cable entrante reconociendo el lado de la acera seleccionado
             if (prevPt && currentNetworkData.cables[ctoIdx]) {
                 const newIncomingCoords = await routeCableAlongStreets(prevPt, targetPt, targetPt);
                 currentNetworkData.cables[ctoIdx].coords = newIncomingCoords;
@@ -2464,19 +1929,25 @@
                 }
             }
 
+            // Rediseñar tramo de cable saliente hacia la siguiente CTO reconociendo el lado de la acera
             if (nextPt && currentNetworkData.cables[ctoIdx + 1]) {
                 const newOutgoingCoords = await routeCableAlongStreets([targetCto.lng, targetCto.lat], nextPt, nextPt);
                 currentNetworkData.cables[ctoIdx + 1].coords = newOutgoingCoords;
             }
 
+            // Recalcular postes de madera 8m empezando en P001 desde la CE
             const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
             generatePolesAlongCables(startPoleNum);
+            
+            // Renderizar mapa actualizado
             renderNetworkOnMap();
         }
 
         function togglePmoModal() {
             const modal = document.getElementById('pmo-modal');
-            if (modal) modal.classList.toggle('hidden');
+            if (modal) {
+                modal.classList.toggle('hidden');
+            }
         }
 
         function copyPmoReportToClipboard() {
@@ -2484,7 +1955,7 @@
 --------------------------------------------------
 - Estatus del Proyecto: Red de distribución FTTH OSP Aérea en Nuakchott.
 - Cobertura de Polígono: 100% de la superficie del sector cubierta.
-- Cajas CTO: ${currentNetworkData.ctos.length} Cajas Terminales Ópticas instaladas.
+- Cajas CTO: 8 Cajas Terminales Ópticas instaladas sobre postes de 8m.
 - Numeración de Postes: P001 desde la CE correlativo hasta las CTOs.
 - Alcance Máximo hacia Hogares: <= 150 metros.
 - Pérdida por Fusión: Aceptado (<= 0.5 dB por empalme).`;
