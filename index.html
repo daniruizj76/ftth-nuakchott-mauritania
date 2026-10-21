@@ -288,6 +288,18 @@
         <main class="flex-1 relative bg-slate-950">
             <div id="map"></div>
 
+            <!-- Buscador Global de Ciudades, Países y Pueblos -->
+            <div class="absolute top-4 left-14 z-[1000] flex items-center bg-slate-900/90 border border-slate-700 rounded-xl p-1.5 backdrop-blur shadow-2xl">
+                <div class="relative flex items-center">
+                    <i class="fa-solid fa-location-dot text-indigo-400 absolute left-3 text-xs"></i>
+                    <input type="text" id="map-search-input" placeholder="Buscar ciudad, pueblo o país..." onkeydown="if(event.key==='Enter') searchLocation()" class="bg-slate-950 text-white text-xs pl-8 pr-3 py-1.5 rounded-lg outline-none border border-slate-800 w-64 focus:border-indigo-500 font-sans transition-all placeholder:text-slate-500" />
+                </div>
+                <button onclick="searchLocation()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg ml-1.5 text-xs font-semibold flex items-center gap-1.5 transition shadow">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Buscar</span>
+                </button>
+            </div>
+
             <!-- Botones Flotantes de Capas -->
             <div class="absolute top-4 right-4 z-[1000] flex flex-col gap-2">
                 <button id="btn-toggle-satellite" onclick="toggleSatelliteView()" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white text-xs px-3 py-2 rounded-lg backdrop-blur shadow-xl font-mono flex items-center gap-2 transition-all cursor-pointer">
@@ -508,7 +520,7 @@
         }
 
         function initMap() {
-            // Centro en Tevragh Zeina, Nuakchott
+            // Centro por defecto en Tevragh Zeina, Nuakchott
             map = L.map('map', {
                 center: [18.1025, -15.9680],
                 zoom: 16,
@@ -572,6 +584,50 @@
                     handleDrawCableClick(e.latlng);
                 }
             });
+        }
+
+        // --- MOTOR DE BÚSQUEDA GEOGRÁFICA (NOMINATIM API) ---
+        async function searchLocation() {
+            const searchInput = document.getElementById('map-search-input');
+            const query = searchInput?.value?.trim();
+            if (!query) {
+                showToast("Por favor, introduce el nombre de una ciudad, país o pueblo.");
+                return;
+            }
+
+            showToast(`Buscando '${query}' en geolocalizador...`);
+
+            try {
+                const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+                const res = await fetch(url, {
+                    headers: { 'Accept-Language': 'es,fr,en' }
+                });
+                const data = await res.json();
+
+                if (data && data.length > 0) {
+                    const result = data[0];
+                    const lat = parseFloat(result.lat);
+                    const lon = parseFloat(result.lon);
+
+                    if (result.boundingbox && result.boundingbox.length === 4) {
+                        const south = parseFloat(result.boundingbox[0]);
+                        const north = parseFloat(result.boundingbox[1]);
+                        const west = parseFloat(result.boundingbox[2]);
+                        const east = parseFloat(result.boundingbox[3]);
+                        map.fitBounds([[south, west], [north, east]], { padding: [30, 30], maxZoom: 16 });
+                    } else {
+                        map.flyTo([lat, lon], 14, { duration: 1.5 });
+                    }
+
+                    const locationName = result.display_name.split(',')[0];
+                    showToast(`Ubicación localizada: ${locationName}`);
+                } else {
+                    showToast(`No se encontraron resultados para '${query}'.`);
+                }
+            } catch (err) {
+                console.error("Error al buscar localización:", err);
+                showToast("Error en el servicio de geolocalización.");
+            }
         }
 
         function setupDragAndDrop() {
