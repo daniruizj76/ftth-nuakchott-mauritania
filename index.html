@@ -64,6 +64,7 @@
 </head>
 <body class="bg-slate-900 text-slate-100 h-screen overflow-hidden flex flex-col select-none">
 
+    <!-- Header Principal PMO & Suite OSP -->
     <header class="h-[65px] bg-slate-950 border-b border-slate-800 px-4 flex items-center justify-between shrink-0 z-20">
         <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
@@ -80,6 +81,7 @@
             </div>
         </div>
 
+        <!-- Indicadores Métricos PMO -->
         <div class="hidden xl:flex items-center space-x-2.5 text-xs font-mono">
             <div class="bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-md flex items-center space-x-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -108,6 +110,7 @@
             </div>
         </div>
 
+        <!-- Botones de Acción Principal -->
         <div class="flex items-center space-x-2">
             <button id="btn-undo" onclick="undoLastAction()" disabled class="bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-amber-400 border border-slate-700 text-xs font-semibold px-2.5 py-2 rounded-lg flex items-center space-x-1 shadow transition-all" title="Deshacer última modificación (Ctrl + Z)">
                 <i class="fa-solid fa-rotate-left"></i>
@@ -136,9 +139,13 @@
         </div>
     </header>
 
+    <!-- Contenedor Principal: Sidebar + Mapa -->
     <div class="flex flex-1 overflow-hidden relative">
+        
+        <!-- Sidebar de Control e Ingeniería -->
         <aside class="w-80 md:w-96 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0 custom-scrollbar overflow-y-auto z-10 shadow-2xl">
             
+            <!-- Sección 1: Carga y Definición del Cluster -->
             <div class="p-3.5 border-b border-slate-800 space-y-2.5">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
@@ -167,6 +174,7 @@
                 </div>
             </div>
 
+            <!-- Sección 2: Identificadores & Nomenclatura -->
             <div class="p-3.5 border-b border-slate-800 space-y-2.5 bg-slate-950/30">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
@@ -212,6 +220,7 @@
                 </button>
             </div>
 
+            <!-- Sección 3: Parámetros Ópticos y Reservas Técnicas -->
             <div class="p-3.5 border-b border-slate-800 space-y-2.5">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
@@ -239,6 +248,7 @@
                     </div>
                 </div>
 
+                <!-- Configuración de Reservas Técnicas -->
                 <div class="grid grid-cols-3 gap-1.5 text-[10px]">
                     <div>
                         <label class="text-cyan-400 font-mono block mb-0.5 truncate">Coca CE (m)</label>
@@ -272,8 +282,16 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="flex items-center justify-between pt-1">
+                    <label class="text-[11px] text-slate-300 flex items-center gap-1.5 cursor-pointer">
+                        <input type="checkbox" id="chk-show-span-badges" checked onchange="toggleSpanBadges()" class="rounded border-slate-700 text-indigo-600 focus:ring-0">
+                        <span>Mostrar Etiquetas de Vanos en Mapa</span>
+                    </label>
+                </div>
             </div>
 
+            <!-- Sección 4: Edición de Elementos OSP -->
             <div class="p-3.5 border-b border-slate-800 space-y-2 bg-slate-950/40">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
@@ -306,6 +324,7 @@
                 </div>
             </div>
 
+            <!-- Sección 5: Auditoría de Viviendas -->
             <div class="p-3.5 border-b border-slate-800 space-y-2">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
@@ -333,6 +352,7 @@
                 </div>
             </div>
 
+            <!-- Sección 6: CTOs y Continuidad Óptica -->
             <div class="p-3.5 border-b border-slate-800 flex-1">
                 <div class="flex items-center justify-between mb-2">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
@@ -349,6 +369,7 @@
                 </div>
             </div>
 
+            <!-- Guardarraíl de Calidad y Compliance Inspector -->
             <div class="p-3.5 bg-slate-950 space-y-2">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
@@ -366,7 +387,9 @@
             </div>
         </aside>
 
+        <!-- Área de Mapa Interactivo Leaflet -->
         <main class="flex-1 relative bg-slate-950">
+            <!-- Barra de Búsqueda Geográfica Nominatim (Nuakchott) -->
             <div class="absolute top-4 left-4 z-[1000] w-72 sm:w-80 md:w-96">
                 <div class="relative flex items-center shadow-2xl">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-slate-400 text-xs"></i>
@@ -377,6 +400,7 @@
                 </div>
             </div>
 
+            <!-- Botones Flotantes de Capas y Vista -->
             <div class="absolute top-4 right-4 z-[1000] flex flex-col gap-1.5">
                 <div class="bg-slate-900/90 border border-slate-700 rounded-lg p-1 flex gap-1 shadow-xl text-xs font-mono">
                     <button id="btn-map-day" onclick="setMapViewMode('DAY')" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold transition">
@@ -390,15 +414,26 @@
                     </button>
                 </div>
 
-                <!-- Botón para abrir la Ventana de Control de Capas y Vanos -->
-                <button onclick="toggleLayerControlModal()" class="bg-indigo-900/90 hover:bg-indigo-800 border border-indigo-600 text-indigo-200 text-xs px-3 py-2 rounded-lg backdrop-blur shadow-xl font-mono flex items-center justify-between gap-2 transition cursor-pointer">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-layer-group text-cyan-400"></i> Control de Capas y Vanos</span>
-                    <i class="fa-solid fa-sliders text-[10px]"></i>
+                <button id="btn-toggle-poles" onclick="togglePolesVisibility()" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white text-xs px-3 py-1.5 rounded-lg backdrop-blur shadow-xl font-mono flex items-center gap-2 transition cursor-pointer">
+                    <i class="fa-solid fa-tree text-amber-400"></i>
+                    <span id="poles-btn-text">Ver Postes 8m</span>
+                </button>
+                
+                <button id="btn-toggle-circles" onclick="toggleCoverageCircles()" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white text-xs px-3 py-1.5 rounded-lg backdrop-blur shadow-xl font-mono flex items-center gap-2 transition cursor-pointer">
+                    <i class="fa-solid fa-circle-dot text-emerald-400"></i>
+                    <span id="circles-btn-text">Radio Cobertura</span>
+                </button>
+
+                <button id="btn-toggle-houses" onclick="toggleHousesVisibility()" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white text-xs px-3 py-1.5 rounded-lg backdrop-blur shadow-xl font-mono flex items-center gap-2 transition cursor-pointer">
+                    <i class="fa-solid fa-house text-cyan-400"></i>
+                    <span id="houses-btn-text">Ver Viviendas</span>
                 </button>
             </div>
 
+            <!-- Map Container -->
             <div id="map"></div>
 
+            <!-- Leyenda Oficial de Planta Externa -->
             <div class="absolute bottom-6 right-6 bg-slate-900/90 backdrop-blur border border-slate-800 p-3 rounded-xl shadow-xl z-[1000] text-xs space-y-1.5 text-slate-300 font-mono hidden sm:block">
                 <div class="font-bold text-white border-b border-slate-800 pb-1 mb-1">Leyenda FTTH OSP (Nuakchott)</div>
                 <div class="flex items-center space-x-2">
@@ -423,6 +458,7 @@
                 </div>
             </div>
 
+            <!-- Toast Messages -->
             <div id="toast-msg" class="hidden absolute top-16 left-1/2 -translate-x-1/2 bg-slate-900 border border-emerald-500 text-white px-4 py-2 rounded-lg shadow-xl z-[2000] flex items-center gap-2 text-xs font-medium animate-bounce">
                 <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
                 <span id="toast-text">Notificación del sistema</span>
@@ -430,63 +466,7 @@
         </main>
     </div>
 
-    <div id="layer-control-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md shadow-2xl flex flex-col overflow-hidden">
-            <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-cyan-600 rounded-lg flex items-center justify-center text-white">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-sm font-bold text-white">Ventana de Control de Capas & Vanos OSP</h2>
-                        <p class="text-xs text-slate-400">Marque o desmarque los elementos visibles en el mapa</p>
-                    </div>
-                </div>
-                <button onclick="toggleLayerControlModal()" class="text-slate-400 hover:text-white text-lg px-2">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <div class="p-5 space-y-3 text-xs font-mono">
-                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2.5">
-                    <label class="flex items-center justify-between p-2 rounded hover:bg-slate-900 cursor-pointer transition">
-                        <span class="flex items-center gap-2 text-slate-200">
-                            <i class="fa-solid fa-arrows-left-right-to-line text-cyan-400"></i> Mostrar Etiquetas de Vanos (Metrajes)
-                        </span>
-                        <input type="checkbox" id="modal-chk-span-badges" checked onchange="syncModalSpanCheckbox(this)" class="w-4 h-4 rounded border-slate-700 text-indigo-600 focus:ring-0">
-                    </label>
-
-                    <label class="flex items-center justify-between p-2 rounded hover:bg-slate-900 cursor-pointer transition">
-                        <span class="flex items-center gap-2 text-slate-200">
-                            <i class="fa-solid fa-tree text-amber-400"></i> Mostrar Postería de Madera (8m)
-                        </span>
-                        <input type="checkbox" id="modal-chk-poles" checked onchange="togglePolesVisibility(); syncModalCheckboxes();" class="w-4 h-4 rounded border-slate-700 text-indigo-600 focus:ring-0">
-                    </label>
-
-                    <label class="flex items-center justify-between p-2 rounded hover:bg-slate-900 cursor-pointer transition">
-                        <span class="flex items-center gap-2 text-slate-200">
-                            <i class="fa-solid fa-circle-dot text-emerald-400"></i> Mostrar Radios de Cobertura CTO
-                        </span>
-                        <input type="checkbox" id="modal-chk-circles" checked onchange="toggleCoverageCircles(); syncModalCheckboxes();" class="w-4 h-4 rounded border-slate-700 text-indigo-600 focus:ring-0">
-                    </label>
-
-                    <label class="flex items-center justify-between p-2 rounded hover:bg-slate-900 cursor-pointer transition">
-                        <span class="flex items-center gap-2 text-slate-200">
-                            <i class="fa-solid fa-house text-cyan-400"></i> Mostrar Auditoría de Viviendas
-                        </span>
-                        <input type="checkbox" id="modal-chk-houses" checked onchange="toggleHousesVisibility(); syncModalCheckboxes();" class="w-4 h-4 rounded border-slate-700 text-indigo-600 focus:ring-0">
-                    </label>
-                </div>
-            </div>
-
-            <div class="p-4 border-t border-slate-800 bg-slate-950 flex justify-end">
-                <button onclick="toggleLayerControlModal()" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-5 py-2 rounded-lg text-xs transition">
-                    Aplicar y Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Modal 1: Configuración de Nomenclatura -->
     <div id="naming-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-xl shadow-2xl flex flex-col overflow-hidden">
             <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
@@ -564,6 +544,7 @@
         </div>
     </div>
 
+    <!-- Modal 2: Matriz de Fibras y Código TIA-598 -->
     <div id="fiber-matrix-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-4xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
             <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
@@ -613,7 +594,9 @@
                         </div>
                     </div>
 
-                    <div id="fiber-table-container" class="max-h-60 overflow-y-auto custom-scrollbar"></div>
+                    <div id="fiber-table-container" class="max-h-60 overflow-y-auto custom-scrollbar">
+                        <!-- Generado dinámicamente -->
+                    </div>
                 </div>
 
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
@@ -651,6 +634,7 @@
         </div>
     </div>
 
+    <!-- Modal 3: Reporte PMO / ARE -->
     <div id="pmo-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
             <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
@@ -737,8 +721,10 @@
 
         let drawingCableCoords = [];
         let drawingCablePolyline = null;
+
         let historyStack = [];
 
+        // TIA-598 Standard Palette
         const TIA_598_COLORS = [
             { id: 1, name: "Azul", code: "AZU", bgClass: "tia-blue", hex: "#0000FF" },
             { id: 2, name: "Naranja", code: "NAR", bgClass: "tia-orange", hex: "#FF6600" },
@@ -818,7 +804,9 @@
         }
 
         function saveStateToHistory() {
-            if (historyStack.length >= 25) historyStack.shift();
+            if (historyStack.length >= 25) {
+                historyStack.shift();
+            }
             historyStack.push(JSON.stringify(currentNetworkData));
             updateUndoButtonUI();
         }
@@ -836,7 +824,9 @@
 
         function updateUndoButtonUI() {
             const undoBtn = document.getElementById('btn-undo');
-            if (undoBtn) undoBtn.disabled = historyStack.length === 0;
+            if (undoBtn) {
+                undoBtn.disabled = historyStack.length === 0;
+            }
         }
 
         function setupKeyboardShortcuts() {
@@ -857,17 +847,20 @@
 
             map.zoomControl.setPosition('bottomright');
 
+            // OpenStreetMap Standard Day Map (High Clarity)
             dayTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors',
                 maxZoom: 19
             }).addTo(map);
 
+            // Night Map Layer
             nightTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors',
                 className: 'dark-map-tiles',
                 maxZoom: 19
             });
 
+            // Esri Satellite Imagery
             satelliteTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 attribution: 'Source: Esri, Maxar, Earthstar Geographics',
                 maxZoom: 19
@@ -1915,6 +1908,7 @@
             if (!container || !badge) return;
 
             const alerts = [];
+
             const maxCapacity = parseInt(clusterConfig.foCapacity, 10) || 48;
             if (currentNetworkData.ctos.length > maxCapacity) {
                 alerts.push(`⚠️ Capacidad Feeder superada: ${currentNetworkData.ctos.length} CTOs > ${maxCapacity} FO.`);
@@ -1925,14 +1919,27 @@
                 alerts.push(`⚠️ Detectadas ${uncoveredCount} viviendas fuera del radio de cobertura (${clusterConfig.coverageRadiusMeters}m).`);
             }
 
+            currentNetworkData.ctos.forEach(cto => {
+                if (parseFloat(cto.spliceLoss) > 0.5) {
+                    alerts.push(`⚠️ CTO ${cto.name}: Pérdida de fusión excede límite (${cto.spliceLoss} dB > 0.5 dB).`);
+                }
+            });
+
             if (alerts.length === 0) {
                 badge.innerText = "100% OK";
                 badge.className = "text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded font-mono font-bold";
-                container.innerHTML = `<div class="bg-slate-900 border border-slate-800 p-2 rounded text-emerald-400"><i class="fa-solid fa-circle-check mr-1"></i> Sin incidencias técnicas detectadas.</div>`;
+                container.innerHTML = `
+                    <div class="bg-slate-900 border border-slate-800 p-2 rounded text-emerald-400">
+                        <i class="fa-solid fa-circle-check mr-1"></i> Sin incidencias técnicas detectadas.
+                    </div>`;
             } else {
                 badge.innerText = `${alerts.length} ALERTA(S)`;
                 badge.className = "text-[10px] bg-red-950 text-red-300 border border-red-800 px-2 py-0.5 rounded font-mono font-bold animate-pulse";
-                container.innerHTML = alerts.map(a => `<div class="bg-red-950/80 border border-red-800/80 p-2 rounded text-red-200">${a}</div>`).join('');
+                container.innerHTML = alerts.map(a => `
+                    <div class="bg-red-950/80 border border-red-800/80 p-2 rounded text-red-200">
+                        ${a}
+                    </div>
+                `).join('');
             }
         }
 
@@ -1944,9 +1951,11 @@
             document.getElementById('matrix-feeder-cap-label').innerText = `${totalFibers} FO`;
 
             let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] font-mono">';
+
             for (let f = 1; f <= totalFibers; f++) {
                 const colorObj = TIA_598_COLORS[(f - 1) % 12];
                 const tubeNum = Math.ceil(f / 12);
+                
                 const assignedCto = currentNetworkData.ctos.find((c, idx) => (c.assignedFiber || (idx + 1)) === f);
                 
                 let statusBadge = `<span class="text-cyan-300 font-bold">Libre</span>`;
@@ -1972,6 +1981,7 @@
                         </div>
                     </div>`;
             }
+
             html += '</div>';
             container.innerHTML = html;
         }
@@ -1994,31 +2004,6 @@
             if (modal) modal.classList.toggle('hidden');
         }
 
-        function toggleLayerControlModal() {
-            const modal = document.getElementById('layer-control-modal');
-            if (modal) {
-                if (!modal.classList.contains('hidden')) syncModalCheckboxes();
-                modal.classList.toggle('hidden');
-            }
-        }
-
-        function syncModalCheckboxes() {
-            const mPoles = document.getElementById('modal-chk-poles');
-            const mCircles = document.getElementById('modal-chk-circles');
-            const mHouses = document.getElementById('modal-chk-houses');
-            const mSpans = document.getElementById('modal-chk-span-badges');
-
-            if (mPoles) mPoles.checked = showPoles;
-            if (mCircles) mCircles.checked = showCoverageCircles;
-            if (mHouses) mHouses.checked = showHouses;
-            if (mSpans) mSpans.checked = showSpanBadges;
-        }
-
-        function syncModalSpanCheckbox(elem) {
-            showSpanBadges = elem.checked;
-            renderNetworkOnMap();
-        }
-
         function applyNamingSettings() {
             namingConfig.clusterPrefix = document.getElementById('prefix-cluster-input')?.value || 'CL';
             namingConfig.cePrefix = document.getElementById('prefix-ce-input')?.value || 'CE';
@@ -2026,7 +2011,9 @@
             namingConfig.cablePrefix = document.getElementById('prefix-cable-input')?.value || 'C';
             namingConfig.polePrefix = document.getElementById('prefix-pole-input')?.value || 'P';
             namingConfig.paddingDigits = parseInt(document.getElementById('naming-padding-select')?.value || '3', 10);
-            namingConfig.policy = document.querySelector('input[name="naming-policy"]:checked')?.value || 'KEEP_LOCKED';
+            
+            const selectedPolicy = document.querySelector('input[name="naming-policy"]:checked')?.value || 'KEEP_LOCKED';
+            namingConfig.policy = selectedPolicy;
 
             updateClusterNameUI();
             toggleNamingModal();
@@ -2051,13 +2038,20 @@
             updateHeaderAndAuditMetrics();
         }
 
+        function toggleSpanBadges() {
+            showSpanBadges = document.getElementById('chk-show-span-badges')?.checked ?? true;
+            renderNetworkOnMap();
+        }
+
         function togglePolesVisibility() {
             showPoles = !showPoles;
+            document.getElementById('poles-btn-text').innerText = showPoles ? "Ocultar Postes" : "Ver Postes 8m";
             renderNetworkOnMap();
         }
 
         function toggleCoverageCircles() {
             showCoverageCircles = !showCoverageCircles;
+            document.getElementById('circles-btn-text').innerText = showCoverageCircles ? "Ocultar Radio" : "Radio Cobertura";
             if (showCoverageCircles) {
                 renderCoverageCircles();
             } else {
@@ -2068,6 +2062,7 @@
 
         function toggleHousesVisibility() {
             showHouses = !showHouses;
+            document.getElementById('houses-btn-text').innerText = showHouses ? "Ocultar Viviendas" : "Ver Viviendas";
             renderNetworkOnMap();
         }
 
@@ -2099,6 +2094,7 @@
 
         function handleDrawCableClick(latlng) {
             drawingCableCoords.push([latlng.lng, latlng.lat]);
+
             if (!drawingCablePolyline) {
                 drawingCablePolyline = L.polyline([[latlng.lat, latlng.lng]], {
                     color: '#ff0000',
@@ -2113,9 +2109,11 @@
         function finishDrawingCable() {
             if (drawingCableCoords.length >= 2) {
                 saveStateToHistory();
+
                 const clusterNum = getClusterNumber();
                 const startCableNum = parseInt(document.getElementById('cable-start-input')?.value || "100", 10);
-                const newCableName = `${namingConfig.cablePrefix}${clusterNum}-${startCableNum + currentNetworkData.cables.length}`;
+                const newIndex = currentNetworkData.cables.length;
+                const newCableName = `${namingConfig.cablePrefix}${clusterNum}-${startCableNum + newIndex}`;
 
                 currentNetworkData.cables.push({
                     name: newCableName,
@@ -2123,7 +2121,8 @@
                     coords: [...drawingCableCoords]
                 });
 
-                recalculateAllPoles(parseInt(document.getElementById('pole-start-input')?.value || "1", 10));
+                const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
+                recalculateAllPoles(startPoleNum);
                 showToast(`Nuevo cable '${newCableName}' añadido.`);
             }
 
@@ -2143,10 +2142,14 @@
             if (!cable) return;
 
             const clickPt = turf.point([clickedLatLng.lng, clickedLatLng.lat]);
-            const snapped = turf.nearestPointOnLine(turf.lineString(cable.coords), clickPt);
-            cable.coords.splice(snapped.properties.index + 1, 0, snapped.geometry.coordinates);
+            const line = turf.lineString(cable.coords);
+            const snapped = turf.nearestPointOnLine(line, clickPt);
 
-            recalculateAllPoles(parseInt(document.getElementById('pole-start-input')?.value || "1", 10));
+            const insertIdx = snapped.properties.index + 1;
+            cable.coords.splice(insertIdx, 0, snapped.geometry.coordinates);
+
+            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
+            recalculateAllPoles(startPoleNum);
             renderNetworkOnMap();
             updateHeaderAndAuditMetrics();
             showToast(`Punto de giro añadido a '${cable.name}'`);
@@ -2156,15 +2159,18 @@
             saveStateToHistory();
             const cable = currentNetworkData.cables[cableIdx];
             if (!cable) return;
+
             if (cable.coords.length <= 2) {
                 removeCable(cableIdx);
                 return;
             }
+
             cable.coords.splice(vertexIdx, 1);
-            recalculateAllPoles(parseInt(document.getElementById('pole-start-input')?.value || "1", 10));
+            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
+            recalculateAllPoles(startPoleNum);
             renderNetworkOnMap();
             updateHeaderAndAuditMetrics();
-            showToast("Vértice eliminado");
+            showToast(`Vértice eliminado de '${cable.name}'`);
         }
 
         function splitCableAtVertex(cableIdx, vertexIdx) {
@@ -2172,49 +2178,63 @@
             const cable = currentNetworkData.cables[cableIdx];
             if (!cable || vertexIdx <= 0 || vertexIdx >= cable.coords.length - 1) return;
 
-            const firstHalf = cable.coords.slice(0, vertexIdx + 1);
-            const secondHalf = cable.coords.slice(vertexIdx);
-            const newName = `${namingConfig.cablePrefix}${getClusterNumber()}-${parseInt(document.getElementById('cable-start-input')?.value || "100", 10) + currentNetworkData.cables.length}`;
+            const firstHalfCoords = cable.coords.slice(0, vertexIdx + 1);
+            const secondHalfCoords = cable.coords.slice(vertexIdx);
 
-            cable.coords = firstHalf;
-            currentNetworkData.cables.push({ name: newName, fo: cable.fo, coords: secondHalf });
-            recalculateAllPoles(parseInt(document.getElementById('pole-start-input')?.value || "1", 10));
+            const clusterNum = getClusterNumber();
+            const startCableNum = parseInt(document.getElementById('cable-start-input')?.value || "100", 10);
+            const newIndex = currentNetworkData.cables.length;
+            const newCableName = `${namingConfig.cablePrefix}${clusterNum}-${startCableNum + newIndex}`;
+
+            cable.coords = firstHalfCoords;
+            currentNetworkData.cables.push({
+                name: newCableName,
+                fo: cable.fo || clusterConfig.foCapacity,
+                coords: secondHalfCoords
+            });
+
+            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
+            recalculateAllPoles(startPoleNum);
             renderNetworkOnMap();
             updateHeaderAndAuditMetrics();
-            showToast("Cable dividido correctamente.");
+            showToast(`Cable dividido en '${cable.name}' y '${newCableName}'`);
         }
 
         function removeCable(index) {
             saveStateToHistory();
-            currentNetworkData.cables.splice(index, 1);
-            recalculateAllPoles(parseInt(document.getElementById('pole-start-input')?.value || "1", 10));
+            const removed = currentNetworkData.cables.splice(index, 1);
+            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
+            recalculateAllPoles(startPoleNum);
             renderNetworkOnMap();
             updateHeaderAndAuditMetrics();
-            showToast("Cable eliminado.");
+            showToast(`Cable '${removed[0]?.name || ''}' eliminado.`);
         }
 
         function clearAllCables() {
             if (currentNetworkData.cables.length === 0) return;
             saveStateToHistory();
             currentNetworkData.cables = [];
-            recalculateAllPoles(parseInt(document.getElementById('pole-start-input')?.value || "1", 10));
+            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
+            recalculateAllPoles(startPoleNum);
             renderNetworkOnMap();
             updateHeaderAndAuditMetrics();
-            showToast("Cables eliminados.");
+            showToast("Todos los cables han sido eliminados.");
         }
 
         function addCtoAtLatLng(lat, lng) {
             const nextNum = currentNetworkData.ctos.length + 1;
+            const pad = String(nextNum).padStart(namingConfig.paddingDigits, '0');
             const newCto = {
                 id: Date.now(),
                 num: nextNum,
-                name: `${namingConfig.ctoPrefix} ${String(nextNum).padStart(namingConfig.paddingDigits, '0')}`,
+                name: `${namingConfig.ctoPrefix} ${pad}`,
                 lng: lng,
                 lat: lat,
                 spliceLoss: "0.04",
                 assignedFiber: nextNum
             };
             currentNetworkData.ctos.push(newCto);
+
             auditHouseCoverage();
             renderNetworkOnMap();
             renderCtoListUI();
@@ -2224,16 +2244,18 @@
 
         function addPoleAtLatLng(lat, lng) {
             const nextNum = currentNetworkData.poles.length + 1;
-            currentNetworkData.poles.push({
+            const pad = String(nextNum).padStart(namingConfig.paddingDigits, '0');
+            const newPole = {
                 id: Date.now(),
-                code: `${namingConfig.polePrefix}${String(nextNum).padStart(namingConfig.paddingDigits, '0')}`,
-                name: `${namingConfig.polePrefix}${String(nextNum).padStart(namingConfig.paddingDigits, '0')}`,
+                code: `${namingConfig.polePrefix}${pad}`,
+                name: `${namingConfig.polePrefix}${pad}`,
                 lng: lng,
                 lat: lat
-            });
+            };
+            currentNetworkData.poles.push(newPole);
             renderNetworkOnMap();
             updateHeaderAndAuditMetrics();
-            showToast("Poste añadido.");
+            showToast(`Añadido ${newPole.name}`);
         }
 
         function removeCto(id) {
@@ -2270,11 +2292,13 @@
             if (prevPt && currentNetworkData.cables[ctoIdx]) {
                 currentNetworkData.cables[ctoIdx].coords = await routeCableAlongStreets(prevPt, targetPt, targetPt);
             }
+
             if (nextPt && currentNetworkData.cables[ctoIdx + 1]) {
                 currentNetworkData.cables[ctoIdx + 1].coords = await routeCableAlongStreets(targetPt, nextPt, nextPt);
             }
 
-            recalculateAllPoles(parseInt(document.getElementById('pole-start-input')?.value || "1", 10));
+            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
+            recalculateAllPoles(startPoleNum);
             renderNetworkOnMap();
         }
 
@@ -2325,70 +2349,276 @@
 
             const geojson = {
                 type: "Feature",
-                geometry: { type: "Polygon", coordinates: [demoCoords] },
+                geometry: {
+                    type: "Polygon",
+                    coordinates: [demoCoords]
+                },
                 properties: { name: "Sector Tevragh Zeina Demo" }
             };
 
             drawnItemsLayer.clearLayers();
             const polygonLayer = L.geoJSON(geojson, {
-                style: { color: '#f59e0b', fillColor: '#f59e0b', fillOpacity: 0.15, weight: 2, dashArray: '5, 5' }
+                style: {
+                    color: '#f59e0b',
+                    fillColor: '#f59e0b',
+                    fillOpacity: 0.15,
+                    weight: 2,
+                    dashArray: '5, 5'
+                }
             }).addTo(drawnItemsLayer);
 
             activePerimeterPolygon = geojson;
             map.fitBounds(polygonLayer.getBounds(), { padding: [40, 40] });
+
             generateHousesInsidePolygon();
             autoGenerateLayoutFromPerimeter();
         }
 
         function exportDesignedKML() {
             if (!currentNetworkData.ce && currentNetworkData.ctos.length === 0) {
-                showToast("No hay elementos para exportar.");
+                showToast("No hay elementos cargados para exportar.");
                 return;
             }
+
+            const clusterName = clusterConfig.id;
 
             let kml = `<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
-    <name>${clusterConfig.id} - Diseño FTTH OSP Nuakchott</name>
-    <Folder><name>CTOs</name>`;
+    <name>${clusterName} - Diseño FTTH OSP Nuakchott</name>
+    <description>Proyecto FTTH OSP - Generado por Auto-Designer Nuakchott (ExtendedData QGIS Compatible).</description>
+    
+    <Style id="ctoStyle">
+      <IconStyle>
+        <color>ff00ffaa</color>
+        <scale>1.2</scale>
+        <Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon>
+      </IconStyle>
+    </Style>
+
+    <Style id="ceStyle">
+      <IconStyle>
+        <color>ff00a5ff</color>
+        <scale>1.2</scale>
+        <Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon>
+      </IconStyle>
+    </Style>
+
+    <Style id="poleStyle">
+      <IconStyle>
+        <color>ff13458b</color>
+        <scale>1.2</scale>
+        <Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon>
+      </IconStyle>
+    </Style>
+
+    <Style id="cableStyle">
+      <LineStyle>
+        <color>ff0000ff</color>
+        <width>3</width>
+      </LineStyle>
+    </Style>
+
+    <Folder>
+      <name>ELEMENTOS ACTIVOS</name>`;
+
+            if (currentNetworkData.ce) {
+                kml += `
+      <Placemark>
+        <name>${currentNetworkData.ce.name}</name>
+        <styleUrl>#ceStyle</styleUrl>
+        <ExtendedData>
+          <Data name="Cluster"><value>${clusterName}</value></Data>
+          <Data name="Tipo"><value>Caja Empalme Feeder / ODF</value></Data>
+          <Data name="Capacidad"><value>${clusterConfig.foCapacity}</value></Data>
+        </ExtendedData>
+        <Point><coordinates>${currentNetworkData.ce.lng},${currentNetworkData.ce.lat},0</coordinates></Point>
+      </Placemark>`;
+            }
 
             currentNetworkData.ctos.forEach((cto, idx) => {
-                kml += `<Placemark><name>${cto.name}</name><Point><coordinates>${cto.lng},${cto.lat},0</coordinates></Point></Placemark>`;
+                kml += `
+      <Placemark>
+        <name>${cto.name}</name>
+        <description>Splitter ${clusterConfig.splitterRatio} - Fibra Feeder TIA-598 #${cto.assignedFiber || idx + 1}</description>
+        <styleUrl>#ctoStyle</styleUrl>
+        <ExtendedData>
+          <Data name="Cluster"><value>${clusterName}</value></Data>
+          <Data name="Tipo"><value>CTO Splitter</value></Data>
+          <Data name="Splitter"><value>${clusterConfig.splitterRatio}</value></Data>
+          <Data name="Fibra_Feeder_TIA598"><value>${cto.assignedFiber || idx + 1}</value></Data>
+          <Data name="Perdida_Fusion_dB"><value>${cto.spliceLoss}</value></Data>
+        </ExtendedData>
+        <Point><coordinates>${cto.lng},${cto.lat},0</coordinates></Point>
+      </Placemark>`;
             });
 
-            kml += `</Folder></Document></kml>`;
+            kml += `
+    </Folder>
+
+    <Folder>
+      <name>POSTES MADERA 8M</name>`;
+
+            currentNetworkData.poles.forEach(pole => {
+                kml += `
+      <Placemark>
+        <name>${pole.name}</name>
+        <styleUrl>#poleStyle</styleUrl>
+        <ExtendedData>
+          <Data name="Cluster"><value>${clusterName}</value></Data>
+          <Data name="Tipo"><value>Poste Madera 8m</value></Data>
+        </ExtendedData>
+        <Point><coordinates>${pole.lng},${pole.lat},0</coordinates></Point>
+      </Placemark>`;
+            });
+
+            kml += `
+    </Folder>
+
+    <Folder>
+      <name>CABLEADO FEEDER</name>`;
+
+            currentNetworkData.cables.forEach(cable => {
+                const coordString = cable.coords.map(c => `${c[0]},${c[1]},0`).join(' ');
+                const netLenMeters = Math.round(turf.length(turf.lineString(cable.coords), { units: 'meters' }));
+                const grossLenMeters = Math.round(netLenMeters + clusterConfig.reserveCtoMeters + (netLenMeters * (clusterConfig.reserveSagPercent / 100)));
+
+                kml += `
+      <Placemark>
+        <name>${cable.name}</name>
+        <description>${cable.fo} - ${netLenMeters} MTS Netos / ${grossLenMeters} MTS Totales</description>
+        <styleUrl>#cableStyle</styleUrl>
+        <ExtendedData>
+          <Data name="Cluster"><value>${clusterName}</value></Data>
+          <Data name="Tipo"><value>Cable Feeder ${cable.fo}</value></Data>
+          <Data name="Metros_Netos"><value>${netLenMeters}</value></Data>
+          <Data name="Metros_Totales_Reserva"><value>${grossLenMeters}</value></Data>
+        </ExtendedData>
+        <LineString><coordinates>${coordString}</coordinates></LineString>
+      </Placemark>`;
+            });
+
+            kml += `
+    </Folder>
+  </Document>
+</kml>`;
 
             const blob = new Blob([kml], { type: 'application/vnd.google-earth.kml+xml' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `${clusterConfig.id}_FTTH.kml`;
+            link.download = `${clusterName}_FTTH_Nuakchott.kml`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            showToast("Archivo KML exportado.");
+
+            showToast(`KML '${clusterName}_FTTH_Nuakchott.kml' exportado correctamente.`);
         }
 
         function exportBomExcel() {
-            let csvContent = "\uFEFFPROYECTO FTTH OSP NUAKCHOTT - BOM\nElemento;Cantidad;Unidad\n";
-            csvContent += `CTOs Splitter;${currentNetworkData.ctos.length};UND\n`;
-            csvContent += `Postes Madera 8m;${currentNetworkData.poles.length};UND\n`;
+            if (!currentNetworkData.ce && currentNetworkData.ctos.length === 0) {
+                showToast("No hay datos para exportar a Excel.");
+                return;
+            }
+
+            let netCableMeters = 0;
+            currentNetworkData.cables.forEach(c => {
+                if (c.coords && c.coords.length >= 2) {
+                    netCableMeters += turf.length(turf.lineString(c.coords), { units: 'meters' });
+                }
+            });
+
+            const ceReserve = currentNetworkData.ce ? clusterConfig.reserveCeMeters : 0;
+            const ctoReserve = currentNetworkData.ctos.length * clusterConfig.reserveCtoMeters;
+            const sagMargin = netCableMeters * (clusterConfig.reserveSagPercent / 100);
+            const grossCableMeters = netCableMeters + ceReserve + ctoReserve + sagMargin;
+
+            let csvContent = "\uFEFF"; // UTF-8 BOM Header
+
+            csvContent += `PROYECTO FTTH OSP NUAKCHOTT - CÓMPUTO DE MATERIALES (BOM)\n`;
+            csvContent += `Cluster;${clusterConfig.id}\n`;
+            csvContent += `Capacidad Feeder;${clusterConfig.foCapacity}\n`;
+            csvContent += `Fecha Generación;${new Date().toLocaleDateString()}\n\n`;
+
+            csvContent += `RESUMEN DE CÓMPUTO Y RESERVAS TÉCNICAS\n`;
+            csvContent += `Elemento / Concepto;Cantidad;Unidad;Notas\n`;
+            csvContent += `Caja Empalme Feeder (CE);1;UND;Modelo ODF Cabecera\n`;
+            csvContent += `Cajas CTO Splitter ${clusterConfig.splitterRatio};${currentNetworkData.ctos.length};UND;Con conectorizado SC/APC\n`;
+            csvContent += `Postes Madera 8m;${currentNetworkData.poles.length};UND;Vanos equilibrados 40m-50m\n`;
+            csvContent += `Cable FO Feeder (${clusterConfig.foCapacity}) - Neto;${Math.round(netCableMeters)};MTS;Medición directa sobre acera\n`;
+            csvContent += `Reserva Técnica CE;${ceReserve};MTS;Coca en caja empalme principal\n`;
+            csvContent += `Reserva Técnica CTOs (10m x CTO);${ctoReserve};MTS;Cocas en cajas de distribución\n`;
+            csvContent += `Margen Flecha / Catenaria (${clusterConfig.reserveSagPercent}%);${Math.round(sagMargin)};MTS;Margen mecánico de tendido aéreo\n`;
+            csvContent += `CABLE FO FEEDER TOTAL COMPRA;${Math.round(grossCableMeters)};MTS;Requerimiento total de suministro\n\n`;
+
+            csvContent += `INVENTARIO DETALLADO DE ELEMENTOS DE RED\n`;
+            csvContent += `Identificador;Tipo Elemento;Longitud (m);Latitud;Longitud;Detalle TIA-598 / Conexión\n`;
+
+            if (currentNetworkData.ce) {
+                csvContent += `${currentNetworkData.ce.name};CE Feeder;-;${currentNetworkData.ce.lat.toFixed(6)};${currentNetworkData.ce.lng.toFixed(6)};Origen Cabecera\n`;
+            }
+
+            currentNetworkData.ctos.forEach((cto, idx) => {
+                csvContent += `${cto.name};CTO Splitter;-;${cto.lat.toFixed(6)};${cto.lng.toFixed(6)};Splitter ${clusterConfig.splitterRatio} | Fibra Feeder #${cto.assignedFiber || idx + 1}\n`;
+            });
+
+            currentNetworkData.poles.forEach(p => {
+                csvContent += `${p.name};Poste Madera 8m;-;${p.lat.toFixed(6)};${p.lng.toFixed(6)};Anclaje Vano\n`;
+            });
+
+            currentNetworkData.cables.forEach(c => {
+                const len = Math.round(turf.length(turf.lineString(c.coords), { units: 'meters' }));
+                csvContent += `${c.name};Cable Feeder ${c.fo};${len};-;-;Ruteo Aceras\n`;
+            });
 
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `BOM_${clusterConfig.id}.csv`;
+            link.download = `BOM_Materiales_${clusterConfig.id.replace(/\s+/g, '_')}.csv`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            showToast("Reporte BOM CSV descargado.");
+
+            showToast("Planilla Excel / BOM descargada correctamente.");
         }
 
         function copyPmoReportToClipboard() {
+            const text = `INFORME TÉCNICO PMO FTTH - NUAKCHOTT (${clusterConfig.id})
+--------------------------------------------------
+- Estatus del Proyecto: Red de distribución FTTH OSP Aérea en Nuakchott.
+- Capacidad Feeder: ${clusterConfig.foCapacity} (Matriz TIA-598).
+- Cajas CTO: ${currentNetworkData.ctos.length} CTOs (Splitter ${clusterConfig.splitterRatio}).
+- Postería: ${currentNetworkData.poles.length} postes con vanos equilibrados (40m - 50m).
+- Cobertura Viviendas: ${document.getElementById('stat-houses-covered')?.innerText || '0'} cubiertas / ${document.getElementById('stat-houses-uncovered')?.innerText || '0'} sin cobertura.
+- Metraje Neto Cable: ${document.getElementById('pmo-total-meters')?.innerText || '0 MTS'}.
+- Cómputo Total Suministro (con Reservas): ${document.getElementById('pmo-total-gross-meters')?.innerText || '0 MTS'}.
+- Atenuación Estimada: ${document.getElementById('header-max-loss')?.innerText || '-20.85 dBm'} (GPON OK).`;
+
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
             showToast("Informe PMO copiado al portapapeles.");
         }
 
         function copyFrenchAreReportToClipboard() {
-            showToast("Rapport ARE (Français) copié.");
+            const text = `RAPPORT TECHNIQUE D'INGÉNIERIE FTTH - ARE MAURITANIE (${clusterConfig.id})
+--------------------------------------------------
+- Statut du projet: Réseau de distribution FTTH OSP Aérien à Nouakchott.
+- Capacité Feeder: ${clusterConfig.foCapacity} (Matrice TIA-598).
+- Boîtiers CTO: ${currentNetworkData.ctos.length} CTOs (Couplage ${clusterConfig.splitterRatio}).
+- Poteaux de bois: ${currentNetworkData.poles.length} poteaux avec portées équilibrées (40m - 50m).
+- métrage Total Câble (avec Réserve): ${document.getElementById('pmo-total-gross-meters')?.innerText || '0 MTS'}.
+- Bilan Optique: ${document.getElementById('header-max-loss')?.innerText || '-20.85 dBm'} (Conforme aux normes ARE).`;
+
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            showToast("Rapport ARE (Français) copié au presse-papier.");
         }
     </script>
 </body>
