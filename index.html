@@ -377,7 +377,6 @@
                 </div>
             </div>
 
-            <!-- Botones de Control de Capas Visibles Directamente (Sin desplegable) -->
             <div class="absolute top-4 right-4 z-[1000] flex flex-col gap-1.5">
                 <div class="bg-slate-900/90 border border-slate-700 rounded-lg p-1 flex gap-1 shadow-xl text-xs font-mono">
                     <button id="btn-map-day" onclick="setMapViewMode('DAY')" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold transition">
@@ -391,29 +390,11 @@
                     </button>
                 </div>
 
-                <div class="bg-slate-900/90 border border-slate-700 rounded-lg p-2 shadow-xl flex flex-col gap-1.5 text-xs font-mono backdrop-blur">
-                    <div class="text-[10px] uppercase font-bold text-slate-400 border-b border-slate-800 pb-1 mb-0.5">Control Visibilidad Capas</div>
-                    
-                    <button onclick="toggleSpanBadgesDirect()" class="flex items-center justify-between px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 transition">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-arrows-left-right-to-line"></i> Metraje Vanos</span>
-                        <span id="badge-status-spans" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    </button>
-
-                    <button onclick="togglePolesVisibilityDirect()" class="flex items-center justify-between px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 transition">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-tree"></i> Postes Madera (8m)</span>
-                        <span id="badge-status-poles" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    </button>
-
-                    <button onclick="toggleCoverageCirclesDirect()" class="flex items-center justify-between px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-emerald-300 transition">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-circle-dot"></i> Radio Cobertura CTO</span>
-                        <span id="badge-status-circles" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    </button>
-
-                    <button onclick="toggleHousesVisibilityDirect()" class="flex items-center justify-between px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 transition">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-house"></i> Auditoría Viviendas</span>
-                        <span id="badge-status-houses" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    </button>
-                </div>
+                <!-- Botón para abrir la Ventana de Control de Capas y Vanos -->
+                <button onclick="toggleLayerControlModal()" class="bg-indigo-900/90 hover:bg-indigo-800 border border-indigo-600 text-indigo-200 text-xs px-3 py-2 rounded-lg backdrop-blur shadow-xl font-mono flex items-center justify-between gap-2 transition cursor-pointer">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-layer-group text-cyan-400"></i> Control de Capas y Vanos</span>
+                    <i class="fa-solid fa-sliders text-[10px]"></i>
+                </button>
             </div>
 
             <div id="map"></div>
@@ -447,6 +428,63 @@
                 <span id="toast-text">Notificación del sistema</span>
             </div>
         </main>
+    </div>
+
+    <div id="layer-control-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md shadow-2xl flex flex-col overflow-hidden">
+            <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-cyan-600 rounded-lg flex items-center justify-center text-white">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-white">Ventana de Control de Capas & Vanos OSP</h2>
+                        <p class="text-xs text-slate-400">Marque o desmarque los elementos visibles en el mapa</p>
+                    </div>
+                </div>
+                <button onclick="toggleLayerControlModal()" class="text-slate-400 hover:text-white text-lg px-2">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-5 space-y-3 text-xs font-mono">
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2.5">
+                    <label class="flex items-center justify-between p-2 rounded hover:bg-slate-900 cursor-pointer transition">
+                        <span class="flex items-center gap-2 text-slate-200">
+                            <i class="fa-solid fa-arrows-left-right-to-line text-cyan-400"></i> Mostrar Etiquetas de Vanos (Metrajes)
+                        </span>
+                        <input type="checkbox" id="modal-chk-span-badges" checked onchange="syncModalSpanCheckbox(this)" class="w-4 h-4 rounded border-slate-700 text-indigo-600 focus:ring-0">
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded hover:bg-slate-900 cursor-pointer transition">
+                        <span class="flex items-center gap-2 text-slate-200">
+                            <i class="fa-solid fa-tree text-amber-400"></i> Mostrar Postería de Madera (8m)
+                        </span>
+                        <input type="checkbox" id="modal-chk-poles" checked onchange="togglePolesVisibility(); syncModalCheckboxes();" class="w-4 h-4 rounded border-slate-700 text-indigo-600 focus:ring-0">
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded hover:bg-slate-900 cursor-pointer transition">
+                        <span class="flex items-center gap-2 text-slate-200">
+                            <i class="fa-solid fa-circle-dot text-emerald-400"></i> Mostrar Radios de Cobertura CTO
+                        </span>
+                        <input type="checkbox" id="modal-chk-circles" checked onchange="toggleCoverageCircles(); syncModalCheckboxes();" class="w-4 h-4 rounded border-slate-700 text-indigo-600 focus:ring-0">
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded hover:bg-slate-900 cursor-pointer transition">
+                        <span class="flex items-center gap-2 text-slate-200">
+                            <i class="fa-solid fa-house text-cyan-400"></i> Mostrar Auditoría de Viviendas
+                        </span>
+                        <input type="checkbox" id="modal-chk-houses" checked onchange="toggleHousesVisibility(); syncModalCheckboxes();" class="w-4 h-4 rounded border-slate-700 text-indigo-600 focus:ring-0">
+                    </label>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-800 bg-slate-950 flex justify-end">
+                <button onclick="toggleLayerControlModal()" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-5 py-2 rounded-lg text-xs transition">
+                    Aplicar y Cerrar
+                </button>
+            </div>
+        </div>
     </div>
 
     <div id="naming-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
@@ -1261,7 +1299,7 @@
 
         async function autoGenerateLayoutFromPerimeter() {
             if (!activePerimeterPolygon) return;
-            showToast("Calculando ruteo por aceras y sincronizando vértices con CTOs...");
+            showToast("Calculando ruteo por aceras y vanos equilibrados (40m - 50m)...");
 
             const bbox = turf.bbox(activePerimeterPolygon);
             const minLng = bbox[0], minLat = bbox[1], maxLng = bbox[2], maxLat = bbox[3];
@@ -1335,14 +1373,9 @@
             for (let i = 0; i < pointsChain.length - 1; i++) {
                 const p1 = pointsChain[i];
                 const p2 = pointsChain[i + 1];
-                let streetCoords = await routeCableAlongStreets(p1, p2, p2);
+                const streetCoords = await routeCableAlongStreets(p1, p2);
 
                 const ctoTarget = currentNetworkData.ctos[i];
-                if (ctoTarget && streetCoords.length > 0) {
-                    // Forzar sincronización exacta del último punto del cable con la CTO
-                    streetCoords[streetCoords.length - 1] = [ctoTarget.lng, ctoTarget.lat];
-                }
-
                 currentNetworkData.cables.push({
                     name: `${namingConfig.cablePrefix}${clusterNum}-${startCableNum + i}`,
                     fo: clusterConfig.foCapacity,
@@ -1351,50 +1384,35 @@
                 });
             }
 
+            currentNetworkData.ctos.forEach((cto, idx) => {
+                const cableSegment = currentNetworkData.cables[idx];
+                if (cableSegment && cableSegment.coords && cableSegment.coords.length > 0) {
+                    const lastCoord = cableSegment.coords[cableSegment.coords.length - 1];
+                    cto.lng = lastCoord[0];
+                    cto.lat = lastCoord[1];
+                }
+            });
+
             recalculateAllPoles(startPoleNum);
             auditHouseCoverage();
             renderNetworkOnMap();
             renderCtoListUI();
             updateHeaderAndAuditMetrics();
             
-            showToast("Red FTTH generada con continuidad exacta en aceras y CTOs.");
+            showToast("Red FTTH generada con éxito sobre aceras y vanos equilibrados.");
         }
 
         function recalculateAllPoles(startPoleNumVal) {
             currentNetworkData.poles = [];
             let poleCounter = startPoleNumVal || 1;
-            const collectedPoles = [];
 
             currentNetworkData.cables.forEach(cable => {
                 if (cable.coords && cable.coords.length >= 2) {
                     const cablePoles = generateBalancedPolesForCable(cable.coords, poleCounter);
-                    cablePoles.forEach(cp => {
-                        collectedPoles.push(cp);
-                        poleCounter++;
-                    });
+                    currentNetworkData.poles.push(...cablePoles);
+                    poleCounter += cablePoles.length;
                 }
             });
-
-            // Deduplicación espacial rigurosa: si dos cables pasan por el mismo punto o poste (tolerancia < 3 metros), se reutiliza el mismo poste único
-            const cleanPoles = [];
-            collectedPoles.forEach(p => {
-                const existingIndex = cleanPoles.findIndex(cp => {
-                    const d = turf.distance(turf.point([p.lng, p.lat]), turf.point([cp.lng, cp.lat]), { units: 'meters' });
-                    return d < 3;
-                });
-
-                if (existingIndex === -1) {
-                    cleanPoles.push({
-                        id: cleanPoles.length + (startPoleNumVal || 1),
-                        code: `${namingConfig.polePrefix}${String(cleanPoles.length + (startPoleNumVal || 1)).padStart(namingConfig.paddingDigits, '0')}`,
-                        name: `${namingConfig.polePrefix}${String(cleanPoles.length + (startPoleNumVal || 1)).padStart(namingConfig.paddingDigits, '0')} (Compartido/Troncal)`,
-                        lng: p.lng,
-                        lat: p.lat
-                    });
-                }
-            });
-
-            currentNetworkData.poles = cleanPoles;
         }
 
         function auditHouseCoverage() {
@@ -1545,9 +1563,7 @@
                     if (currentNetworkData.cables.length > 0 && currentNetworkData.ctos.length > 0) {
                         const cePt = [currentNetworkData.ce.lng, currentNetworkData.ce.lat];
                         const firstCtoPt = [currentNetworkData.ctos[0].lng, currentNetworkData.ctos[0].lat];
-                        const routed = await routeCableAlongStreets(cePt, firstCtoPt, firstCtoPt);
-                        routed[routed.length - 1] = firstCtoPt;
-                        currentNetworkData.cables[0].coords = routed;
+                        currentNetworkData.cables[0].coords = await routeCableAlongStreets(cePt, firstCtoPt);
                     }
                     const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
                     recalculateAllPoles(startPoleNum);
@@ -1679,7 +1695,6 @@
                     }
                 }
 
-                // Renderizar puntos blancos y rojos interactivos en los vértices del cable para arrastrarlos
                 cable.coords.forEach((coord, vIdx) => {
                     const isEndpoint = (vIdx === 0 || vIdx === cable.coords.length - 1);
                     const vertexHandle = L.circleMarker([coord[1], coord[0]], {
@@ -1764,40 +1779,6 @@
             }
 
             if (showCoverageCircles) renderCoverageCircles();
-        }
-
-        // Funciones directas para la botonera de capas flotante
-        function toggleSpanBadgesDirect() {
-            showSpanBadges = !showSpanBadges;
-            const badge = document.getElementById('badge-status-spans');
-            if (badge) badge.className = `w-2.5 h-2.5 rounded-full ${showSpanBadges ? 'bg-emerald-500' : 'bg-red-500'}`;
-            renderNetworkOnMap();
-        }
-
-        function togglePolesVisibilityDirect() {
-            showPoles = !showPoles;
-            const badge = document.getElementById('badge-status-poles');
-            if (badge) badge.className = `w-2.5 h-2.5 rounded-full ${showPoles ? 'bg-emerald-500' : 'bg-red-500'}`;
-            renderNetworkOnMap();
-        }
-
-        function toggleCoverageCirclesDirect() {
-            showCoverageCircles = !showCoverageCircles;
-            const badge = document.getElementById('badge-status-circles');
-            if (badge) badge.className = `w-2.5 h-2.5 rounded-full ${showCoverageCircles ? 'bg-emerald-500' : 'bg-red-500'}`;
-            if (showCoverageCircles) {
-                renderCoverageCircles();
-            } else {
-                mapLayers.coverageCircles.forEach(c => map.removeLayer(c));
-                mapLayers.coverageCircles = [];
-            }
-        }
-
-        function toggleHousesVisibilityDirect() {
-            showHouses = !showHouses;
-            const badge = document.getElementById('badge-status-houses');
-            if (badge) badge.className = `w-2.5 h-2.5 rounded-full ${showHouses ? 'bg-emerald-500' : 'bg-red-500'}`;
-            renderNetworkOnMap();
         }
 
         function renderCoverageCircles() {
@@ -2013,6 +1994,31 @@
             if (modal) modal.classList.toggle('hidden');
         }
 
+        function toggleLayerControlModal() {
+            const modal = document.getElementById('layer-control-modal');
+            if (modal) {
+                if (!modal.classList.contains('hidden')) syncModalCheckboxes();
+                modal.classList.toggle('hidden');
+            }
+        }
+
+        function syncModalCheckboxes() {
+            const mPoles = document.getElementById('modal-chk-poles');
+            const mCircles = document.getElementById('modal-chk-circles');
+            const mHouses = document.getElementById('modal-chk-houses');
+            const mSpans = document.getElementById('modal-chk-span-badges');
+
+            if (mPoles) mPoles.checked = showPoles;
+            if (mCircles) mCircles.checked = showCoverageCircles;
+            if (mHouses) mHouses.checked = showHouses;
+            if (mSpans) mSpans.checked = showSpanBadges;
+        }
+
+        function syncModalSpanCheckbox(elem) {
+            showSpanBadges = elem.checked;
+            renderNetworkOnMap();
+        }
+
         function applyNamingSettings() {
             namingConfig.clusterPrefix = document.getElementById('prefix-cluster-input')?.value || 'CL';
             namingConfig.cePrefix = document.getElementById('prefix-ce-input')?.value || 'CE';
@@ -2043,6 +2049,26 @@
             auditHouseCoverage();
             renderNetworkOnMap();
             updateHeaderAndAuditMetrics();
+        }
+
+        function togglePolesVisibility() {
+            showPoles = !showPoles;
+            renderNetworkOnMap();
+        }
+
+        function toggleCoverageCircles() {
+            showCoverageCircles = !showCoverageCircles;
+            if (showCoverageCircles) {
+                renderCoverageCircles();
+            } else {
+                mapLayers.coverageCircles.forEach(c => map.removeLayer(c));
+                mapLayers.coverageCircles = [];
+            }
+        }
+
+        function toggleHousesVisibility() {
+            showHouses = !showHouses;
+            renderNetworkOnMap();
         }
 
         function enableDrawPolygon() {
@@ -2237,10 +2263,15 @@
                 ? [currentNetworkData.ce.lng, currentNetworkData.ce.lat]
                 : (currentNetworkData.ctos[ctoIdx - 1] ? [currentNetworkData.ctos[ctoIdx - 1].lng, currentNetworkData.ctos[ctoIdx - 1].lat] : null);
 
+            let nextPt = currentNetworkData.ctos[ctoIdx + 1] 
+                ? [currentNetworkData.ctos[ctoIdx + 1].lng, currentNetworkData.ctos[ctoIdx + 1].lat] 
+                : null;
+
             if (prevPt && currentNetworkData.cables[ctoIdx]) {
-                const routed = await routeCableAlongStreets(prevPt, targetPt, targetPt);
-                routed[routed.length - 1] = targetPt;
-                currentNetworkData.cables[ctoIdx].coords = routed;
+                currentNetworkData.cables[ctoIdx].coords = await routeCableAlongStreets(prevPt, targetPt, targetPt);
+            }
+            if (nextPt && currentNetworkData.cables[ctoIdx + 1]) {
+                currentNetworkData.cables[ctoIdx + 1].coords = await routeCableAlongStreets(targetPt, nextPt, nextPt);
             }
 
             recalculateAllPoles(parseInt(document.getElementById('pole-start-input')?.value || "1", 10));
