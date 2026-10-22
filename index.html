@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,15 +24,18 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
-        #map { height: calc(100vh - 65px); width: 100%; z-index: 1; }
+        #map { height: 100%; width: 100%; z-index: 1; background: #090d16; }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
         .leaflet-popup-content-wrapper { background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; }
         .leaflet-popup-tip { background: #0f172a; }
+        .leaflet-bar a { background-color: #0f172a !important; color: #f8fafc !important; border-bottom: 1px solid #334155 !important; }
+        .leaflet-bar a:hover { background-color: #1e293b !important; }
+        .leaflet-draw-toolbar a { background-color: #0f172a !important; border-color: #334155 !important; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 h-screen overflow-hidden flex flex-col">
+<body class="bg-slate-900 text-slate-100 h-screen overflow-hidden flex flex-col select-none">
 
     <!-- Header Principal PMO -->
     <header class="h-[65px] bg-slate-950 border-b border-slate-800 px-4 flex items-center justify-between shrink-0 z-20">
@@ -47,7 +50,7 @@
                         <i class="fa-solid fa-route text-[10px]"></i> Ruteo Estricto por Aceras
                     </span>
                 </div>
-                <p class="text-xs text-slate-400">Trazado Pegado a Aceras (Offset ~3.5m) | Postes 8m desde CE (P001) | 8 CTOs Matriz | KML Icon Scale 1.2</p>
+                <p class="text-xs text-slate-400 hidden md:block">Trazado Pegado a Aceras (Offset ~3.5m) | Postes 8m desde CE (P001) | 8 CTOs Matriz | KML Icon Scale 1.2</p>
             </div>
         </div>
 
@@ -82,10 +85,9 @@
 
         <!-- Botones de Acción -->
         <div class="flex items-center space-x-2">
-            <!-- Botón de Marcha Atrás (Undo) -->
             <button id="btn-undo" onclick="undoLastAction()" disabled class="bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-amber-400 border border-slate-700 text-xs font-semibold px-3 py-2 rounded-lg flex items-center space-x-1.5 shadow transition-all" title="Deshacer última modificación (Ctrl + Z)">
                 <i class="fa-solid fa-rotate-left"></i>
-                <span>Marcha Atrás</span>
+                <span class="hidden sm:inline">Marcha Atrás</span>
             </button>
             <button id="btn-export-kml" onclick="exportDesignedKML()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-2 rounded-lg flex items-center space-x-2 shadow-md transition-all">
                 <i class="fa-solid fa-file-export"></i>
@@ -102,7 +104,7 @@
     <div class="flex flex-1 overflow-hidden relative">
         
         <!-- Sidebar de Control -->
-        <aside class="w-96 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0 custom-scrollbar overflow-y-auto z-10 shadow-2xl">
+        <aside class="w-80 md:w-96 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0 custom-scrollbar overflow-y-auto z-10 shadow-2xl">
             
             <!-- Sección 1: Carga / Dibujo de Perímetro -->
             <div class="p-4 border-b border-slate-800 space-y-3">
@@ -206,15 +208,14 @@
                     <span id="edit-mode-indicator" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Modo Lectura</span>
                 </div>
                 
-                <!-- Guía rápida de edición de cable -->
                 <div class="bg-indigo-950/50 border border-indigo-800/50 p-2.5 rounded text-[10px] text-indigo-200 leading-relaxed space-y-1">
                     <p class="font-bold text-indigo-300 flex items-center gap-1">
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Rediseño y Edición en Aceras:
                     </p>
-                    <p>• <strong>Mover CTO $\rightarrow$ Rediseño Automático:</strong> Al arrastrar una CTO a otra acera, el cable y postes se recalculan automáticamente.</p>
-                    <p>• <strong>Eliminar Vértice (Acortar):</strong> Clic derecho en un nodo rojo para borrar ese punto de giro.</p>
-                    <p>• <strong>Dividir Cable:</strong> Clica en un nodo rojo intermedio $\rightarrow$ "Dividir Cable en 2".</p>
-                    <p>• <strong>Alargar Cable:</strong> Clica en un nodo extremo $\rightarrow$ "Alargar / Extender Cable".</p>
+                    <p>• <strong>Mover CTO &rarr; Rediseño Automático:</strong> Al arrastrar una CTO a otra acera, el cable y postes se recalculan automáticamente.</p>
+                    <p>• <strong>Eliminar Vértice (Acortar):</strong> Clic derecho o menú en un nodo rojo para borrar ese punto de giro.</p>
+                    <p>• <strong>Dividir Cable:</strong> Clica en un nodo rojo intermedio &rarr; "Dividir Cable en 2".</p>
+                    <p>• <strong>Alargar Cable:</strong> Clica en un nodo extremo &rarr; "Alargar / Extender Cable".</p>
                 </div>
 
                 <div class="grid grid-cols-2 gap-1.5 pt-1">
@@ -232,7 +233,6 @@
                     </button>
                 </div>
 
-                <!-- Panel Flotante para finalizar trazado manual o extensión de cable -->
                 <div id="cable-drawing-banner" class="hidden bg-red-950/90 border border-red-500/50 p-2 rounded flex items-center justify-between text-xs mt-2">
                     <span class="text-red-200 text-[11px]"><i class="fa-solid fa-draw-polygon mr-1 animate-pulse"></i> Clica en el mapa para trazar el cable.</span>
                     <button onclick="finishDrawingCable()" class="bg-red-600 hover:bg-red-500 text-white font-bold text-[10px] px-2.5 py-1 rounded shadow">
@@ -258,7 +258,6 @@
                     </div>
                 </div>
 
-                <!-- Lista Dinámica de CTOs -->
                 <div id="cto-list-container" class="space-y-2">
                     <div class="p-4 text-center text-xs text-slate-500 italic bg-slate-950/40 rounded-lg border border-slate-800">
                         Dibuja un polígono en el mapa o carga un archivo KML/KMZ perimetrado para calcular las 8 CTOs y el cableado por aceras.
@@ -286,18 +285,15 @@
 
         <!-- Área de Mapa Interactivo Leaflet -->
         <main class="flex-1 relative bg-slate-950">
-            <div id="map"></div>
-
-            <!-- Buscador Global de Ciudades, Países y Pueblos -->
-            <div class="absolute top-4 left-14 z-[1000] flex items-center bg-slate-900/90 border border-slate-700 rounded-xl p-1.5 backdrop-blur shadow-2xl">
-                <div class="relative flex items-center">
-                    <i class="fa-solid fa-location-dot text-indigo-400 absolute left-3 text-xs"></i>
-                    <input type="text" id="map-search-input" placeholder="Buscar ciudad, pueblo o país..." onkeydown="if(event.key==='Enter') searchLocation()" class="bg-slate-950 text-white text-xs pl-8 pr-3 py-1.5 rounded-lg outline-none border border-slate-800 w-64 focus:border-indigo-500 font-sans transition-all placeholder:text-slate-500" />
+            <!-- Barra de Búsqueda de Ciudades/Distritos en Nuakchott (Nominatim Geocoder) -->
+            <div class="absolute top-4 left-4 z-[1000] w-72 sm:w-80 md:w-96">
+                <div class="relative flex items-center shadow-2xl">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-slate-400 text-xs"></i>
+                    <input type="text" id="map-search-input" placeholder="Buscar barrio en Nuakchott (Tevragh Zeina, Ksar, Sebkha...)" onkeydown="if(event.key==='Enter') searchLocation()" class="w-full bg-slate-900/95 border border-slate-700/80 rounded-xl pl-9 pr-20 py-2.5 text-xs text-slate-100 placeholder-slate-400 shadow-lg backdrop-blur focus:outline-none focus:border-indigo-500 font-sans">
+                    <button onclick="searchLocation()" class="absolute right-1.5 px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold transition">
+                        Buscar
+                    </button>
                 </div>
-                <button onclick="searchLocation()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg ml-1.5 text-xs font-semibold flex items-center gap-1.5 transition shadow">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Buscar</span>
-                </button>
             </div>
 
             <!-- Botones Flotantes de Capas -->
@@ -316,8 +312,11 @@
                 </button>
             </div>
 
+            <!-- Map Container -->
+            <div id="map"></div>
+
             <!-- Leyenda Oficial de Planta Externa Aérea -->
-            <div class="absolute bottom-6 right-6 bg-slate-900/90 backdrop-blur border border-slate-800 p-3.5 rounded-xl shadow-xl z-[1000] text-xs space-y-2 text-slate-300 font-mono">
+            <div class="absolute bottom-6 right-6 bg-slate-900/90 backdrop-blur border border-slate-800 p-3.5 rounded-xl shadow-xl z-[1000] text-xs space-y-2 text-slate-300 font-mono hidden sm:block">
                 <div class="font-bold text-white border-b border-slate-800 pb-1 mb-1">Leyenda Criterios CL 01 (Nuakchott)</div>
                 <div class="flex items-center space-x-2">
                     <span class="w-3.5 h-3.5 bg-amber-500 rounded border border-white flex items-center justify-center text-[8px] text-black font-bold">CE</span>
@@ -329,11 +328,11 @@
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="w-3.5 h-3.5 rounded-full bg-[#8b4513] border border-amber-200 flex items-center justify-center text-[7px] text-amber-100 font-bold">P</span>
-                    <span>Poste Madera 8m (P001 desde CE correlativo)</span>
+                    <span>Poste Madera 8m (P001 correlativo)</span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="w-3.5 h-3.5 rounded-full border border-emerald-400/80 bg-emerald-400/10"></span>
-                    <span>Radio Cobertura Casas (≤ 150m)</span>
+                    <span>Radio Cobertura Casas (&le; 150m)</span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="w-4 h-[3px] bg-red-600 rounded"></span>
@@ -341,8 +340,7 @@
                 </div>
             </div>
 
-            <!-- Toast / Notificación temporal -->
-            <div id="toast-msg" class="hidden absolute top-4 left-1/2 -translate-x-1/2 bg-slate-900 border border-emerald-500 text-white px-4 py-2 rounded-lg shadow-xl z-[1000] flex items-center gap-2 text-xs font-medium animate-bounce">
+            <div id="toast-msg" class="hidden absolute top-16 left-1/2 -translate-x-1/2 bg-slate-900 border border-emerald-500 text-white px-4 py-2 rounded-lg shadow-xl z-[2000] flex items-center gap-2 text-xs font-medium animate-bounce">
                 <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
                 <span id="toast-text">Notificación del sistema</span>
             </div>
@@ -368,8 +366,6 @@
             </div>
 
             <div class="p-6 overflow-y-auto space-y-5 text-xs custom-scrollbar">
-                
-                <!-- 1. Estatus Actual -->
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                     <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                         <h3 class="font-bold text-indigo-400 flex items-center gap-2">
@@ -379,16 +375,15 @@
                         <span id="pmo-cluster-badge" class="bg-amber-950 text-amber-300 px-2 py-0.5 rounded text-[10px] font-mono">Cluster: CL 01</span>
                     </div>
                     <div class="text-slate-300 space-y-1.5 leading-relaxed">
-                        <p>• <strong>Cobertura Integral del Polígono:</strong> <span id="pmo-cto-count-label" class="text-emerald-400 font-bold font-mono">8 CTOs adaptativas</span> distribuidas matricialmente por las aceras de las calles del interior y bordes para garantizar cobertura del 100% del área.</p>
-                        <p>• <strong>Trazado Ortogonal por Aceras:</strong> Cables ruteados con offset (~3.5m) en ángulos rectos por esquinas sin sobrevolar edificaciones privadas.</p>
-                        <p>• <strong>Separación entre CTOs Consecutivas ($\le 200$m):</strong> Distancia de cable entre CTOs consecutivas de <span id="modal-max-spacing" class="text-emerald-400 font-mono font-bold">138 m</span>.</p>
-                        <p>• <strong>Radio Cobertura a Casas ($\le 150$m):</strong> Cobertura hacia viviendas con un radio máximo de <span id="modal-max-house-dist" class="text-emerald-400 font-mono font-bold">118 m</span>.</p>
-                        <p>• <strong>Infraestructura de Postería (8m desde CE):</strong> Instalación de <span id="pmo-total-poles-count" class="text-amber-400 font-mono font-bold">0 postes</span> de madera con inicio en P001 (CE) y vanos máximos de <span class="text-amber-300 font-mono">40 metros</span>.</p>
-                        <p>• <strong>Metraje Total de Fibra:</strong> Tramo correlativo de cable rojo con metraje total de <span id="pmo-total-meters" class="font-bold text-white">0 MTS</span> de cable 48 FO.</p>
+                        <p>&bull; <strong>Cobertura Integral del Polígono:</strong> <span id="pmo-cto-count-label" class="text-emerald-400 font-bold font-mono">8 CTOs adaptativas</span> distribuidas matricialmente por las aceras de las calles del interior y bordes para garantizar cobertura del 100% del área.</p>
+                        <p>&bull; <strong>Trazado Ortogonal por Aceras:</strong> Cables ruteados con offset (~3.5m) en ángulos rectos por esquinas sin sobrevolar edificaciones privadas.</p>
+                        <p>&bull; <strong>Separación entre CTOs Consecutivas (&le; 200m):</strong> Distancia de cable entre CTOs consecutivas de <span id="modal-max-spacing" class="text-emerald-400 font-mono font-bold">138 m</span>.</p>
+                        <p>&bull; <strong>Radio Cobertura a Casas (&le; 150m):</strong> Cobertura hacia viviendas con un radio máximo de <span id="modal-max-house-dist" class="text-emerald-400 font-mono font-bold">118 m</span>.</p>
+                        <p>&bull; <strong>Infraestructura de Postería (8m desde CE):</strong> Instalación de <span id="pmo-total-poles-count" class="text-amber-400 font-mono font-bold">0 postes</span> de madera con inicio en P001 (CE) y vanos máximos de <span class="text-amber-300 font-mono">40 metros</span>.</p>
+                        <p>&bull; <strong>Metraje Total de Fibra:</strong> Tramo correlativo de cable rojo con metraje total de <span id="pmo-total-meters" class="font-bold text-white">0 MTS</span> de cable 48 FO.</p>
                     </div>
                 </div>
 
-                <!-- 2. Análisis Técnico -->
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                     <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                         <h3 class="font-bold text-emerald-400 flex items-center gap-2">
@@ -398,11 +393,10 @@
                         <span class="bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded text-[10px] font-mono">GPON G.984</span>
                     </div>
                     <div class="text-slate-300 space-y-1 leading-relaxed">
-                        <p>• <strong>Matriz de Cobertura Interior:</strong> Red proyectada para satisfacer las solicitudes de servicio en cualquier vivienda dentro del polígono.</p>
-                        <p>• <strong>Presupuesto Óptico GPON:</strong> Atenuación acumulada estimada en la última CTO de <span class="text-emerald-400 font-bold">-20.85 dBm</span>.</p>
+                        <p>&bull; <strong>Matriz de Cobertura Interior:</strong> Red proyectada para satisfacer las solicitudes de servicio en cualquier vivienda dentro del polígono.</p>
+                        <p>&bull; <strong>Presupuesto Óptico GPON:</strong> Atenuación acumulada estimada en la última CTO de <span class="text-emerald-400 font-bold">-20.85 dBm</span> (Atenuación por fusión de 0.04 dB/empalme &le; 0.5 dB).</p>
                     </div>
                 </div>
-
             </div>
 
             <div class="p-4 border-t border-slate-800 bg-slate-950 flex justify-between items-center">
@@ -423,16 +417,14 @@
         </div>
     </div>
 
-    <!-- Lógica de Aplicación en JS -->
     <script>
-        // Variables globales de Estado
         let map, darkTileLayer, satelliteTileLayer;
         let drawnItemsLayer, drawControl;
         let isSatelliteActive = false;
         let showPoles = true;
         let showCoverageCircles = true;
         let activePerimeterPolygon = null;
-        let mapEditMode = 'NONE'; // 'ADD_CTO', 'ADD_POLE', 'ADD_CABLE'
+        let mapEditMode = 'NONE';
         let drawingCableCoords = [];
         let drawingCablePolyline = null;
         let extendingCableIndex = null;
@@ -469,6 +461,7 @@
             initMap();
             setupDragAndDrop();
             setupKeyboardShortcuts();
+            loadDemoCluster();
         };
 
         function showToast(text) {
@@ -520,29 +513,29 @@
         }
 
         function initMap() {
-            // Centro por defecto en Tevragh Zeina, Nuakchott
             map = L.map('map', {
                 center: [18.1025, -15.9680],
                 zoom: 16,
                 zoomControl: true
             });
 
-            // Capa Cartográfica Oscura
-            darkTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap &copy; CARTO',
-                maxZoom: 20
+            map.zoomControl.setPosition('bottomright');
+
+            darkTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '&copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+                maxZoom: 19
             }).addTo(map);
 
-            // Capa de Satélite de Alta Resolución (Esri)
             satelliteTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                attribution: '&copy; Esri &mdash; Source: Esri',
-                maxZoom: 20
+                attribution: 'Source: Esri, Maxar, Earthstar Geographics',
+                maxZoom: 19
             });
 
             drawnItemsLayer = new L.FeatureGroup();
             map.addLayer(drawnItemsLayer);
 
             drawControl = new L.Control.Draw({
+                position: 'bottomright',
                 draw: {
                     polygon: {
                         allowIntersection: false,
@@ -560,7 +553,6 @@
             });
             map.addControl(drawControl);
 
-            // Evento al terminar de dibujar polígono manual
             map.on(L.Draw.Event.CREATED, function (e) {
                 saveStateToHistory();
                 const layer = e.layer;
@@ -570,7 +562,6 @@
                 autoGenerateLayoutFromPerimeter();
             });
 
-            // Evento de clic directo en mapa para adición manual
             map.on('click', function(e) {
                 if (mapEditMode === 'ADD_CTO') {
                     saveStateToHistory();
@@ -586,48 +577,34 @@
             });
         }
 
-        // --- MOTOR DE BÚSQUEDA GEOGRÁFICA (NOMINATIM API) ---
-        async function searchLocation() {
-            const searchInput = document.getElementById('map-search-input');
-            const query = searchInput?.value?.trim();
-            if (!query) {
-                showToast("Por favor, introduce el nombre de una ciudad, país o pueblo.");
-                return;
-            }
+        function searchLocation() {
+            const queryInput = document.getElementById('map-search-input');
+            if (!queryInput) return;
+            const query = queryInput.value.trim();
+            if (!query) return;
 
-            showToast(`Buscando '${query}' en geolocalizador...`);
+            const fullQuery = query.toLowerCase().includes('nuakchott') || query.toLowerCase().includes('nouakchott') || query.toLowerCase().includes('mauritania') 
+                ? query 
+                : `${query}, Nouakchott, Mauritania`;
 
-            try {
-                const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
-                const res = await fetch(url, {
-                    headers: { 'Accept-Language': 'es,fr,en' }
-                });
-                const data = await res.json();
+            showToast(`Buscando: ${query}...`);
 
-                if (data && data.length > 0) {
-                    const result = data[0];
-                    const lat = parseFloat(result.lat);
-                    const lon = parseFloat(result.lon);
-
-                    if (result.boundingbox && result.boundingbox.length === 4) {
-                        const south = parseFloat(result.boundingbox[0]);
-                        const north = parseFloat(result.boundingbox[1]);
-                        const west = parseFloat(result.boundingbox[2]);
-                        const east = parseFloat(result.boundingbox[3]);
-                        map.fitBounds([[south, west], [north, east]], { padding: [30, 30], maxZoom: 16 });
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullQuery)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        const lat = parseFloat(data[0].lat);
+                        const lon = parseFloat(data[0].lon);
+                        map.setView([lat, lon], 16);
+                        showToast(`Ubicación: ${data[0].display_name.split(',')[0]}`);
                     } else {
-                        map.flyTo([lat, lon], 14, { duration: 1.5 });
+                        showToast('Ubicación no encontrada en Nuakchott');
                     }
-
-                    const locationName = result.display_name.split(',')[0];
-                    showToast(`Ubicación localizada: ${locationName}`);
-                } else {
-                    showToast(`No se encontraron resultados para '${query}'.`);
-                }
-            } catch (err) {
-                console.error("Error al buscar localización:", err);
-                showToast("Error en el servicio de geolocalización.");
-            }
+                })
+                .catch(err => {
+                    console.error(err);
+                    showToast('Error de conexión con el geocodificador');
+                });
         }
 
         function setupDragAndDrop() {
@@ -807,7 +784,6 @@
                 activePerimeterPolygon = geojson;
                 map.fitBounds(polygonLayer.getBounds(), { padding: [40, 40] });
 
-                // Generar automáticamente el diseño OSP
                 autoGenerateLayoutFromPerimeter();
                 showToast(`Perímetro '${fileName}' cargado correctamente.`);
 
@@ -845,7 +821,6 @@
                 }
             }
 
-            // Desplazar el trazado distinguiendo el lado específico de la acera (Offset +3.5m o -3.5m)
             try {
                 if (rawCoords.length >= 2) {
                     const line = turf.lineString(rawCoords);
@@ -860,7 +835,6 @@
                         const distPos = turf.distance(ptTarget, turf.point(lastPos), { units: 'meters' });
                         const distNeg = turf.distance(ptTarget, turf.point(lastNeg), { units: 'meters' });
 
-                        // Seleccionar la acera (izquierda o derecha) más próxima al punto donde soltaste la CTO
                         return (distPos <= distNeg) ? offsetPos.geometry.coordinates : offsetNeg.geometry.coordinates;
                     }
 
@@ -932,7 +906,6 @@
                 return nearestOnLine.geometry.coordinates;
             });
 
-            // Posicionar CE001 en la acera suroeste
             const ceName = document.getElementById('ce-name-input')?.value || 'CE001';
             currentNetworkData.ce = {
                 name: ceName,
@@ -974,7 +947,6 @@
                 });
             }
 
-            // Asegurar que las CTOs estén ajustadas a los nodos exactos del cable en la ACERA
             currentNetworkData.ctos.forEach((cto, idx) => {
                 const cableSegment = currentNetworkData.cables[idx];
                 if (cableSegment && cableSegment.coords && cableSegment.coords.length > 0) {
@@ -992,7 +964,6 @@
             showToast(`Red FTTH generada sobre ACERAS (Offset de Calzada). Postes P001 en adelante.`);
         }
 
-        /* REGLA PMO: Numeración Correlativa de Postes EMPEZANDO EN LA CE */
         function generatePolesAlongCables(startPoleNumVal) {
             currentNetworkData.poles = [];
             const spacingMeters = clusterConfig.poleSpacingMeters || 40;
@@ -1024,12 +995,10 @@
                 currentPoleId++;
             }
 
-            // 1. PRIMER POSTE (P001) SIEMPRE EN LA CE
             if (currentNetworkData.ce) {
                 addPole(currentNetworkData.ce.lng, currentNetworkData.ce.lat, `CE: ${currentNetworkData.ce.name}`);
             }
 
-            // 2. POSTES CORRELATIVOS A LO LARGO DE LOS CABLES DESDE LA CE HACIA CADA CTO
             currentNetworkData.cables.forEach(cable => {
                 if (!cable.coords || cable.coords.length < 2) return;
                 
@@ -1042,7 +1011,6 @@
                     addPole(coords[0], coords[1]);
                 }
 
-                // Poste al final del tramo (donde está instalada la CTO)
                 const endCoord = cable.coords[cable.coords.length - 1];
                 const matchingCto = currentNetworkData.ctos.find(c => 
                     Math.abs(c.lng - endCoord[0]) < 0.0001 && Math.abs(c.lat - endCoord[1]) < 0.0001
@@ -1084,7 +1052,6 @@
         function renderNetworkOnMap() {
             clearMapLayersExceptPerimeter();
 
-            // 1. Renderizar CE001
             if (currentNetworkData.ce) {
                 const ceIcon = L.divIcon({
                     className: 'custom-ce-icon',
@@ -1124,7 +1091,6 @@
                 });
             }
 
-            // 2. Renderizar CTOs (#aaff00 verde con centro negro)
             currentNetworkData.ctos.forEach((cto, ctoIdx) => {
                 const ctoIcon = L.divIcon({
                     className: 'custom-cto-icon',
@@ -1142,7 +1108,7 @@
                     <div class="p-2 font-mono text-xs space-y-1">
                         <strong class="text-[#aaff00]">${cto.name} (Splitter 1:8)</strong><br>
                         Atenuación Fusión: <span class="text-emerald-400 font-bold">${cto.spliceLoss} dB</span><br>
-                        Radio Cobertura: <span class="text-emerald-300">≤ 150m (OK)</span><br>
+                        Radio Cobertura: <span class="text-emerald-300">&le; 150m (OK)</span><br>
                         <button onclick="removeCto(${cto.id})" class="mt-2 text-[10px] bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800 flex items-center gap-1">
                             <i class="fa-solid fa-trash-can"></i> Eliminar CTO
                         </button>
@@ -1164,7 +1130,6 @@
                 mapLayers.ctoMarkers.push(marker);
             });
 
-            // 3. Renderizar Postes de Madera 8m (#8b4513 Marrón)
             if (showPoles) {
                 currentNetworkData.poles.forEach((pole) => {
                     const poleIcon = L.divIcon({
@@ -1202,7 +1167,6 @@
                 });
             }
 
-            // 4. Renderizar Cables (Línea Roja Ancho 3) con Edición Fina de Nodos
             currentNetworkData.cables.forEach((cable, cIdx) => {
                 const latLngs = cable.coords.map(c => [c[1], c[0]]);
                 const polyline = L.polyline(latLngs, {
@@ -1231,7 +1195,6 @@
 
                 mapLayers.cablePolylines.push(polyline);
 
-                // Nodos Rojos Arrastrables y Clicables para Edición Fina de Puntos
                 cable.coords.forEach((coord, vIdx) => {
                     const isEndpoint = (vIdx === 0 || vIdx === cable.coords.length - 1);
                     const vertexHandle = L.circleMarker([coord[1], coord[0]], {
@@ -1440,7 +1403,7 @@
                         </div>
                         <div class="flex items-center space-x-3 text-[11px]">
                             <span class="text-slate-400">Pérdida: <strong class="text-emerald-400">${cto.spliceLoss} dB</strong></span>
-                            <span class="text-emerald-400 font-semibold">150m (OK)</span>
+                            <span class="text-emerald-400 font-semibold">&le; 150m (OK)</span>
                         </div>
                     </div>`;
             });
@@ -1511,7 +1474,6 @@
     <name>${clusterName} - Diseño FTTH OSP Nuakchott</name>
     <description>Proyecto FTTH OSP - Cobertura 100% por Aceras. Generado por Auto-Designer Nuakchott.</description>
     
-    <!-- Estilo de CTO (Verde Lima #aaff00 -> ff00ffaa en KML AABBGGRR) - Escala 1.2 -->
     <Style id="ctoStyle">
       <IconStyle>
         <color>ff00ffaa</color>
@@ -1525,7 +1487,6 @@
       </LabelStyle>
     </Style>
 
-    <!-- Estilo de CE001 (Ámbar) - Escala 1.2 -->
     <Style id="ceStyle">
       <IconStyle>
         <color>ff00a5ff</color>
@@ -1536,7 +1497,6 @@
       </IconStyle>
     </Style>
 
-    <!-- Estilo de Poste Madera 8m (Marrón Madera #8b4513 -> ff13458b en KML AABBGGRR) - Escala 1.2 -->
     <Style id="poleStyle">
       <IconStyle>
         <color>ff13458b</color>
@@ -1550,7 +1510,6 @@
       </LabelStyle>
     </Style>
 
-    <!-- Estilo de Cableado Rojo (Ancho 3) -->
     <Style id="cableStyle">
       <LineStyle>
         <color>ff0000ff</color>
@@ -1558,7 +1517,6 @@
       </LineStyle>
     </Style>
 
-    <!-- CAPA 1: CTOS Y CE -->
     <Folder>
       <name>CTOS Y CE</name>`;
 
@@ -1587,7 +1545,6 @@
             kml += `
     </Folder>
 
-    <!-- CAPA 2: POSTES MADERA 8M -->
     <Folder>
       <name>POSTES MADERA 8M</name>`;
 
@@ -1605,7 +1562,6 @@
             kml += `
     </Folder>
 
-    <!-- CAPA 3: CABLEADO -->
     <Folder>
       <name>CABLEADO</name>`;
 
@@ -1900,7 +1856,6 @@
             const targetCto = currentNetworkData.ctos[ctoIdx];
             const targetPt = [targetCto.lng, targetCto.lat];
 
-            // Determinar nodo anterior (CE001 o CTO previa)
             let prevPt = null;
             if (ctoIdx === 0) {
                 if (currentNetworkData.ce) {
@@ -1911,14 +1866,12 @@
                 prevPt = [prevCto.lng, prevCto.lat];
             }
 
-            // Determinar nodo siguiente (CTO posterior, si existe)
             let nextPt = null;
             if (ctoIdx < currentNetworkData.ctos.length - 1) {
                 const nextCto = currentNetworkData.ctos[ctoIdx + 1];
                 nextPt = [nextCto.lng, nextCto.lat];
             }
 
-            // Rediseñar tramo de cable entrante reconociendo el lado de la acera seleccionado
             if (prevPt && currentNetworkData.cables[ctoIdx]) {
                 const newIncomingCoords = await routeCableAlongStreets(prevPt, targetPt, targetPt);
                 currentNetworkData.cables[ctoIdx].coords = newIncomingCoords;
@@ -1929,18 +1882,48 @@
                 }
             }
 
-            // Rediseñar tramo de cable saliente hacia la siguiente CTO reconociendo el lado de la acera
             if (nextPt && currentNetworkData.cables[ctoIdx + 1]) {
                 const newOutgoingCoords = await routeCableAlongStreets([targetCto.lng, targetCto.lat], nextPt, nextPt);
                 currentNetworkData.cables[ctoIdx + 1].coords = newOutgoingCoords;
             }
 
-            // Recalcular postes de madera 8m empezando en P001 desde la CE
             const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
             generatePolesAlongCables(startPoleNum);
-            
-            // Renderizar mapa actualizado
             renderNetworkOnMap();
+        }
+
+        function loadDemoCluster() {
+            const demoCoords = [
+                [-15.9695, 18.1045],
+                [-15.9655, 18.1040],
+                [-15.9650, 18.1005],
+                [-15.9690, 18.1008],
+                [-15.9695, 18.1045]
+            ];
+
+            const geojson = {
+                type: "Feature",
+                geometry: {
+                    type: "Polygon",
+                    coordinates: [demoCoords]
+                },
+                properties: { name: "Sector Tevragh Zeina Demo" }
+            };
+
+            drawnItemsLayer.clearLayers();
+            const polygonLayer = L.geoJSON(geojson, {
+                style: {
+                    color: '#f59e0b',
+                    fillColor: '#f59e0b',
+                    fillOpacity: 0.15,
+                    weight: 2,
+                    dashArray: '5, 5'
+                }
+            }).addTo(drawnItemsLayer);
+
+            activePerimeterPolygon = geojson;
+            map.fitBounds(polygonLayer.getBounds(), { padding: [40, 40] });
+            autoGenerateLayoutFromPerimeter();
         }
 
         function togglePmoModal() {
