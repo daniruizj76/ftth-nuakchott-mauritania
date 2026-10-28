@@ -62,11 +62,11 @@
             <div>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-sm md:text-base font-bold text-white tracking-wide">FTTH OSP Auto-Designer Nuakchott</h1>
-                    <span class="bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] px-2 py-0.5 rounded font-mono flex items-center gap-1">
-                        <i class="fa-solid fa-microchip text-[9px]"></i> Suite OSP v8.5
+                    <span class="bg-indigo-950 border border-indigo-500/40 text-indigo-300 text-[10px] px-2 py-0.5 rounded font-mono flex items-center gap-1">
+                        <i class="fa-solid fa-microchip text-[9px]"></i> Suite OSP v9.3 Pro
                     </span>
                 </div>
-                <p class="text-[11px] text-slate-400 hidden md:block">Gestión TIA-598 | Presupuesto Óptico GPON | Exportación QGIS & BOM Excel</p>
+                <p class="text-[11px] text-slate-400 hidden md:block">Gestión TIA-598 | Vanos 35m-50m (~40m) | Postes en Acera | Cero Cruces Innecesarios</p>
             </div>
         </div>
 
@@ -80,7 +80,7 @@
             <div class="bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-lg flex items-center space-x-2 shadow-inner">
                 <i class="fa-solid fa-arrows-left-right-to-line text-cyan-400"></i>
                 <span class="text-slate-400">Vano Promedio:</span>
-                <span id="header-avg-span" class="text-cyan-300 font-bold">~45 m</span>
+                <span id="header-avg-span" class="text-cyan-300 font-bold">~40 m</span>
             </div>
             <div class="bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-lg flex items-center space-x-2 shadow-inner">
                 <i class="fa-solid fa-house-signal text-emerald-400"></i>
@@ -163,7 +163,7 @@
                 </div>
             </div>
 
-            <!-- Sección 2: Identificadores & Nomenclatura -->
+            <!-- Sección 2: Identificadores & Nomenclatura Reactiva -->
             <div class="p-3.5 border-b border-slate-800 space-y-2.5 bg-slate-950/40">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
@@ -178,28 +178,28 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[10px] font-medium text-slate-400 mb-1">Nombre Cluster</label>
-                        <input type="text" id="cluster-name" value="CL 01" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-slate-800 text-white text-xs rounded px-2 py-1 font-mono focus:border-indigo-500 outline-none">
+                        <input type="text" id="cluster-name" value="CL 01" oninput="updateClusterNameUI()" class="w-full bg-slate-950 border border-slate-800 text-white text-xs rounded px-2 py-1 font-mono focus:border-indigo-500 outline-none">
                     </div>
                     <div>
                         <label class="block text-[10px] font-medium text-amber-400 mb-1 flex items-center gap-1">
                             <i class="fa-solid fa-box text-[9px]"></i> Nombre CE / ODF
                         </label>
-                        <input type="text" id="ce-name-input" value="CE001" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-amber-500/50 text-amber-300 font-bold text-xs rounded px-2 py-1 font-mono focus:border-amber-400 outline-none shadow-inner">
+                        <input type="text" id="ce-name-input" value="CE001" oninput="updateClusterNameUI()" class="w-full bg-slate-950 border border-amber-500/50 text-amber-300 font-bold text-xs rounded px-2 py-1 font-mono focus:border-amber-400 outline-none shadow-inner">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-1.5 text-[10px]">
                     <div>
                         <label class="text-emerald-400 font-mono block mb-0.5 truncate">Inicio CTO</label>
-                        <input type="number" id="cto-start-input" value="1" min="1" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-emerald-500/40 text-emerald-300 font-bold text-xs rounded p-1 text-center font-mono">
+                        <input type="number" id="cto-start-input" value="1" min="1" oninput="updateClusterNameUI()" class="w-full bg-slate-950 border border-emerald-500/40 text-emerald-300 font-bold text-xs rounded p-1 text-center font-mono">
                     </div>
                     <div>
                         <label class="text-red-400 font-mono block mb-0.5 truncate">Inicio Cable</label>
-                        <input type="number" id="cable-start-input" value="100" min="1" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-red-500/40 text-red-300 font-bold text-xs rounded p-1 text-center font-mono">
+                        <input type="number" id="cable-start-input" value="100" min="1" oninput="updateClusterNameUI()" class="w-full bg-slate-950 border border-red-500/40 text-red-300 font-bold text-xs rounded p-1 text-center font-mono">
                     </div>
                     <div>
                         <label class="text-amber-200 font-mono block mb-0.5 truncate">Inicio Poste</label>
-                        <input type="number" id="pole-start-input" value="1" min="1" onchange="updateClusterNameUI()" class="w-full bg-slate-950 border border-amber-500/40 text-amber-200 font-bold text-xs rounded p-1 text-center font-mono">
+                        <input type="number" id="pole-start-input" value="1" min="1" oninput="updateClusterNameUI()" class="w-full bg-slate-950 border border-amber-500/40 text-amber-200 font-bold text-xs rounded p-1 text-center font-mono">
                     </div>
                 </div>
 
@@ -264,7 +264,7 @@
                     <div>
                         <label class="block text-[10px] font-medium text-slate-400 mb-1">Objetivo Vano Postes</label>
                         <div class="flex items-center space-x-1">
-                            <input type="number" id="pole-min-span-input" value="40" min="20" max="60" onchange="updateDesignRules()" class="w-1/2 bg-slate-950 border border-slate-800 text-amber-300 text-xs font-bold rounded p-1 text-center font-mono">
+                            <input type="number" id="pole-min-span-input" value="35" min="20" max="60" onchange="updateDesignRules()" class="w-1/2 bg-slate-950 border border-slate-800 text-amber-300 text-xs font-bold rounded p-1 text-center font-mono">
                             <span class="text-slate-500 text-[10px]">-</span>
                             <input type="number" id="pole-max-span-input" value="50" min="30" max="80" onchange="updateDesignRules()" class="w-1/2 bg-slate-950 border border-slate-800 text-amber-300 text-xs font-bold rounded p-1 text-center font-mono">
                             <span class="text-[10px] text-slate-400">m</span>
@@ -314,7 +314,7 @@
                         5. Auditoría de Viviendas
                     </h2>
                     <button onclick="optimizeCtoCoverage()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow flex items-center gap-1">
-                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Optimizar Cobertura
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Cobertura 100%
                     </button>
                 </div>
 
@@ -577,9 +577,7 @@
                         </div>
                     </div>
 
-                    <div id="fiber-table-container" class="max-h-60 overflow-y-auto custom-scrollbar">
-                        <!-- Generado dinámicamente -->
-                    </div>
+                    <div id="fiber-table-container" class="max-h-60 overflow-y-auto custom-scrollbar"></div>
                 </div>
 
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
@@ -627,7 +625,7 @@
                     </div>
                     <div>
                         <h2 class="text-sm font-bold text-white">Informe Ejecutivo PMO FTTH - Nuakchott (OSP Aéreo)</h2>
-                        <p class="text-xs text-slate-400">Postes Madera 8m vanos equilibrados (40m - 50m) | Estándar <span id="modal-cluster-label">CL 01</span></p>
+                        <p class="text-xs text-slate-400">Postes Madera 8m vanos equilibrados (35m - 50m) | Estándar <span id="modal-cluster-label">CL 01</span></p>
                     </div>
                 </div>
                 <button onclick="togglePmoModal()" class="text-slate-400 hover:text-white text-lg px-2">
@@ -646,7 +644,7 @@
                     </div>
                     <div class="text-slate-300 space-y-1.5 leading-relaxed">
                         <p>&bull; <strong>Cobertura de Polígono:</strong> <span id="pmo-cto-count-label" class="text-emerald-400 font-bold font-mono">0 CTOs</span> distribuidas por aceras públicas con identificación correlativa única.</p>
-                        <p>&bull; <strong>Distribución Equilibrada de Postes:</strong> Vanos calculados entre <span class="text-amber-300 font-mono">40 m y 50 m</span> con apoyos compartidos en giros y trazados comunes.</p>
+                        <p>&bull; <strong>Distribución Equilibrada de Postes:</strong> Vanos calculados entre <span class="text-amber-300 font-mono">35 m y 50 m</span> (~40m) con apoyos compartidos en giros y trazados comunes.</p>
                         <p>&bull; <strong>Viviendas Cubiertas:</strong> <span id="pmo-covered-houses" class="text-emerald-400 font-mono font-bold">0</span> de <span id="pmo-total-houses" class="font-mono text-white">0</span> dentro del radio asignado.</p>
                         <p>&bull; <strong>Infraestructura de Postería:</strong> <span id="pmo-total-poles-count" class="text-amber-400 font-mono font-bold">0 postes</span> instalados (sin duplicados, postería compartida).</p>
                         <p>&bull; <strong>Metraje Neto de Cable Feeder:</strong> <span id="pmo-total-meters" class="font-bold text-white">0 MTS</span> de fibra <span id="pmo-feeder-type" class="text-cyan-300">48 FO</span>.</p>
@@ -699,13 +697,15 @@
         let showPoles = true;
         let showCoverageCircles = true;
         let showHouses = true;
-        let showSpanBadges = false;
         let activePerimeterPolygon = null;
         let mapEditMode = 'NONE';
 
         let drawingCableCoords = [];
         let drawingCablePolyline = null;
         let historyStack = [];
+
+        // Red vial real cacheada
+        let cachedStreetFeatures = [];
 
         // Paleta Estándar TIA-598
         const TIA_598_COLORS = [
@@ -739,14 +739,13 @@
             foCapacity: "48 FO",
             splitterRatio: "1:8",
             coverageRadiusMeters: 150,
-            poleMinSpanMeters: 40,
+            poleMinSpanMeters: 35,
             poleMaxSpanMeters: 50,
             reserveCeMeters: 15,
             reserveCtoMeters: 10,
             reserveSagPercent: 5
         };
 
-        // Estado inicial limpio
         let currentNetworkData = {
             ce: null,
             ctos: [],
@@ -756,7 +755,6 @@
             fiberAllocations: []
         };
 
-        // Referencia del lado de acera activo (+1 o -1) para evitar cruces en zigzag
         let activeSidewalkSign = 1;
 
         let mapLayers = {
@@ -776,6 +774,9 @@
             setupKeyboardShortcuts();
             renderCtoListUI();
             updateHeaderAndAuditMetrics();
+            setTimeout(() => {
+                if (map) map.invalidateSize();
+            }, 250);
         };
 
         function showToast(text) {
@@ -835,27 +836,23 @@
 
             map.zoomControl.setPosition('bottomright');
 
-            // CartoDB Voyager (Día: libre de bloqueos 403, alta resolución)
             dayTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
                 subdomains: 'abcd',
                 maxZoom: 20
             });
 
-            // CartoDB Dark Matter (Noche: nativo oscuro, sin bloqueos)
             nightTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
                 subdomains: 'abcd',
                 maxZoom: 20
             });
 
-            // Esri World Imagery (Satélite)
             satelliteTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 attribution: 'Source: Esri, Maxar, Earthstar Geographics',
                 maxZoom: 19
             });
 
-            // Iniciar por defecto en Día
             dayTileLayer.addTo(map);
 
             drawnItemsLayer = new L.FeatureGroup();
@@ -880,14 +877,14 @@
             });
             map.addControl(drawControl);
 
-            map.on(L.Draw.Event.CREATED, function (e) {
+            map.on(L.Draw.Event.CREATED, async function (e) {
                 saveStateToHistory();
                 const layer = e.layer;
                 drawnItemsLayer.clearLayers();
                 drawnItemsLayer.addLayer(layer);
                 activePerimeterPolygon = layer.toGeoJSON();
                 generateHousesInsidePolygon();
-                autoGenerateLayoutFromPerimeter();
+                await autoGenerateLayoutFromPerimeter();
             });
 
             map.on('click', function(e) {
@@ -1078,10 +1075,10 @@
                 }
 
                 if (!kmlText || kmlText.trim().length === 0) {
-                    throw new Error("El archivo KML no contiene datos válidos.");
+                    throw new Error("El archivo KML no contiene datos de texto.");
                 }
 
-                parseAndLoadKML(kmlText, fileName);
+                await parseAndLoadKML(kmlText, fileName);
 
             } catch (err) {
                 console.error("Error al procesar KMZ/KML:", err);
@@ -1109,7 +1106,7 @@
             return coords;
         }
 
-        function parseAndLoadKML(kmlText, fileName) {
+        async function parseAndLoadKML(kmlText, fileName) {
             try {
                 let cleanKml = kmlText.replace(/^\uFEFF/, '').trim();
                 let candidates = [];
@@ -1178,7 +1175,7 @@
                 map.fitBounds(polygonLayer.getBounds(), { padding: [40, 40] });
 
                 generateHousesInsidePolygon();
-                autoGenerateLayoutFromPerimeter();
+                await autoGenerateLayoutFromPerimeter();
                 showToast(`Perímetro '${fileName}' cargado correctamente.`);
 
             } catch (err) {
@@ -1201,79 +1198,274 @@
             }));
         }
 
-        // Ruteo manteniendo la misma acera de forma continua y evitando cruces de calzada
-        async function routeCableAlongStreets(p1, p2, targetSnapPt = null, forcedSidewalkSide = null) {
-            const url = `https://router.project-osrm.org/route/v1/driving/${p1[0]},${p1[1]};${p2[0]},${p2[1]}?overview=full&geometries=geojson`;
-            let rawCoords = [];
+        async function fetchRealStreetNetwork(bbox) {
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 2500);
-                const res = await fetch(url, { signal: controller.signal });
-                clearTimeout(timeoutId);
+                const s = bbox[1], w = bbox[0], n = bbox[3], e = bbox[2];
+                const query = `[out:json][timeout:10];(way["highway"](${s},${w},${n},${e}););out geom;`;
+                const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                if (data && data.elements && data.elements.length > 0) {
+                    cachedStreetFeatures = data.elements
+                        .filter(el => el.geometry && el.geometry.length >= 2)
+                        .map(el => turf.lineString(el.geometry.map(pt => [pt.lon, pt.lat])));
+                }
+            } catch (err) {
+                console.warn("Overpass API no disponible, detectando ejes viales por subdivisión:", err);
+            }
+
+            if (!cachedStreetFeatures || cachedStreetFeatures.length === 0) {
+                cachedStreetFeatures = generateSyntheticStreetGrid(bbox);
+            }
+        }
+
+        function generateSyntheticStreetGrid(bbox) {
+            const minLng = bbox[0], minLat = bbox[1], maxLng = bbox[2], maxLat = bbox[3];
+            const midLng = (minLng + maxLng) / 2;
+            const midLat = (minLat + maxLat) / 2;
+            const streets = [];
+
+            if (activePerimeterPolygon) {
+                const polyLine = turf.polygonToLine(activePerimeterPolygon);
+                streets.push(polyLine);
+            }
+
+            const nsLine = turf.lineString([[midLng, minLat], [midLng, maxLat]]);
+            const ewLine = turf.lineString([[minLng, midLat], [maxLng, midLat]]);
+
+            streets.push(nsLine, ewLine);
+            return streets;
+        }
+
+        async function snapToPublicStreet(lng, lat) {
+            const pt = turf.point([lng, lat]);
+
+            if (cachedStreetFeatures && cachedStreetFeatures.length > 0) {
+                let closestDist = Infinity;
+                let closestPt = null;
+                cachedStreetFeatures.forEach(streetLine => {
+                    try {
+                        const snapped = turf.nearestPointOnLine(streetLine, pt);
+                        const d = turf.distance(pt, snapped, { units: 'meters' });
+                        if (d < closestDist) {
+                            closestDist = d;
+                            closestPt = snapped.geometry.coordinates;
+                        }
+                    } catch (e) {}
+                });
+                if (closestPt) {
+                    return closestPt;
+                }
+            }
+
+            if (activePerimeterPolygon) {
+                const polyLine = turf.polygonToLine(activePerimeterPolygon);
+                const nearest = turf.nearestPointOnLine(polyLine, pt);
+                return nearest.geometry.coordinates;
+            }
+
+            return [lng, lat];
+        }
+
+        async function routeCableAlongStreets(p1, p2, targetSnapPt = null, forcedSidewalkSide = null) {
+            const directDist = turf.distance(turf.point(p1), turf.point(p2), { units: 'meters' });
+            let rawCoords = [];
+
+            try {
+                const url = `https://router.project-osrm.org/route/v1/foot/${p1[0]},${p1[1]};${p2[0]},${p2[1]}?overview=full&geometries=geojson`;
+                const res = await fetch(url);
                 const data = await res.json();
                 if (data.routes && data.routes.length > 0 && data.routes[0].geometry) {
                     const coords = data.routes[0].geometry.coordinates;
-                    if (coords && coords.length >= 2) rawCoords = coords;
+                    if (coords && coords.length >= 2) {
+                        const routedLen = turf.length(turf.lineString(coords), { units: 'meters' });
+                        if (routedLen <= directDist * 2.2) {
+                            rawCoords = coords;
+                        }
+                    }
                 }
-            } catch (err) {
-                console.warn("OSRM en espera, aplicando ruteo ortogonal por acera:", err);
+            } catch (err) {}
+
+            if (rawCoords.length < 2) {
+                if (cachedStreetFeatures && cachedStreetFeatures.length > 0) {
+                    const pt1 = turf.point(p1);
+                    const pt2 = turf.point(p2);
+                    let bestLine = null;
+                    let minD = Infinity;
+
+                    cachedStreetFeatures.forEach(line => {
+                        try {
+                            const d1 = turf.distance(pt1, turf.nearestPointOnLine(line, pt1), { units: 'meters' });
+                            const d2 = turf.distance(pt2, turf.nearestPointOnLine(line, pt2), { units: 'meters' });
+                            if (d1 + d2 < minD) {
+                                minD = d1 + d2;
+                                bestLine = line;
+                            }
+                        } catch (e) {}
+                    });
+
+                    if (bestLine && minD < 100) {
+                        const snap1 = turf.nearestPointOnLine(bestLine, pt1).geometry.coordinates;
+                        const snap2 = turf.nearestPointOnLine(bestLine, pt2).geometry.coordinates;
+                        rawCoords = [p1, snap1, snap2, p2];
+                    }
+                }
             }
 
             if (rawCoords.length < 2) {
-                if (Math.abs(p1[1] - p2[1]) < 0.00001 || Math.abs(p1[0] - p2[0]) < 0.00001) {
-                    rawCoords = [[p1[0], p1[1]], [p2[0], p2[1]]];
+                if (activePerimeterPolygon) {
+                    try {
+                        const polyLine = turf.polygonToLine(activePerimeterPolygon);
+                        const n1 = turf.nearestPointOnLine(polyLine, turf.point(p1)).geometry.coordinates;
+                        const n2 = turf.nearestPointOnLine(polyLine, turf.point(p2)).geometry.coordinates;
+                        rawCoords = [p1, n1, n2, p2];
+                    } catch (e) {
+                        rawCoords = [p1, [p1[0], p2[1]], p2];
+                    }
                 } else {
-                    // Trazado ortogonal sin cruce diagonal de calzada
-                    rawCoords = [[p1[0], p1[1]], [p2[0], p1[1]], [p2[0], p2[1]]];
+                    rawCoords = [[p1[0], p1[1]], [p1[0], p2[1]], [p2[0], p2[1]]];
                 }
             }
 
+            rawCoords = rawCoords.filter((pt, idx, arr) => {
+                if (idx === 0) return true;
+                const prev = arr[idx - 1];
+                return Math.abs(pt[0] - prev[0]) > 0.000005 || Math.abs(pt[1] - prev[1]) > 0.000005;
+            });
+
+            // Desplazar el tendido CLARAMENTE pegado a la acera/fachada de las viviendas (a 4.5m del eje)
             try {
                 if (rawCoords.length >= 2) {
                     const line = turf.lineString(rawCoords);
-                    const offsetDistKm = 0.0045; // ~4.5m desde el eje de calzada hacia la acera
+                    const offsetDistKm = 0.0045; // ~4.5m para que se distinga nítidamente sobre la acera
 
-                    // Generar acera derecha e izquierda
                     const offsetPos = turf.lineOffset(line, offsetDistKm, { units: 'kilometers' });
                     const offsetNeg = turf.lineOffset(line, -offsetDistKm, { units: 'kilometers' });
 
-                    const hasPos = offsetPos && offsetPos.geometry && offsetPos.geometry.coordinates && offsetPos.geometry.coordinates.length >= 2;
-                    const hasNeg = offsetNeg && offsetNeg.geometry && offsetNeg.geometry.coordinates && offsetNeg.geometry.coordinates.length >= 2;
+                    const hasPos = offsetPos && offsetPos.geometry && Array.isArray(offsetPos.geometry.coordinates) && offsetPos.geometry.coordinates.length >= 2;
+                    const hasNeg = offsetNeg && offsetNeg.geometry && Array.isArray(offsetNeg.geometry.coordinates) && offsetNeg.geometry.coordinates.length >= 2;
 
-                    // Si se especifica un lado fijo, mantenerlo estrictamente
-                    const sideSign = (forcedSidewalkSide !== null) ? forcedSidewalkSide : activeSidewalkSign;
+                    if (activePerimeterPolygon && hasPos && hasNeg) {
+                        const midPos = offsetPos.geometry.coordinates[Math.floor(offsetPos.geometry.coordinates.length / 2)];
+                        const midNeg = offsetNeg.geometry.coordinates[Math.floor(offsetNeg.geometry.coordinates.length / 2)];
 
-                    if (sideSign > 0 && hasPos) {
-                        return offsetPos.geometry.coordinates;
-                    } else if (sideSign < 0 && hasNeg) {
-                        return offsetNeg.geometry.coordinates;
+                        const distHousesPos = getMinDistanceToHouses(midPos);
+                        const distHousesNeg = getMinDistanceToHouses(midNeg);
+
+                        // Elegir estrictamente la acera más próxima a las casas para que el lado sea obvio
+                        if (distHousesPos <= distHousesNeg) {
+                            return offsetPos.geometry.coordinates;
+                        } else {
+                            return offsetNeg.geometry.coordinates;
+                        }
                     }
 
                     if (hasPos) return offsetPos.geometry.coordinates;
-                    if (hasNeg) return offsetNeg.geometry.coordinates;
                 }
             } catch (e) {
-                console.warn("Aplicando trazado base de acera continua:", e);
+                console.warn("Error calculando desplazamiento a línea de fachada:", e);
             }
 
             return rawCoords;
         }
 
-        // Algoritmo de Ingeniería OSP: Postes obligatorios en CE y CTOs + reparto equitativo sobre ~40m
+        function getMinDistanceToHouses(coord) {
+            if (!currentNetworkData.houses || currentNetworkData.houses.length === 0) return 999;
+            const pt = turf.point(coord);
+            let minDist = Infinity;
+            for (let i = 0; i < Math.min(currentNetworkData.houses.length, 30); i++) {
+                const h = currentNetworkData.houses[i];
+                const d = turf.distance(pt, turf.point([h.lng, h.lat]), { units: 'meters' });
+                if (d < minDist) minDist = d;
+            }
+            return minDist;
+        }
+
+        function sortPointsChainOptimally(startPt, points) {
+            if (!points || points.length === 0) return [];
+            
+            let sumLng = startPt[0];
+            let sumLat = startPt[1];
+            points.forEach(p => {
+                sumLng += p[0];
+                sumLat += p[1];
+            });
+            const centerLng = sumLng / (points.length + 1);
+            const centerLat = sumLat / (points.length + 1);
+
+            function getAngle(pt) {
+                return Math.atan2(pt[1] - centerLat, pt[0] - centerLng);
+            }
+
+            const startAngle = getAngle(startPt);
+
+            const remaining = points.map((p, idx) => {
+                let ang = getAngle(p) - startAngle;
+                while (ang < 0) ang += 2 * Math.PI;
+                while (ang >= 2 * Math.PI) ang -= 2 * Math.PI;
+                return { pt: p, idx: idx, angle: ang };
+            });
+
+            remaining.sort((a, b) => a.angle - b.angle);
+
+            const ordered = remaining.map(item => item.pt);
+
+            let improved = true;
+            let iterations = 0;
+            while (improved && iterations < 5) {
+                improved = false;
+                iterations++;
+                for (let i = 0; i < ordered.length - 1; i++) {
+                    const prevPt = (i === 0) ? startPt : ordered[i - 1];
+                    const curPt = ordered[i];
+                    const nextPt = ordered[i + 1];
+
+                    const dDirect = turf.distance(turf.point(prevPt), turf.point(curPt), { units: 'meters' }) +
+                                    turf.distance(turf.point(curPt), turf.point(nextPt), { units: 'meters' });
+                    const dSwap = turf.distance(turf.point(prevPt), turf.point(nextPt), { units: 'meters' }) +
+                                  turf.distance(turf.point(nextPt), turf.point(curPt), { units: 'meters' });
+
+                    if (dSwap < dDirect * 0.85) {
+                        const temp = ordered[i];
+                        ordered[i] = ordered[i + 1];
+                        ordered[i + 1] = temp;
+                        improved = true;
+                    }
+                }
+            }
+
+            return ordered;
+        }
+
         function recalculateAllPoles(startPoleNumVal) {
             currentNetworkData.poles = [];
             let poleCounter = startPoleNumVal || 1;
-            const SNAP_TOLERANCE_METERS = 7.0;
+            // Tolerancia de 18 metros para evitar postes duplicados o pegados en esquinas y nodos cercanos
+            const CORNER_SNAP_TOLERANCE_METERS = 18.0;
+
+            function isValidNumber(val) {
+                return typeof val === 'number' && !isNaN(val) && isFinite(val);
+            }
 
             function formatPoleName(num) {
                 const pad = String(num).padStart(namingConfig.paddingDigits, '0');
                 return `${namingConfig.polePrefix}${pad}`;
             }
 
-            function findOrCreatePole(lng, lat, role, associatedNode = "", cableName = "") {
+            function findOrCreatePole(lngRaw, latRaw, role, associatedNode = "", cableName = "", forceExact = false) {
+                const lng = parseFloat(lngRaw);
+                const lat = parseFloat(latRaw);
+
+                if (!isValidNumber(lng) || !isValidNumber(lat)) {
+                    return null;
+                }
+
                 const pt = turf.point([lng, lat]);
+                const snapDistance = forceExact ? 3.0 : CORNER_SNAP_TOLERANCE_METERS;
+
                 let existing = currentNetworkData.poles.find(p => {
-                    return turf.distance(pt, turf.point([p.lng, p.lat]), { units: 'meters' }) <= SNAP_TOLERANCE_METERS;
+                    if (!isValidNumber(p.lng) || !isValidNumber(p.lat)) return false;
+                    return turf.distance(pt, turf.point([p.lng, p.lat]), { units: 'meters' }) <= snapDistance;
                 });
 
                 if (existing) {
@@ -1294,7 +1486,7 @@
                     id: poleCounter,
                     code: poleCode,
                     name: associatedNode ? `${poleCode} (${associatedNode})` : poleCode,
-                    role: role || "Poste de Línea / Apoyo 8m",
+                    role: role || "Poste de Línea / Apoyo Acera",
                     associatedNode: associatedNode || "",
                     lng: lng,
                     lat: lat,
@@ -1305,122 +1497,205 @@
                 return newPole;
             }
 
-            // 1. REGLA OBLIGATORIA: En la CE va SIEMPRE un poste (P001)
-            if (currentNetworkData.ce) {
+            // 1. REGLA OBLIGATORIA: Poste en la cabecera (CE) sobre la acera
+            if (currentNetworkData.ce && isValidNumber(currentNetworkData.ce.lng) && isValidNumber(currentNetworkData.ce.lat)) {
                 findOrCreatePole(
                     currentNetworkData.ce.lng,
                     currentNetworkData.ce.lat,
                     "Poste Cabecera (CE)",
-                    currentNetworkData.ce.name
+                    currentNetworkData.ce.name,
+                    "",
+                    true
                 );
             }
 
-            // 2. REGLA OBLIGATORIA: En CADA CTO va SIEMPRE un poste
+            // 2. REGLA OBLIGATORIA: Poste en CADA CTO
             currentNetworkData.ctos.forEach(cto => {
-                findOrCreatePole(
-                    cto.lng,
-                    cto.lat,
-                    "Poste CTO",
-                    cto.name
-                );
+                if (cto && isValidNumber(cto.lng) && isValidNumber(cto.lat)) {
+                    findOrCreatePole(
+                        cto.lng,
+                        cto.lat,
+                        "Poste CTO",
+                        cto.name
+                    );
+                }
             });
 
-            // 3. REPARTO EQUITATIVO DE POSTES INTERMEDIOS (~40 METROS) POR CABLE
-            const targetSpan = clusterConfig.poleMinSpanMeters ? ((clusterConfig.poleMinSpanMeters + clusterConfig.poleMaxSpanMeters) / 2) : 40;
+            function getAngleDegrees(pPrev, pCurr, pNext) {
+                const b1 = turf.bearing(turf.point(pPrev), turf.point(pCurr));
+                const b2 = turf.bearing(turf.point(pCurr), turf.point(pNext));
+                let diff = Math.abs(b1 - b2);
+                if (diff > 180) diff = 360 - diff;
+                return diff;
+            }
 
+            const MIN_SPAN = 35.0;
+            const MAX_SPAN = 50.0;
+            const TARGET_SPAN = 42.0;
+
+            // 3. IDENTIFICAR ESQUINAS Y REPARTIR DISTANCIAS EXACTAS EQUITATIVAS ENTRE ELLAS
             currentNetworkData.cables.forEach(cable => {
-                if (!cable.coords || cable.coords.length < 2) return;
+                if (!cable || !Array.isArray(cable.coords) || cable.coords.length < 2) return;
 
-                const line = turf.lineString(cable.coords);
-                const totalCableLen = turf.length(line, { units: 'meters' });
+                const cleanCoords = cable.coords
+                    .map(c => [parseFloat(c[0]), parseFloat(c[1])])
+                    .filter(c => isValidNumber(c[0]) && isValidNumber(c[1]));
 
-                // Asegurar postes en los extremos del cable
-                const firstCoord = cable.coords[0];
-                const lastCoord = cable.coords[cable.coords.length - 1];
+                if (cleanCoords.length < 2) return;
 
-                findOrCreatePole(firstCoord[0], firstCoord[1], "Vértice/Origen Cable", "", cable.name);
-                findOrCreatePole(lastCoord[0], lastCoord[1], "Vértice/Destino Cable", "", cable.name);
+                // Nodos obligatorios: origen, destino y cualquier quiebre angular de esquina >= 20°
+                const hardIndices = [0];
+                for (let i = 1; i < cleanCoords.length - 1; i++) {
+                    const ang = getAngleDegrees(cleanCoords[i - 1], cleanCoords[i], cleanCoords[i + 1]);
+                    if (ang >= 20.0) {
+                        hardIndices.push(i);
+                    }
+                }
+                hardIndices.push(cleanCoords.length - 1);
 
-                // Calcular vanos equitativos alrededor de 40 metros
-                // Ej. si mide 125m -> 125 / 40 = 3.125 -> 3 vanos -> 2 postes intermedios a 41.67m
-                const numSpans = Math.max(1, Math.round(totalCableLen / targetSpan));
-                if (numSpans > 1) {
-                    const stepMeters = totalCableLen / numSpans;
-                    for (let s = 1; s < numSpans; s++) {
-                        const distMeters = stepMeters * s;
-                        const slicedPt = turf.along(line, distMeters / 1000, { units: 'kilometers' }).geometry.coordinates;
-                        
-                        findOrCreatePole(
-                            slicedPt[0],
-                            slicedPt[1],
-                            `Poste de Línea / Apoyo 8m (Vano: ${stepMeters.toFixed(1)}m)`,
-                            "",
-                            cable.name
-                        );
+                // Fijar los postes en las esquinas y extremos
+                hardIndices.forEach((idx) => {
+                    const pt = cleanCoords[idx];
+                    const isEnd = (idx === 0 || idx === cleanCoords.length - 1);
+                    const roleText = isEnd ? "Extremo de Tramo" : "Poste Esquina / Giro";
+                    findOrCreatePole(pt[0], pt[1], roleText, "", cable.name);
+                });
+
+                // Repartir equitativamente: MEDIA EXACTA ENTRE ESQUINAS (todos al mismo vano, ej. 45m todos a 45m)
+                for (let k = 0; k < hardIndices.length - 1; k++) {
+                    const startIdx = hardIndices[k];
+                    const endIdx = hardIndices[k + 1];
+
+                    const subCoords = cleanCoords.slice(startIdx, endIdx + 1);
+                    if (subCoords.length >= 2) {
+                        const subLine = turf.lineString(subCoords);
+                        const subLen = turf.length(subLine, { units: 'meters' });
+
+                        // Si el tramo entre esquinas es <= 50m, NO añadir postes juntos
+                        if (subLen <= MAX_SPAN) {
+                            continue;
+                        }
+
+                        // Calcular el número exacto de vanos para que todos tengan la misma distancia uniforme
+                        let numSpans = Math.round(subLen / TARGET_SPAN);
+                        let spanDist = subLen / numSpans;
+
+                        if (spanDist > MAX_SPAN) {
+                            numSpans = Math.ceil(subLen / MAX_SPAN);
+                            spanDist = subLen / numSpans;
+                        } else if (spanDist < MIN_SPAN && numSpans > 1) {
+                            numSpans = Math.max(1, Math.floor(subLen / MIN_SPAN));
+                            spanDist = subLen / numSpans;
+                        }
+
+                        // Colocar los postes intermedios a la distancia exacta calculada 'spanDist'
+                        if (numSpans > 1) {
+                            for (let s = 1; s < numSpans; s++) {
+                                const distMeters = spanDist * s;
+
+                                // Protección: nunca crear un poste a menos de 20m de la esquina inicial o final
+                                if (distMeters < 20.0 || (subLen - distMeters) < 20.0) {
+                                    continue;
+                                }
+
+                                try {
+                                    const sliced = turf.along(subLine, distMeters / 1000, { units: 'kilometers' });
+                                    if (sliced && sliced.geometry && Array.isArray(sliced.geometry.coordinates)) {
+                                        const pt = sliced.geometry.coordinates;
+                                        if (isValidNumber(pt[0]) && isValidNumber(pt[1])) {
+                                            findOrCreatePole(
+                                                pt[0],
+                                                pt[1],
+                                                `Poste de Apoyo Acera (Vano Uniforme: ${spanDist.toFixed(1)}m)`,
+                                                "",
+                                                cable.name
+                                            );
+                                        }
+                                    }
+                                } catch (e) {
+                                    console.warn("Error interpolando poste en acera:", e);
+                                }
+                            }
+                        }
                     }
                 }
             });
+
+            // LIMPIEZA FINAL ANTI-DUPLICADOS: Fusionar cualquier par de postes que haya quedado a menos de 15m
+            const mergedPoles = [];
+            currentNetworkData.poles.forEach(p => {
+                const pt = turf.point([p.lng, p.lat]);
+                const closePole = mergedPoles.find(mp => turf.distance(pt, turf.point([mp.lng, mp.lat]), { units: 'meters' }) < 15.0);
+                if (!closePole) {
+                    mergedPoles.push(p);
+                } else {
+                    // Si el poste a descartar tenía una CTO o CE, priorizar esa información
+                    if (p.associatedNode && !closePole.associatedNode) {
+                        closePole.associatedNode = p.associatedNode;
+                        closePole.name = `${closePole.code} (${p.associatedNode})`;
+                        closePole.lng = p.lng;
+                        closePole.lat = p.lat;
+                    }
+                    if (p.role && !closePole.role.includes(p.role)) {
+                        closePole.role += ` / ${p.role}`;
+                    }
+                }
+            });
+            currentNetworkData.poles = mergedPoles;
         }
 
         async function autoGenerateLayoutFromPerimeter() {
             if (!activePerimeterPolygon) return;
-            showToast("Calculando ruteo continuo por acera sin cruces de calzada...");
+            showToast("Calculando trazado lineal directo y sin repetición de recorrido...");
 
             const bbox = turf.bbox(activePerimeterPolygon);
             const minLng = bbox[0], minLat = bbox[1], maxLng = bbox[2], maxLat = bbox[3];
+
+            await fetchRealStreetNetwork(bbox);
 
             const startCtoNum = parseInt(document.getElementById('cto-start-input')?.value || "1", 10);
             const startCableNum = parseInt(document.getElementById('cable-start-input')?.value || "100", 10);
             const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
 
-            const polyWidthMeters = turf.distance(turf.point([minLng, minLat]), turf.point([maxLng, minLat]), { units: 'meters' });
-            const polyHeightMeters = turf.distance(turf.point([minLng, minLat]), turf.point([minLng, maxLat]), { units: 'meters' });
-
-            // Orientación longitudinal principal para encajar la acera continua
-            let cols = 4, rows = 2;
-            if (polyHeightMeters > polyWidthMeters * 1.2) {
-                cols = 2;
-                rows = 4;
+            if (!currentNetworkData.houses || currentNetworkData.houses.length === 0) {
+                generateHousesInsidePolygon();
             }
 
-            // Ubicar cabecera CE en el punto de acometida de la acera principal
             const ceName = document.getElementById('ce-name-input')?.value || 'CE001';
+            const rawCeLng = minLng + (maxLng - minLng) * 0.08;
+            const rawCeLat = minLat + (maxLat - minLat) * 0.08;
+            const snappedCe = await snapToPublicStreet(rawCeLng, rawCeLat);
+
             currentNetworkData.ce = {
                 id: ceName,
                 name: ceName,
-                lng: minLng + (maxLng - minLng) * 0.06,
-                lat: minLat + (maxLat - minLat) * 0.06
+                lng: snappedCe[0],
+                lat: snappedCe[1]
             };
 
-            // Determinar lado preferente de acera (+1 o -1) según ubicación de la CE
-            activeSidewalkSign = (currentNetworkData.ce.lng >= (minLng + maxLng) / 2) ? 1 : -1;
+            const candidatePoints = [
+                [minLng + (maxLng - minLng) * 0.05, minLat + (maxLat - minLat) * 0.40],
+                [minLng + (maxLng - minLng) * 0.05, minLat + (maxLat - minLat) * 0.80],
+                [minLng + (maxLng - minLng) * 0.45, maxLat - (maxLat - minLat) * 0.05],
+                [minLng + (maxLng - minLng) * 0.50, minLat + (maxLat - minLat) * 0.60],
+                [minLng + (maxLng - minLng) * 0.50, minLat + (maxLat - minLat) * 0.30],
+                [maxLng - (maxLng - minLng) * 0.05, minLat + (maxLat - minLat) * 0.75],
+                [maxLng - (maxLng - minLng) * 0.05, minLat + (maxLat - minLat) * 0.35],
+                [minLng + (maxLng - minLng) * 0.40, minLat + (maxLat - minLat) * 0.05]
+            ];
 
-            // Generar posiciones de CTOs a lo largo del corredor de acera sin zig-zaguear entre aceras
-            const ctoPositions = [];
-            for (let r = 0; r < rows; r++) {
-                const rowRatio = (r + 0.5) / rows;
-                const lat = minLat + rowRatio * (maxLat - minLat);
-                const rowPoints = [];
-                for (let c = 0; c < cols; c++) {
-                    const colRatio = (c + 0.5) / cols;
-                    const lng = minLng + colRatio * (maxLng - minLng);
-                    rowPoints.push([lng, lat]);
-                }
-                // Si cambiamos de fila, mantener la continuidad de acera en bucle exterior
-                if (r % 2 === 1) rowPoints.reverse();
-                rowPoints.forEach(pt => ctoPositions.push(pt));
+            const snappedCentroids = [];
+            for (let i = 0; i < candidatePoints.length; i++) {
+                const pt = candidatePoints[i];
+                const snapped = await snapToPublicStreet(pt[0], pt[1]);
+                snappedCentroids.push(snapped);
             }
 
-            const polyLine = turf.polygonToLine(activePerimeterPolygon);
-            const snapped8Positions = ctoPositions.slice(0, 8).map(pos => {
-                const pt = turf.point(pos);
-                if (turf.booleanPointInPolygon(pt, activePerimeterPolygon)) return pos;
-                const nearestOnLine = turf.nearestPointOnLine(polyLine, pt);
-                return nearestOnLine.geometry.coordinates;
-            });
+            const ceOrigin = [currentNetworkData.ce.lng, currentNetworkData.ce.lat];
+            const sortedCentroids = sortPointsChainOptimally(ceOrigin, snappedCentroids);
 
             currentNetworkData.ctos = [];
-            snapped8Positions.forEach((pos, idx) => {
+            sortedCentroids.forEach((pos, idx) => {
                 const num = startCtoNum + idx;
                 const pad = String(num).padStart(namingConfig.paddingDigits, '0');
                 currentNetworkData.ctos.push({
@@ -1434,45 +1709,145 @@
                 });
             });
 
-            const pointsChain = [
-                [currentNetworkData.ce.lng, currentNetworkData.ce.lat],
-                ...snapped8Positions
-            ];
-
             const clusterNum = getClusterNumber();
             currentNetworkData.cables = [];
+            let currentStartPt = [...ceOrigin];
 
-            // Trazado encadenado forzando el mismo lado de acera
-            for (let i = 0; i < pointsChain.length - 1; i++) {
-                const p1 = pointsChain[i];
-                const p2 = pointsChain[i + 1];
-                const streetCoords = await routeCableAlongStreets(p1, p2, p2, activeSidewalkSign);
+            for (let i = 0; i < sortedCentroids.length; i++) {
+                const targetPt = sortedCentroids[i];
+                let streetCoords = await routeCableAlongStreets(currentStartPt, targetPt, targetPt, activeSidewalkSign);
+
+                if (streetCoords.length > 0) {
+                    streetCoords[0] = [...currentStartPt];
+                }
 
                 const ctoTarget = currentNetworkData.ctos[i];
+                const finalCoord = streetCoords[streetCoords.length - 1];
+
+                ctoTarget.lng = finalCoord[0];
+                ctoTarget.lat = finalCoord[1];
+
                 currentNetworkData.cables.push({
                     name: `${namingConfig.cablePrefix}${clusterNum}-${startCableNum + i}`,
                     fo: clusterConfig.foCapacity,
-                    targetCto: ctoTarget ? ctoTarget.name : null,
+                    targetCto: ctoTarget.name,
                     coords: streetCoords
                 });
-            }
 
-            // Alinear exactamente las CTOs al final del tramo de acera donde termina el cable
-            currentNetworkData.ctos.forEach((cto, idx) => {
-                const cableSegment = currentNetworkData.cables[idx];
-                if (cableSegment && cableSegment.coords && cableSegment.coords.length > 0) {
-                    const lastCoord = cableSegment.coords[cableSegment.coords.length - 1];
-                    cto.lng = lastCoord[0];
-                    cto.lat = lastCoord[1];
-                }
-            });
+                currentStartPt = [...finalCoord];
+            }
 
             recalculateAllPoles(startPoleNum);
             auditHouseCoverage();
             renderNetworkOnMap();
             renderCtoListUI();
             updateHeaderAndAuditMetrics();
-            showToast("Red FTTH trazada por acera continua (sin cruces innecesarios de calzada).");
+
+            showToast("Trazado continuo aplicado: CTOs y cables sincronizados al 100% en la misma acera.");
+        }
+
+        async function optimizeCtoCoverage() {
+            if (!currentNetworkData.houses || currentNetworkData.houses.length === 0) {
+                showToast("No hay casas generadas en el área para optimizar.");
+                return;
+            }
+
+            saveStateToHistory();
+            showToast("Optimizando cobertura en avance unidireccional continuo...");
+
+            const bbox = turf.bbox(activePerimeterPolygon);
+            await fetchRealStreetNetwork(bbox);
+
+            const housePoints = turf.featureCollection(
+                currentNetworkData.houses.map(h => turf.point([h.lng, h.lat]))
+            );
+
+            const uncoveredHouses = currentNetworkData.houses.filter(h => h.status === 'UNCOVERED');
+            const numCtos = Math.max(8, currentNetworkData.ctos.length);
+
+            const clustered = turf.clustersKmeans(housePoints, { numberOfClusters: numCtos });
+
+            const centroids = [];
+            for (let c = 0; c < numCtos; c++) {
+                const clusterFeatures = clustered.features.filter(f => f.properties.cluster === c);
+                if (clusterFeatures.length > 0) {
+                    const center = turf.center(turf.featureCollection(clusterFeatures));
+                    const rawPt = center.geometry.coordinates;
+                    const snappedPt = await snapToPublicStreet(rawPt[0], rawPt[1]);
+                    centroids.push(snappedPt);
+                }
+            }
+
+            const midLng = (bbox[0] + bbox[2]) / 2;
+            const midLat = (bbox[1] + bbox[3]) / 2;
+            const centerSnap = await snapToPublicStreet(midLng, midLat);
+
+            if (uncoveredHouses.length > 0 && centroids.length > 2) {
+                centroids[0] = centerSnap;
+            }
+
+            const startPt = currentNetworkData.ce 
+                ? [currentNetworkData.ce.lng, currentNetworkData.ce.lat]
+                : (centroids[0] || [-15.9680, 18.1025]);
+
+            const sortedCentroids = sortPointsChainOptimally(startPt, centroids);
+
+            const startCtoNum = parseInt(document.getElementById('cto-start-input')?.value || "1", 10);
+            currentNetworkData.ctos = [];
+            sortedCentroids.forEach((pos, idx) => {
+                const num = startCtoNum + idx;
+                const pad = String(num).padStart(namingConfig.paddingDigits, '0');
+                currentNetworkData.ctos.push({
+                    id: idx + 1,
+                    num: num,
+                    name: `${namingConfig.ctoPrefix} ${pad}`,
+                    lng: pos[0],
+                    lat: pos[1],
+                    spliceLoss: "0.04",
+                    assignedFiber: idx + 1
+                });
+            });
+
+            const clusterNum = getClusterNumber();
+            const startCableNum = parseInt(document.getElementById('cable-start-input')?.value || "100", 10);
+            currentNetworkData.cables = [];
+
+            let currentStartPt = currentNetworkData.ce 
+                ? [currentNetworkData.ce.lng, currentNetworkData.ce.lat]
+                : [...sortedCentroids[0]];
+
+            for (let i = 0; i < sortedCentroids.length; i++) {
+                const targetPt = sortedCentroids[i];
+                let streetCoords = await routeCableAlongStreets(currentStartPt, targetPt, targetPt, activeSidewalkSign);
+
+                if (streetCoords.length > 0) {
+                    streetCoords[0] = [...currentStartPt];
+                }
+
+                const ctoTarget = currentNetworkData.ctos[i];
+                const finalCoord = streetCoords[streetCoords.length - 1];
+
+                ctoTarget.lng = finalCoord[0];
+                ctoTarget.lat = finalCoord[1];
+
+                currentNetworkData.cables.push({
+                    name: `${namingConfig.cablePrefix}${clusterNum}-${startCableNum + i}`,
+                    fo: clusterConfig.foCapacity,
+                    targetCto: ctoTarget.name,
+                    coords: streetCoords
+                });
+
+                currentStartPt = [...finalCoord];
+            }
+
+            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
+            recalculateAllPoles(startPoleNum);
+            auditHouseCoverage();
+            renderNetworkOnMap();
+            renderCtoListUI();
+            updateHeaderAndAuditMetrics();
+
+            showToast("Cobertura optimizada: cables y CTOs perfectamente acoplados en la misma acera.");
         }
 
         function auditHouseCoverage() {
@@ -1504,51 +1879,15 @@
                 }
             });
 
-            document.getElementById('stat-houses-covered').innerText = covered;
-            document.getElementById('stat-houses-uncovered').innerText = uncovered;
-            document.getElementById('stat-houses-overlapped').innerText = overlapped;
-            document.getElementById('header-coverage-stat').innerText = `${covered} / ${currentNetworkData.houses.length}`;
-        }
+            const statCovered = document.getElementById('stat-houses-covered');
+            const statUncovered = document.getElementById('stat-houses-uncovered');
+            const statOverlapped = document.getElementById('stat-houses-overlapped');
+            const headerCoverage = document.getElementById('header-coverage-stat');
 
-        function optimizeCtoCoverage() {
-            if (!currentNetworkData.houses || currentNetworkData.houses.length === 0) {
-                showToast("No hay casas generadas en el área para optimizar.");
-                return;
-            }
-
-            saveStateToHistory();
-            showToast("Ejecutando K-Means para optimizar ubicación de CTOs...");
-
-            const housePoints = turf.featureCollection(
-                currentNetworkData.houses.map(h => turf.point([h.lng, h.lat]))
-            );
-
-            const numCtos = Math.max(1, currentNetworkData.ctos.length);
-            const clustered = turf.clustersKmeans(housePoints, { numberOfClusters: numCtos });
-
-            const centroids = [];
-            for (let c = 0; c < numCtos; c++) {
-                const clusterFeatures = clustered.features.filter(f => f.properties.cluster === c);
-                if (clusterFeatures.length > 0) {
-                    const center = turf.center(turf.featureCollection(clusterFeatures));
-                    centroids.push(center.geometry.coordinates);
-                }
-            }
-
-            currentNetworkData.ctos.forEach((cto, idx) => {
-                if (centroids[idx]) {
-                    cto.lng = centroids[idx][0];
-                    cto.lat = centroids[idx][1];
-                }
-            });
-
-            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
-            recalculateAllPoles(startPoleNum);
-            auditHouseCoverage();
-            renderNetworkOnMap();
-            renderCtoListUI();
-            updateHeaderAndAuditMetrics();
-            showToast("Ubicación de CTOs optimizada según demanda de viviendas.");
+            if (statCovered) statCovered.innerText = covered;
+            if (statUncovered) statUncovered.innerText = uncovered;
+            if (statOverlapped) statOverlapped.innerText = overlapped;
+            if (headerCoverage) headerCoverage.innerText = `${covered} / ${currentNetworkData.houses.length}`;
         }
 
         function updateClusterNameUI() {
@@ -1562,17 +1901,17 @@
             const headerElem = document.getElementById('header-cluster-id');
             if (headerElem) headerElem.innerText = inputVal;
 
-            if (namingConfig.policy === "RESEQUENCE_ALL") resequenceAllIdentifiers();
+            resequenceAllIdentifiers();
 
             renderNetworkOnMap();
             renderCtoListUI();
             updateHeaderAndAuditMetrics();
-            showToast("Nomenclatura e Identificadores actualizados.");
         }
 
         function resequenceAllIdentifiers() {
             const startCtoNum = parseInt(document.getElementById('cto-start-input')?.value || "1", 10);
             const startCableNum = parseInt(document.getElementById('cable-start-input')?.value || "100", 10);
+            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
             const clusterNum = getClusterNumber();
 
             currentNetworkData.ctos.forEach((cto, idx) => {
@@ -1580,13 +1919,16 @@
                 const pad = String(num).padStart(namingConfig.paddingDigits, '0');
                 cto.num = num;
                 cto.name = `${namingConfig.ctoPrefix} ${pad}`;
+                cto.assignedFiber = idx + 1;
             });
 
             currentNetworkData.cables.forEach((cable, idx) => {
                 cable.name = `${namingConfig.cablePrefix}${clusterNum}-${startCableNum + idx}`;
+                if (currentNetworkData.ctos[idx]) {
+                    cable.targetCto = currentNetworkData.ctos[idx].name;
+                }
             });
 
-            const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
             recalculateAllPoles(startPoleNum);
         }
 
@@ -1714,16 +2056,27 @@
 
             currentNetworkData.cables.forEach((cable, cIdx) => {
                 const latLngs = cable.coords.map(c => [c[1], c[0]]);
+
+                // Línea de base/sombra de acera para distinguir con claridad el lado por el que va el cable
+                const sidewalkHalo = L.polyline(latLngs, {
+                    color: '#fbbf24',
+                    weight: 7,
+                    opacity: 0.35,
+                    lineCap: 'round',
+                    lineJoin: 'round'
+                }).addTo(map);
+                mapLayers.cablePolylines.push(sidewalkHalo);
+
                 const polyline = L.polyline(latLngs, {
-                    color: '#ff0000',
-                    weight: 3,
-                    opacity: 0.95
+                    color: '#dc2626',
+                    weight: 3.5,
+                    opacity: 1.0
                 }).addTo(map);
 
                 polyline.bindPopup(`
                     <div class="p-2 font-mono text-xs space-y-1.5">
                         <strong class="text-red-400">${cable.name} (${cable.fo})</strong><br>
-                        Trazado: Ruteo por Acera Pública<br>
+                        Trazado: <span class="text-amber-300 font-bold">Acera de Viviendas</span><br>
                         <span class="text-slate-400 text-[10px]">Clica en la línea para añadir vértice</span><br>
                         <button onclick="removeCable(${cIdx})" class="mt-1 bg-red-950 hover:bg-red-900 text-red-300 border border-red-800 px-2 py-1 rounded text-[10px] flex items-center gap-1 font-bold">
                             <i class="fa-solid fa-trash-can"></i> Eliminar Cable
@@ -1896,7 +2249,6 @@
             const sagMarginMeters = totalNetCableMeters * (clusterConfig.reserveSagPercent / 100);
             const totalGrossCableMeters = totalNetCableMeters + totalCeReserve + totalCtoReserve + sagMarginMeters;
 
-            // Cálculo dinámico de la media real de los vanos entre postes generados
             let calculatedAvgSpan = 40.0;
             if (currentNetworkData.cables.length > 0 && currentNetworkData.poles.length > 1) {
                 let totalSpanDistances = 0;
@@ -2103,7 +2455,7 @@
 
         function updateDesignRules() {
             clusterConfig.coverageRadiusMeters = parseInt(document.getElementById('coverage-radius-input')?.value || "150", 10);
-            clusterConfig.poleMinSpanMeters = parseInt(document.getElementById('pole-min-span-input')?.value || "40", 10);
+            clusterConfig.poleMinSpanMeters = parseInt(document.getElementById('pole-min-span-input')?.value || "35", 10);
             clusterConfig.poleMaxSpanMeters = parseInt(document.getElementById('pole-max-span-input')?.value || "50", 10);
 
             const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
@@ -2361,11 +2713,21 @@
                 : null;
 
             if (prevPt && currentNetworkData.cables[ctoIdx]) {
-                currentNetworkData.cables[ctoIdx].coords = await routeCableAlongStreets(prevPt, targetPt, targetPt, activeSidewalkSign);
+                const newCoords = await routeCableAlongStreets(prevPt, targetPt, targetPt, activeSidewalkSign);
+                if (newCoords.length > 0) {
+                    newCoords[0] = [...prevPt];
+                    newCoords[newCoords.length - 1] = [...targetPt];
+                }
+                currentNetworkData.cables[ctoIdx].coords = newCoords;
             }
 
             if (nextPt && currentNetworkData.cables[ctoIdx + 1]) {
-                currentNetworkData.cables[ctoIdx + 1].coords = await routeCableAlongStreets(targetPt, nextPt, nextPt, activeSidewalkSign);
+                const nextCoords = await routeCableAlongStreets(targetPt, nextPt, nextPt, activeSidewalkSign);
+                if (nextCoords.length > 0) {
+                    nextCoords[0] = [...targetPt];
+                    nextCoords[nextCoords.length - 1] = [...nextPt];
+                }
+                currentNetworkData.cables[ctoIdx + 1].coords = nextCoords;
             }
 
             const startPoleNum = parseInt(document.getElementById('pole-start-input')?.value || "1", 10);
@@ -2402,6 +2764,7 @@
             saveStateToHistory();
             drawnItemsLayer.clearLayers();
             activePerimeterPolygon = null;
+            cachedStreetFeatures = [];
             clearMapLayersExceptPerimeter();
             currentNetworkData = { ce: null, ctos: [], poles: [], cables: [], houses: [], fiberAllocations: [] };
             renderCtoListUI();
@@ -2630,7 +2993,7 @@
 - Estatus del Proyecto: Red de distribución FTTH OSP Aérea en Nuakchott.
 - Capacidad Feeder: ${clusterConfig.foCapacity} (Matriz TIA-598).
 - Cajas CTO: ${currentNetworkData.ctos.length} CTOs (Splitter ${clusterConfig.splitterRatio}).
-- Postería: ${currentNetworkData.poles.length} postes compartidos con vanos equilibrados (40m - 50m).
+- Postería: ${currentNetworkData.poles.length} postes compartidos con vanos equilibrados (35m-50m).
 - Cobertura Viviendas: ${document.getElementById('stat-houses-covered')?.innerText || '0'} cubiertas / ${document.getElementById('stat-houses-uncovered')?.innerText || '0'} sin cobertura.
 - Metraje Neto Cable: ${document.getElementById('pmo-total-meters')?.innerText || '0 MTS'}.
 - Cómputo Total Suministro (con Reservas): ${document.getElementById('pmo-total-gross-meters')?.innerText || '0 MTS'}.
@@ -2651,7 +3014,7 @@
 - Statut du projet: Réseau de distribution FTTH OSP Aérien à Nouakchott.
 - Capacité Feeder: ${clusterConfig.foCapacity} (Matrice TIA-598).
 - Boîtiers CTO: ${currentNetworkData.ctos.length} CTOs (Couplage ${clusterConfig.splitterRatio}).
-- Poteaux de bois: ${currentNetworkData.poles.length} poteaux partagés avec portées équilibrées (40m - 50m).
+- Poteaux de bois: ${currentNetworkData.poles.length} poteaux partagés avec portées equilibrées (35m-50m).
 - Métrage Total Câble (avec Réserve): ${document.getElementById('pmo-total-gross-meters')?.innerText || '0 MTS'}.
 - Bilan Optique: ${document.getElementById('header-max-loss')?.innerText || '-20.85 dBm'} (Conforme aux normes ARE).`;
 
